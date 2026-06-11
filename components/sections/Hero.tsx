@@ -11,8 +11,8 @@ const marqueeCopies = 8;
 const marqueeDuration = 360;
 const marqueeTimeScale = 2;
 
-/** Coloque sua foto em public/profile.jpg (proporção retrato ~4:5). */
-const profileImageSrc = "/profile.jpg";
+/** Coloque sua foto em public/profile.png (PNG recortado, fundo transparente). */
+const profileImageSrc = "/profile.png";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -62,12 +62,12 @@ export default function Hero() {
       ref={sectionRef}
       className="relative isolate z-0 min-h-screen w-full overflow-hidden bg-[#999d9e] text-white"
     >
-      {/* Camada 10: retrato — Dennis: ~42% largura, ~88% altura, base alinhada ao rodapé */}
-      <div className="pointer-events-none absolute bottom-0 left-1/2 z-10 h-[88vh] w-[clamp(300px,42vw,580px)] -translate-x-1/2 max-md:h-[82vh] max-md:w-[min(92vw,480px)]">
+      {/* Camada 10: retrato — object-contain evita cortar braço/cotovelo; sem overflow-hidden */}
+      <div className="pointer-events-none absolute bottom-0 left-1/2 z-10 -translate-x-1/2">
         <img
           src={profileImageSrc}
           alt="Fredson Santana"
-          className="block h-full w-full object-cover object-[center_12%]"
+          className="block h-[min(96vh,920px)] w-auto max-w-[min(88vw,980px)] object-contain object-bottom"
           draggable={false}
         />
       </div>
@@ -76,9 +76,9 @@ export default function Hero() {
       <div className="absolute left-0 top-1/2 z-30 -translate-y-1/2 px-6 sm:px-10 lg:px-16">
         <div className="flex items-center gap-4 rounded-full bg-[#1c1d20] px-5 py-3 text-white shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
           <div className="text-left text-xs font-light leading-tight tracking-[0.08em] sm:text-sm">
-            <span className="block">Located</span>
-            <span className="block">in</span>
-            <span className="block">Bahia, Brazil</span>
+            <span className="block">Localizado</span>
+            <span className="block">na</span>
+            <span className="block">Bahia, Brasil</span>
           </div>
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#999d9e]">
             <svg
