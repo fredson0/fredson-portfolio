@@ -1,18 +1,20 @@
 "use client";
 
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/all";
 
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
-const marqueeText = "FREDSON SANTANA - ";
-const marqueeCopies = 8;
-const marqueeDuration = 360;
-const marqueeTimeScale = 2;
+const marqueeText = "FREDSON SANTANA — ";
+const marqueeRepeats = 6;
+const marqueeBlock = marqueeText.repeat(marqueeRepeats);
+const marqueeDuration = 80;
 
 /** Coloque sua foto em public/profile.png (PNG recortado, fundo transparente). */
 const profileImageSrc = "/profile.png";
+const heroBackground = "#999d9e";
+
+const marqueeTextClassName =
+  "marquee-text shrink-0 text-[22vw] font-semibold uppercase leading-[0.82] tracking-tight text-white/90 md:text-[15vw] lg:text-[13vw] xl:text-[11.5vw]";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -25,51 +27,73 @@ export default function Hero() {
         return;
       }
 
-      const tween = gsap.to(marquee, {
+      gsap.set(marquee, { xPercent: 0 });
+
+      const marqueeTween = gsap.to(marquee, {
         xPercent: -50,
+        repeat: -1,
         duration: marqueeDuration,
         ease: "none",
-        repeat: -1,
+        modifiers: {
+          xPercent: gsap.utils.wrap(-50, 0),
+        },
       });
 
-      const setDirection = (nextDirection: number) => {
-        gsap.to(tween, {
-          timeScale: marqueeTimeScale * nextDirection,
-          duration: 0.6,
-          ease: "power2.out",
-          overwrite: true,
-        });
-      };
+      marqueeTween.timeScale(1);
+
+      let lastDirection = 1;
 
       const trigger = ScrollTrigger.create({
         start: 0,
         end: "max",
-        onUpdate: (self) => setDirection(self.direction || 1),
-      });
+        onUpdate: (self) => {
+          const velocity = self.getVelocity();
 
-      setDirection(1);
+          if (Math.abs(velocity) > 1) {
+            lastDirection = velocity >= 0 ? 1 : -1;
+          }
+
+          const direction = lastDirection;
+
+          let speedBoost = Math.abs(velocity) * 0.0008;
+          if (speedBoost > 3) {
+            speedBoost = 3;
+          }
+
+          const targetTimeScale = (1 + speedBoost) * direction;
+
+          gsap.to(marqueeTween, {
+            timeScale: targetTimeScale,
+            duration: 0.4,
+            ease: "power1.out",
+            overwrite: true,
+          });
+        },
+      });
 
       return () => {
         trigger.kill();
-        tween.kill();
+        marqueeTween.kill();
       };
     },
-    { scope: sectionRef }
+    { dependencies: [] }
   );
 
   return (
     <section
       ref={sectionRef}
-      className="relative isolate z-0 min-h-screen w-full overflow-hidden bg-[#999d9e] text-white"
+      className="relative isolate z-10 min-h-screen w-full overflow-x-hidden bg-[#999d9e] text-white"
     >
-      {/* Camada 10: retrato — object-contain evita cortar braço/cotovelo; sem overflow-hidden */}
-      <div className="pointer-events-none absolute bottom-0 left-1/2 z-10 -translate-x-1/2">
-        <img
-          src={profileImageSrc}
-          alt="Fredson Santana"
-          className="block h-[min(96vh,920px)] w-auto max-w-[min(88vw,980px)] object-contain object-bottom"
-          draggable={false}
-        />
+      {/* Camada 10: base colada na seção + foto inteira visível */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-center">
+        <div className="leading-[0]" style={{ backgroundColor: heroBackground }}>
+          <img
+            src={profileImageSrc}
+            alt="Fredson Santana"
+            className="block h-auto max-h-[min(96vh,920px)] w-auto max-w-[min(52vw,720px)] max-md:max-w-[92vw]"
+            draggable={false}
+          />
+        </div>
       </div>
 
       {/* Camada 30: localização (esquerda) */}
@@ -124,32 +148,16 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Camada 20: letreiro no rodapé — na frente do torso (efeito Dennis) */}
+      {/* Camada 20: letreiro — duas cópias idênticas para loop infinito */}
       <div className="absolute inset-x-0 bottom-0 z-20 overflow-hidden pb-[1.5vh] md:pb-[2vh]">
         <div
           ref={marqueeRef}
-          className="relative flex w-max whitespace-nowrap will-change-transform"
+          className="marquee-container flex w-max flex-nowrap whitespace-nowrap will-change-transform"
         >
-          <div className="flex shrink-0 items-center">
-            {Array.from({ length: marqueeCopies }).map((_, index) => (
-              <span
-                key={`marquee-a-${index}`}
-                className="text-[22vw] font-semibold uppercase leading-[0.82] tracking-tight text-white/90 md:text-[15vw] lg:text-[13vw] xl:text-[11.5vw]"
-              >
-                {marqueeText}
-              </span>
-            ))}
-          </div>
-          <div className="flex shrink-0 items-center" aria-hidden="true">
-            {Array.from({ length: marqueeCopies }).map((_, index) => (
-              <span
-                key={`marquee-b-${index}`}
-                className="text-[22vw] font-semibold uppercase leading-[0.82] tracking-tight text-white/90 md:text-[15vw] lg:text-[13vw] xl:text-[11.5vw]"
-              >
-                {marqueeText}
-              </span>
-            ))}
-          </div>
+          <p className={marqueeTextClassName}>{marqueeBlock}</p>
+          <p className={marqueeTextClassName} aria-hidden="true">
+            {marqueeBlock}
+          </p>
         </div>
       </div>
     </section>

@@ -1,9 +1,10 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/all";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
+  // Registra apenas o ScrollTrigger, já que useGSAP e Modifiers não precisam/devem ser registrados aqui
+  gsap.registerPlugin(ScrollTrigger);
 }
 
-export { gsap };
+export { gsap, ScrollTrigger, useGSAP };
