@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import LaptopFrame from "@/components/ui/LaptopFrame";
+
 export const metadata: Metadata = {
   title: "Rei da Selva — Fredson Santana",
   description:
@@ -70,16 +72,31 @@ export default function ReiDaSelvaPage() {
             />
           </div>
 
+          <div className="mt-16 sm:mt-20 lg:mt-28">
+            <LaptopFrame>
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src="/projects/rei-da-selva/Reidaselvavideo.webm"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Rei da Selva — vídeo do projeto"
+              />
+            </LaptopFrame>
+          </div>
+
           <div className="mt-16 overflow-hidden sm:mt-20 lg:mt-28">
             <video
               className="h-auto w-full object-cover"
-              src="/projects/rei-da-selva/Reidaselvavideo.webm"
+              src="/projects/rei-da-selva/Aprendervideo.webm"
               autoPlay
               muted
               loop
               playsInline
               preload="metadata"
-              aria-label="Rei da Selva — vídeo do projeto"
+              aria-label="Rei da Selva — seção Aprender"
             />
           </div>
         </div>
