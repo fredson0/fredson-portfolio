@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import SiteHeader from "@/components/layout/SiteHeader";
 import { projects } from "@/lib/projects";
 
 export const metadata: Metadata = {
@@ -13,8 +12,6 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <main className="min-h-screen bg-white text-black">
-      <SiteHeader active="work" />
-
       <section className="px-6 pb-24 pt-28 sm:px-10 md:pt-36 lg:px-16 lg:pb-32">
         <div className="mx-auto max-w-[1400px]">
           <p className="text-xs font-light uppercase tracking-tight text-black/45 sm:text-sm">

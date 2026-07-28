@@ -70,3 +70,23 @@ select {
   width: 0;
   height: 0;
 }
+
+@keyframes nav-wobble {
+  0%,
+  100% {
+    transform: rotate(0deg) translateX(0);
+  }
+  25% {
+    transform: rotate(-2deg) translateX(-2px);
+  }
+  50% {
+    transform: rotate(2deg) translateX(2px);
+  }
+  75% {
+    transform: rotate(-1deg) translateX(-1px);
+  }
+}
+
+.group:hover .nav-link-text {
+  animation: nav-wobble 0.45s ease-in-out;
+}

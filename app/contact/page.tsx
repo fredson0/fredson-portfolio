@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 
-import SiteHeader from "@/components/layout/SiteHeader";
-
 export const metadata: Metadata = {
   title: "Contato — Fredson Santana",
   description:
@@ -29,8 +27,6 @@ const socialLinks = [
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-white text-black">
-      <SiteHeader active="contact" />
-
       <section className="px-6 pb-24 pt-28 sm:px-10 md:pt-36 lg:px-16 lg:pb-32">
         <div className="mx-auto max-w-[1400px]">
           <p className="text-xs font-light uppercase tracking-tight text-black/45 sm:text-sm">

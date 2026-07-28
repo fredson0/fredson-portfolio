@@ -9,6 +9,7 @@ import { gsap } from "@/lib/gsap";
 type SmoothScrollContextValue = {
   enabled: boolean;
   setEnabled: (value: boolean) => void;
+  lenis: Lenis | null;
 };
 
 const SmoothScrollContext = createContext<SmoothScrollContextValue | undefined>(
@@ -21,25 +22,28 @@ export function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   const [enabled, setEnabled] = useState(true);
+  const [lenis, setLenis] = useState<Lenis | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!enabled) {
+      setLenis(null);
       return undefined;
     }
 
-    const lenis = new Lenis({
+    const instance = new Lenis({
       lerp: 0.08,
       smoothWheel: true,
       smoothTouch: false,
     });
 
-    lenisRef.current = lenis;
+    lenisRef.current = instance;
+    setLenis(instance);
     gsap.ticker.lagSmoothing(0);
 
     const raf = (time: number) => {
-      lenis.raf(time);
+      instance.raf(time);
       ScrollTrigger.update();
       rafRef.current = requestAnimationFrame(raf);
     };
@@ -51,14 +55,15 @@ export function SmoothScrollProvider({
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
       }
-      lenis.destroy();
+      instance.destroy();
       lenisRef.current = null;
+      setLenis(null);
       rafRef.current = null;
     };
   }, [enabled]);
 
   return (
-    <SmoothScrollContext.Provider value={{ enabled, setEnabled }}>
+    <SmoothScrollContext.Provider value={{ enabled, setEnabled, lenis }}>
       {children}
     </SmoothScrollContext.Provider>
   );
