@@ -60,13 +60,26 @@ export default function ReiDaSelvaPage() {
         </div>
       </section>
 
-      <section className="relative -mt-14 px-6 pb-20 sm:-mt-16 sm:px-10 lg:px-16 lg:pb-28">
-        <div className="mx-auto max-w-[1400px]">
+      <section className="bg-[#f7f2e9] px-6 pb-24 pt-0 sm:px-10 sm:pb-32 lg:px-16 lg:pb-40">
+        <div className="relative mx-auto -mt-14 max-w-[1400px] sm:-mt-16">
           <div className="overflow-hidden">
             <img
               src="/projects/rei-da-selva/reidaselva.webp"
               alt="Rei da Selva — preview do projeto"
               className="h-auto w-full object-cover"
+            />
+          </div>
+
+          <div className="mt-16 overflow-hidden sm:mt-20 lg:mt-28">
+            <video
+              className="h-auto w-full object-cover"
+              src="/projects/rei-da-selva/Reidaselvavideo.webm"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="Rei da Selva — vídeo do projeto"
             />
           </div>
         </div>
