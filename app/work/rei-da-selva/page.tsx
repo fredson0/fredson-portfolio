@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 import LaptopFrame from "@/components/ui/LaptopFrame";
+import ParallaxBleedImage from "@/components/ui/ParallaxBleedImage";
+import NextCaseFooter from "@/components/work/NextCaseFooter";
+import { projects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Rei da Selva — Fredson Santana",
@@ -9,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 const LIVE_SITE_URL = "https://www.reidasselvas.com.br/";
+const NEXT_PROJECT =
+  projects.find((project) => project.id === "faculty") ?? projects[1];
 
 export default function ReiDaSelvaPage() {
   return (
@@ -101,6 +106,80 @@ export default function ReiDaSelvaPage() {
           </div>
         </div>
       </section>
+
+      <ParallaxBleedImage
+        src="/projects/rei-da-selva/navega%C3%A7%C3%A3oH.webp"
+        alt="Rei da Selva — navegação do projeto"
+      />
+
+      <section className="bg-[#e8e0d4] px-6 py-24 sm:px-10 sm:py-32 lg:px-16 lg:py-40">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="overflow-hidden">
+            <video
+              className="h-auto w-full object-cover"
+              src="/projects/rei-da-selva/Menusectionrei.webm"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="Rei da Selva — menu do projeto"
+            />
+          </div>
+
+          <div className="mt-16 sm:mt-20 lg:mt-28">
+            <LaptopFrame>
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src="/projects/rei-da-selva/Landinpage2rei.webm"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Rei da Selva — landing page do projeto"
+              />
+            </LaptopFrame>
+          </div>
+        </div>
+      </section>
+
+      <ParallaxBleedImage
+        src="/projects/rei-da-selva/navega%C3%A7%C3%A3oH.webp"
+        alt="Rei da Selva — cena do projeto"
+      />
+
+      <section className="bg-white px-6 py-24 sm:px-10 sm:py-32 lg:px-16 lg:py-40">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-10 md:gap-16 lg:gap-20">
+          {[
+            {
+              src: "/projects/rei-da-selva/reiV1.webp",
+              alt: "Rei da Selva — tela mobile 1",
+            },
+            {
+              src: "/projects/rei-da-selva/reiV2.webp",
+              alt: "Rei da Selva — tela mobile 2",
+            },
+            {
+              src: "/projects/rei-da-selva/reiV3.webp",
+              alt: "Rei da Selva — tela mobile 3",
+            },
+          ].map((phone) => (
+            <div
+              key={phone.src}
+              className="mx-auto w-full max-w-[340px] overflow-hidden shadow-[0_20px_50px_-20px_rgba(0,0,0,0.35)] sm:max-w-none"
+            >
+              <img
+                src={phone.src}
+                alt={phone.alt}
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <NextCaseFooter nextProject={NEXT_PROJECT} versionYear={2025} />
     </main>
   );
 }

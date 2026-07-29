@@ -22,20 +22,19 @@ export type GalleryCard = {
 const rowOneCards: GalleryCard[] = [
   {
     id: "r1-1",
-    title: "Interface Study",
+    title: "Rei da Selva",
     media: {
       type: "image",
-      src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=600&fit=crop&q=80",
+      src: "/projects/rei-da-selva/reidaselva.webp",
     },
   },
   {
     id: "r1-2",
-    title: "Motion Loop",
+    title: "Rei da Selva — Site",
     media: {
       type: "video",
-      src: "https://cdn.coverr.co/videos/coverr-abstract-digital-lines-1576/1080p.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1558591710-4bfb4a27904a?w=800&h=600&fit=crop&q=80",
+      src: "/projects/rei-da-selva/Reidaselvavideo.webm",
+      poster: "/projects/rei-da-selva/reidaselva.webp",
     },
   },
   {
@@ -106,6 +105,8 @@ const rowTwoExpanded = expandRow(rowTwoCards);
 
 function GalleryCardMedia({ media, title }: { media: GalleryMedia; title: string }) {
   if (media.type === "video") {
+    const isWebm = media.src.endsWith(".webm");
+
     return (
       <video
         autoPlay
@@ -117,7 +118,7 @@ function GalleryCardMedia({ media, title }: { media: GalleryMedia; title: string
         className="h-full w-full object-cover"
         aria-label={title}
       >
-        <source src={media.src} type="video/mp4" />
+        <source src={media.src} type={isWebm ? "video/webm" : "video/mp4"} />
       </video>
     );
   }
