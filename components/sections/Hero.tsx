@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { ACCENT_MUTED, DARK_BACKGROUND } from "@/lib/theme";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
-const marqueeText = "FULL STACK · WEB · SALVADOR · ";
+const marqueeText = "Full Stack · Web · Salvador · ";
 const marqueeRepeats = 6;
 const marqueeBlock = marqueeText.repeat(marqueeRepeats);
 const marqueeDuration = 80;
@@ -14,7 +14,7 @@ const marqueeDuration = 80;
 const profileImageSrc = "/profile.png";
 
 const marqueeTextClassName =
-  "marquee-text shrink-0 text-[22vw] font-semibold uppercase leading-[0.82] tracking-tight text-white/90 md:text-[15vw] lg:text-[13vw] xl:text-[11.5vw]";
+  "marquee-text shrink-0 font-cursive text-[24vw] font-semibold normal-case leading-[0.95] tracking-normal text-white/90 md:text-[16vw] lg:text-[14vw] xl:text-[12vw]";
 
 function GlobeIcon({ className }: { className?: string }) {
   return (

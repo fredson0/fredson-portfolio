@@ -371,13 +371,22 @@ export default function SiteHeader({
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!isMounted) {
+      return;
+    }
+
     ballEverVisibleRef.current = false;
     const shell = ballShellRef.current;
     if (shell) {
-      gsap.set(shell, { scale: 0.12, opacity: 0, pointerEvents: "none" });
+      gsap.set(shell, {
+        scale: 0.12,
+        opacity: 0,
+        pointerEvents: "none",
+        transformOrigin: "center center",
+      });
     }
-  }, [pathname]);
+  }, [isMounted, pathname]);
 
   useEffect(() => {
     const updateScrolled = (scrollY: number) => {
@@ -407,14 +416,20 @@ export default function SiteHeader({
   }, [lenis, pathname]);
 
   useEffect(() => {
-    if (!isMounted || lightHeader) {
+    if (!isMounted) {
       return;
     }
+
+    if (lightHeader) {
+      setOverDarkSection(false);
+      return;
+    }
+
+    setOverDarkSection(false);
 
     const darkSections = document.querySelectorAll("[data-header-dark]");
 
     if (!darkSections.length) {
-      setOverDarkSection(false);
       return;
     }
 
@@ -435,7 +450,7 @@ export default function SiteHeader({
     darkSections.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
-  }, [isMounted, lightHeader]);
+  }, [isMounted, lightHeader, pathname]);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -510,7 +525,7 @@ export default function SiteHeader({
         }
       }
     },
-    { dependencies: [showBrand] }
+    { dependencies: [showBrand, isMounted] }
   );
 
   useGSAP(
@@ -560,7 +575,7 @@ export default function SiteHeader({
         }
       }
     },
-    { dependencies: [showBall] }
+    { dependencies: [showBall, isMounted] }
   );
 
   const openMenu = () => {
@@ -577,11 +592,8 @@ export default function SiteHeader({
         <Link
           ref={brandRef}
           href="/"
-          className={`inline-block text-sm font-light tracking-tight transition-colors max-md:text-xs ${
-            useLightStyle
-              ? "text-white hover:text-white/70"
-              : "text-black hover:text-black/70"
-          }`}
+          className="inline-block text-sm font-light tracking-tight transition-opacity max-md:text-xs hover:opacity-70"
+          style={{ color: useLightStyle ? "#ffffff" : "#000000" }}
         >
           Fredson Santana
         </Link>
@@ -642,8 +654,8 @@ export default function SiteHeader({
 
           <div
             ref={ballShellRef}
-            className="absolute right-0 top-0 flex h-[7.65rem] w-[7.65rem] origin-center items-center justify-center will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
-            style={{ pointerEvents: "none" }}
+            className="absolute right-0 top-0 flex h-[7.65rem] w-[7.65rem] origin-center items-center justify-center opacity-0 will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
+            style={{ pointerEvents: "none", transform: "scale(0.12)" }}
           >
             <button
               ref={ballRef}
