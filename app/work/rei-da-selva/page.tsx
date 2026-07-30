@@ -48,7 +48,7 @@ export default function ReiDaSelvaPage() {
                 Location &amp; Year
               </dt>
               <dd className="mt-3 text-sm font-light leading-relaxed tracking-[-0.02em] sm:text-base">
-                Bahia, Brasil © 2025
+                Bahia, Brasil © 2026
               </dd>
             </div>
           </dl>
@@ -181,7 +181,7 @@ export default function ReiDaSelvaPage() {
         </div>
       </section>
 
-      <NextCaseFooter nextProject={NEXT_PROJECT} versionYear={2025} />
+      <NextCaseFooter nextProject={NEXT_PROJECT} versionYear={2026} />
     </main>
   );
 }

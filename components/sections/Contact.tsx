@@ -294,7 +294,7 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
             <Link
               ref={magneticRef}
               href="/contact"
-              className="contact-interactive absolute right-0 top-1/2 flex h-36 w-36 -translate-y-1/2 will-change-transform items-center justify-center overflow-hidden rounded-full border border-zinc-700 bg-[#141516] text-center md:h-44 md:w-44"
+              className="contact-interactive relative mx-auto mt-8 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border border-zinc-700 bg-[#141516] text-center will-change-transform max-md:mb-2 md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:h-44 md:w-44 md:-translate-y-1/2"
               aria-label="Entre em contato"
             >
                 <div
@@ -311,10 +311,10 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
           </div>
 
           {/* Cápsulas de contato */}
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col gap-4 max-md:mt-6 sm:flex-row sm:flex-wrap">
             <a
               href="mailto:fredsonmachado02@gmail.com"
-              className="contact-interactive contact-pill relative cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4"
+              className="contact-interactive contact-pill relative w-full cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4 sm:w-auto"
             >
               <div
                 className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"
@@ -328,7 +328,7 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
 
             <a
               href="tel:+5571991407870"
-              className="contact-interactive contact-pill relative cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4"
+              className="contact-interactive contact-pill relative w-full cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4 sm:w-auto"
             >
               <div
                 className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"

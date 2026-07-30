@@ -12,7 +12,7 @@ export const projects: Project[] = [
     id: "rei-da-selva",
     title: "REI DA SELVA",
     category: "Freelance — Web & Development",
-    year: "2025",
+    year: "2026",
     imageSrc: "/projects/rei-da-selva/reidaselva.webp",
     href: "/work/rei-da-selva",
   },
