@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useMagnetic } from "@/components/layout/Magnetic";
+import { ACCENT } from "@/lib/theme";
 import { useSmoothScroll } from "@/context/SmoothScrollContext";
 import { gsap, useGSAP } from "@/lib/gsap";
 
@@ -12,14 +14,14 @@ export type ActiveNav = "work" | "about" | "contact";
 
 const navLinks: { id: ActiveNav; label: string; href: string }[] = [
   { id: "work", label: "Trabalho", href: "/work" },
-  { id: "about", label: "Sobre", href: "/#about" },
+  { id: "about", label: "Sobre", href: "/about" },
   { id: "contact", label: "Contato", href: "/contact" },
 ];
 
 const overlayLinks = [
   { label: "Home", href: "/" },
   { label: "Trabalho", href: "/work" },
-  { label: "Sobre", href: "/#about" },
+  { label: "Sobre", href: "/about" },
   { label: "Contato", href: "/contact" },
 ] as const;
 
@@ -40,6 +42,8 @@ const socialLinks = [
 
 type SiteHeaderProps = {
   active?: ActiveNav;
+  /** Texto claro (branco) — ex.: página de contato */
+  lightHeader?: boolean;
 };
 
 function HeaderNavLink({
@@ -47,11 +51,13 @@ function HeaderNavLink({
   label,
   isActive,
   onNavigate,
+  light,
 }: {
   href: string;
   label: string;
   isActive: boolean;
   onNavigate?: () => void;
+  light?: boolean;
 }) {
   const linkRef = useMagnetic<HTMLAnchorElement>(0.5);
 
@@ -63,11 +69,17 @@ function HeaderNavLink({
         onClick={onNavigate}
         className="group relative flex flex-col items-center gap-2.5 will-change-transform"
       >
-        <span className="nav-link-text inline-block text-sm font-light tracking-tight text-black sm:text-base">
+        <span
+          className={`nav-link-text inline-block text-sm font-light tracking-tight sm:text-base ${
+            light ? "text-white" : "text-black"
+          }`}
+        >
           {label}
         </span>
         <span
-          className={`h-2 w-2 rounded-full bg-black transition-all duration-300 ease-out ${
+          className={`h-2 w-2 rounded-full transition-all duration-300 ease-out ${
+            light ? "bg-white" : "bg-black"
+          } ${
             isActive
               ? "scale-100 opacity-100"
               : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"
@@ -106,7 +118,7 @@ function OverlayNavLink({
           }`}
           aria-hidden="true"
         />
-        <span className="text-4xl font-light tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-7xl">
+        <span className="text-3xl font-light tracking-[-0.03em] sm:text-4xl md:text-5xl lg:text-6xl">
           {label}
         </span>
       </Link>
@@ -128,7 +140,13 @@ function MenuOverlay({
   const labelRef = useRef<HTMLParagraphElement>(null);
   const linksRef = useRef<HTMLUListElement>(null);
   const socialsRef = useRef<HTMLDivElement>(null);
-  const closeRef = useMagnetic<HTMLButtonElement>(0.4);
+  const [isVisible, setIsVisible] = useState(open);
+
+  useLayoutEffect(() => {
+    if (open) {
+      setIsVisible(true);
+    }
+  }, [open]);
 
   useGSAP(
     () => {
@@ -137,46 +155,72 @@ function MenuOverlay({
       const label = labelRef.current;
       const links = linksRef.current;
       const socials = socialsRef.current;
-      const closeBtn = closeRef.current;
 
-      if (!open || !overlay || !panel || !label || !links || !socials || !closeBtn) {
+      if (!isVisible || !overlay || !panel || !label || !links || !socials) {
         return;
       }
 
       const linkItems = links.querySelectorAll<HTMLElement>(".menu-overlay-link");
 
-      gsap.set(overlay, { opacity: 0 });
-      gsap.set(panel, { y: 40 });
-      gsap.set(label, { y: 30, opacity: 0 });
-      gsap.set(linkItems, { y: 80, opacity: 0 });
-      gsap.set(socials, { y: 40, opacity: 0 });
-      gsap.set(closeBtn, { scale: 0.6, opacity: 0 });
+      if (open) {
+        gsap.killTweensOf([overlay, panel, label, linkItems, socials]);
 
-      const timeline = gsap.timeline();
+        gsap.set(overlay, { opacity: 0 });
+        gsap.set(panel, { yPercent: -100 });
+        gsap.set(label, { y: 20, opacity: 0 });
+        gsap.set(linkItems, { y: 40, opacity: 0 });
+        gsap.set(socials, { y: 24, opacity: 0 });
+
+        const timeline = gsap.timeline();
+
+        timeline
+          .to(overlay, { opacity: 1, duration: 0.4, ease: "power2.out" })
+          .to(panel, { yPercent: 0, duration: 0.65, ease: "power3.out" }, 0)
+          .to(label, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 0.12)
+          .to(
+            linkItems,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.06,
+              ease: "power3.out",
+            },
+            0.18
+          )
+          .to(socials, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 0.32);
+
+        return () => {
+          timeline.kill();
+        };
+      }
+
+      const timeline = gsap.timeline({
+        onComplete: () => setIsVisible(false),
+      });
 
       timeline
-        .to(overlay, { opacity: 1, duration: 0.45, ease: "power2.out" })
-        .to(panel, { y: 0, duration: 0.7, ease: "power3.out" }, 0)
-        .to(label, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.1)
+        .to(socials, { y: 24, opacity: 0, duration: 0.35, ease: "power3.in" }, 0)
         .to(
           linkItems,
           {
-            y: 0,
-            opacity: 1,
-            duration: 0.55,
-            stagger: 0.08,
-            ease: "power3.out",
+            y: 40,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: "power3.in",
           },
-          0.15
+          0.05
         )
-        .to(socials, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.35)
-        .to(closeBtn, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, 0.2);
+        .to(label, { y: 20, opacity: 0, duration: 0.35, ease: "power3.in" }, 0.12)
+        .to(panel, { yPercent: -100, duration: 0.6, ease: "power3.in" }, 0.16)
+        .to(overlay, { opacity: 0, duration: 0.35, ease: "power2.in" }, 0.16);
 
       return () => {
         timeline.kill();
       };
     },
-    { dependencies: [open] }
+    { dependencies: [open, isVisible] }
   );
 
   useEffect(() => {
@@ -212,75 +256,73 @@ function MenuOverlay({
     return () => window.removeEventListener("mousemove", onMove);
   }, [open]);
 
-  if (!open) {
+  if (!isVisible) {
     return null;
   }
 
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[200] bg-[#141516] text-white"
+      className={`fixed inset-0 z-[10050] text-white ${open ? "" : "pointer-events-none"}`}
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navegação"
     >
-      <div ref={panelRef} className="relative flex h-full flex-col px-6 py-8 sm:px-10 lg:px-16">
-        <div className="absolute right-6 top-6 sm:right-10 sm:top-8 lg:right-16 lg:top-8">
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Fechar menu"
-            className="flex h-32 w-32 items-center justify-center rounded-full bg-[#3457dc] text-white will-change-transform sm:h-36 sm:w-36"
-          >
-            <span className="text-3xl font-light leading-none" aria-hidden="true">
-              ×
-            </span>
-          </button>
-        </div>
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/35"
+        aria-label="Fechar menu"
+        onClick={onClose}
+      />
 
-        <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col justify-between pt-24 pb-10">
-          <div>
-            <p
-              ref={labelRef}
-              className="text-xs font-light uppercase tracking-tight text-white/45"
-            >
-              Navigation
-            </p>
-            <div className="mt-4 border-t border-white/15" />
+      <div
+        ref={panelRef}
+        className="relative z-10 flex h-[min(58vh,660px)] min-h-[440px] w-full flex-col overflow-hidden bg-[#141516] shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+      >
+        <div className="relative flex h-full flex-col px-6 py-6 sm:px-10 sm:py-8 lg:px-16">
+          <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col justify-between pt-4 pb-6 sm:pt-6">
+            <div>
+              <p
+                ref={labelRef}
+                className="text-xs font-light uppercase tracking-tight text-white/45"
+              >
+                Navegação
+              </p>
+              <div className="mt-4 border-t border-white/15" />
 
-            <ul
-              ref={linksRef}
-              className="menu-parallax-links mt-10 flex flex-col gap-2 will-change-transform sm:mt-14 sm:gap-4"
-            >
-              {overlayLinks.map((link) => {
-                const isActive =
-                  (link.href === "/work" && active === "work") ||
-                  (link.href === "/contact" && active === "contact") ||
-                  (link.href === "/#about" && active === "about");
+              <ul
+                ref={linksRef}
+                className="menu-parallax-links mt-8 flex flex-col gap-1 will-change-transform sm:mt-10 sm:gap-2"
+              >
+                {overlayLinks.map((link) => {
+                  const isActive =
+                    (link.href === "/work" && active === "work") ||
+                    (link.href === "/contact" && active === "contact") ||
+                    (link.href === "/about" && active === "about");
 
-                return (
-                  <OverlayNavLink
-                    key={link.href}
-                    href={link.href}
-                    label={link.label}
-                    isActive={isActive}
-                    onClose={onClose}
-                  />
-                );
-              })}
-            </ul>
-          </div>
+                  return (
+                    <OverlayNavLink
+                      key={link.href}
+                      href={link.href}
+                      label={link.label}
+                      isActive={isActive}
+                      onClose={onClose}
+                    />
+                  );
+                })}
+              </ul>
+            </div>
 
-          <div ref={socialsRef} className="menu-parallax-socials will-change-transform">
-            <p className="text-xs font-light uppercase tracking-tight text-white/45">
-              Socials
-            </p>
-            <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
-              {socialLinks.map((link) => (
-                <OverlaySocialLink key={link.label} href={link.href} label={link.label} />
-              ))}
-            </ul>
+            <div ref={socialsRef} className="menu-parallax-socials will-change-transform">
+              <p className="text-xs font-light uppercase tracking-tight text-white/45">
+                Redes
+              </p>
+              <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
+                {socialLinks.map((link) => (
+                  <OverlaySocialLink key={link.label} href={link.href} label={link.label} />
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -306,24 +348,43 @@ function OverlaySocialLink({ href, label }: { href: string; label: string }) {
   );
 }
 
-export default function SiteHeader({ active }: SiteHeaderProps) {
+export default function SiteHeader({
+  active,
+  lightHeader = false,
+}: SiteHeaderProps) {
+  const pathname = usePathname();
   const { lenis } = useSmoothScroll();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [overDarkSection, setOverDarkSection] = useState(false);
 
-  const brandRef = useMagnetic<HTMLAnchorElement>(0.35);
+  const brandShellRef = useRef<HTMLDivElement>(null);
+  const brandRef = useRef<HTMLAnchorElement>(null);
   const ballRef = useMagnetic<HTMLButtonElement>(0.55);
   const ballShellRef = useRef<HTMLDivElement>(null);
+  const ballEverVisibleRef = useRef(false);
+
+  const useLightStyle = lightHeader || overDarkSection;
 
   useLayoutEffect(() => {
     setIsMounted(true);
   }, []);
 
   useEffect(() => {
+    ballEverVisibleRef.current = false;
+    const shell = ballShellRef.current;
+    if (shell) {
+      gsap.set(shell, { scale: 0.12, opacity: 0, pointerEvents: "none" });
+    }
+  }, [pathname]);
+
+  useEffect(() => {
     const updateScrolled = (scrollY: number) => {
       setScrolled(scrollY > 40);
     };
+
+    updateScrolled(lenis ? lenis.scroll : window.scrollY);
 
     if (lenis) {
       const onLenisScroll = ({ scroll }: { scroll: number }) => {
@@ -331,7 +392,6 @@ export default function SiteHeader({ active }: SiteHeaderProps) {
       };
 
       lenis.on("scroll", onLenisScroll);
-      updateScrolled(lenis.scroll);
 
       return () => {
         lenis.off("scroll", onLenisScroll);
@@ -342,10 +402,40 @@ export default function SiteHeader({ active }: SiteHeaderProps) {
       updateScrolled(window.scrollY);
     };
 
-    onWindowScroll();
     window.addEventListener("scroll", onWindowScroll, { passive: true });
     return () => window.removeEventListener("scroll", onWindowScroll);
-  }, [lenis]);
+  }, [lenis, pathname]);
+
+  useEffect(() => {
+    if (!isMounted || lightHeader) {
+      return;
+    }
+
+    const darkSections = document.querySelectorAll("[data-header-dark]");
+
+    if (!darkSections.length) {
+      setOverDarkSection(false);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isOverDark = entries.some(
+          (entry) => entry.isIntersecting && entry.intersectionRatio > 0
+        );
+        setOverDarkSection(isOverDark);
+      },
+      {
+        root: null,
+        rootMargin: "-72px 0px 0px 0px",
+        threshold: [0, 0.05, 0.15],
+      }
+    );
+
+    darkSections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [isMounted, lightHeader]);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -372,7 +462,56 @@ export default function SiteHeader({ active }: SiteHeaderProps) {
   }, [menuOpen, lenis]);
 
   const showInlineNav = !scrolled && !menuOpen;
-  const showBall = scrolled && !menuOpen;
+  const showBall = scrolled;
+  const showBrand = !scrolled && !menuOpen;
+
+  useGSAP(
+    () => {
+      const shell = brandShellRef.current;
+      if (!shell) {
+        return;
+      }
+
+      if (showBrand) {
+        gsap.killTweensOf(shell);
+        gsap.set(shell, { pointerEvents: "auto" });
+        gsap.fromTo(
+          shell,
+          { opacity: 0, y: -8 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            ease: "power3.out",
+            overwrite: true,
+          }
+        );
+      } else {
+        gsap.killTweensOf(shell);
+
+        const opacity = gsap.getProperty(shell, "opacity") as number;
+        if (opacity > 0.35) {
+          gsap.to(shell, {
+            opacity: 0,
+            y: -8,
+            duration: 0.35,
+            ease: "power3.in",
+            overwrite: true,
+            onComplete: () => {
+              gsap.set(shell, { pointerEvents: "none" });
+            },
+          });
+        } else {
+          gsap.set(shell, {
+            opacity: 0,
+            y: -8,
+            pointerEvents: "none",
+          });
+        }
+      }
+    },
+    { dependencies: [showBrand] }
+  );
 
   useGSAP(
     () => {
@@ -382,6 +521,7 @@ export default function SiteHeader({ active }: SiteHeaderProps) {
       }
 
       if (showBall) {
+        ballEverVisibleRef.current = true;
         gsap.killTweensOf(shell);
         gsap.set(shell, { pointerEvents: "auto" });
         gsap.fromTo(
@@ -398,17 +538,26 @@ export default function SiteHeader({ active }: SiteHeaderProps) {
         );
       } else {
         gsap.killTweensOf(shell);
-        gsap.to(shell, {
-          scale: 0.12,
-          opacity: 0,
-          duration: 0.45,
-          ease: "power3.in",
-          transformOrigin: "center center",
-          overwrite: true,
-          onComplete: () => {
-            gsap.set(shell, { pointerEvents: "none" });
-          },
-        });
+
+        if (ballEverVisibleRef.current) {
+          gsap.to(shell, {
+            scale: 0.12,
+            opacity: 0,
+            duration: 0.45,
+            ease: "power3.in",
+            transformOrigin: "center center",
+            overwrite: true,
+            onComplete: () => {
+              gsap.set(shell, { pointerEvents: "none" });
+            },
+          });
+        } else {
+          gsap.set(shell, {
+            scale: 0.12,
+            opacity: 0,
+            pointerEvents: "none",
+          });
+        }
       }
     },
     { dependencies: [showBall] }
@@ -418,64 +567,112 @@ export default function SiteHeader({ active }: SiteHeaderProps) {
     setMenuOpen(true);
   };
 
-  return (
-    <>
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-[150]">
-        <div className="pointer-events-auto absolute left-6 top-6 sm:left-10 lg:left-16">
-          <Link
-            ref={brandRef}
-            href="/"
-            className="inline-block text-sm font-light tracking-tight text-black transition-colors will-change-transform hover:text-black/70"
+  const headerMarkup = (
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-[9999]">
+      <div
+        ref={brandShellRef}
+        className="pointer-events-auto fixed left-6 top-6 will-change-transform max-md:max-w-[calc(100%-5.5rem)] sm:left-10 lg:left-16"
+        style={{ pointerEvents: "none" }}
+      >
+        <Link
+          ref={brandRef}
+          href="/"
+          className={`inline-block text-sm font-light tracking-tight transition-colors max-md:text-xs ${
+            useLightStyle
+              ? "text-white hover:text-white/70"
+              : "text-black hover:text-black/70"
+          }`}
+        >
+          Fredson Santana
+        </Link>
+      </div>
+
+      <div
+        className={`pointer-events-auto fixed right-6 top-6 md:hidden ${
+          menuOpen ? "z-[10060]" : ""
+        }`}
+      >
+        <button
+          type="button"
+          onClick={menuOpen ? () => setMenuOpen(false) : openMenu}
+          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={menuOpen}
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1c1d20] text-white"
+        >
+          {menuOpen ? (
+            <span className="text-2xl font-light leading-none" aria-hidden="true">
+              ×
+            </span>
+          ) : (
+            <span className="flex flex-col gap-2" aria-hidden="true">
+              <span className="block h-px w-5 bg-white/90" />
+              <span className="block h-px w-5 bg-white/90" />
+            </span>
+          )}
+        </button>
+      </div>
+
+      <div
+        className={`pointer-events-auto fixed right-6 top-6 hidden sm:right-10 lg:right-16 md:block ${
+          menuOpen ? "z-[10060]" : ""
+        }`}
+      >
+        <div className="relative flex h-[7.65rem] w-[7.65rem] items-center justify-end sm:h-[8.5rem] sm:w-[8.5rem]">
+          <nav
+            className={`absolute right-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-out ${
+              showInlineNav
+                ? "pointer-events-auto translate-y-[-50%] opacity-100"
+                : "pointer-events-none translate-y-[-40%] opacity-0"
+            }`}
+            aria-label="Navegação principal"
           >
-            © Code by Fredson
-          </Link>
-        </div>
+            <ul className="flex items-center gap-10 sm:gap-14">
+              {navLinks.map((link) => (
+                <HeaderNavLink
+                  key={link.id}
+                  href={link.href}
+                  label={link.label}
+                  isActive={active === link.id}
+                  onNavigate={() => setMenuOpen(false)}
+                  light={useLightStyle}
+                />
+              ))}
+            </ul>
+          </nav>
 
-        <div className="pointer-events-auto absolute right-6 top-6 sm:right-10 lg:right-16">
-          <div className="relative flex h-[7.65rem] w-[7.65rem] items-center justify-end sm:h-[8.5rem] sm:w-[8.5rem]">
-            <nav
-              className={`absolute right-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-out ${
-                showInlineNav
-                  ? "pointer-events-auto translate-y-[-50%] opacity-100"
-                  : "pointer-events-none translate-y-[-40%] opacity-0"
-              }`}
-              aria-label="Navegação principal"
+          <div
+            ref={ballShellRef}
+            className="absolute right-0 top-0 flex h-[7.65rem] w-[7.65rem] origin-center items-center justify-center will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
+            style={{ pointerEvents: "none" }}
+          >
+            <button
+              ref={ballRef}
+              type="button"
+              onClick={menuOpen ? () => setMenuOpen(false) : openMenu}
+              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={menuOpen}
+              className="relative z-10 flex h-[7.65rem] w-[7.65rem] shrink-0 items-center justify-center rounded-full bg-[#1c1d20] text-white will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
             >
-              <ul className="flex items-center gap-10 sm:gap-14">
-                {navLinks.map((link) => (
-                  <HeaderNavLink
-                    key={link.id}
-                    href={link.href}
-                    label={link.label}
-                    isActive={active === link.id}
-                    onNavigate={() => setMenuOpen(false)}
-                  />
-                ))}
-              </ul>
-            </nav>
-
-            <div
-              ref={ballShellRef}
-              className="absolute right-0 top-0 flex h-[7.65rem] w-[7.65rem] origin-center items-center justify-center will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
-              style={{ pointerEvents: "none" }}
-            >
-              <button
-                ref={ballRef}
-                type="button"
-                onClick={openMenu}
-                aria-label="Abrir menu"
-                aria-expanded={menuOpen}
-                className="relative z-10 flex h-[7.65rem] w-[7.65rem] shrink-0 items-center justify-center rounded-full bg-[#1c1d20] text-white will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
-              >
+              {menuOpen ? (
+                <span className="text-3xl font-light leading-none" aria-hidden="true">
+                  ×
+                </span>
+              ) : (
                 <span className="flex flex-col gap-3" aria-hidden="true">
                   <span className="block h-px w-8 bg-white/90 sm:w-9" />
                   <span className="block h-px w-8 bg-white/90 sm:w-9" />
                 </span>
-              </button>
-            </div>
+              )}
+            </button>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
+  );
+
+  return (
+    <>
+      {isMounted ? createPortal(headerMarkup, document.body) : null}
 
       {isMounted &&
         createPortal(

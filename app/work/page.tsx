@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
+import ProjectListItem from "@/components/work/ProjectListItem";
 import { projects } from "@/lib/projects";
 
 export const metadata: Metadata = {
@@ -24,21 +24,9 @@ export default function WorkPage() {
             Projetos reais e estudos selecionados — do conceito à entrega.
           </p>
 
-          <ul className="mt-16 border-t border-black/10">
+          <ul className="mt-8 md:mt-16 md:border-t md:border-black/10">
             {projects.map((project) => (
-              <li key={project.id}>
-                <Link
-                  href={project.href ?? "#"}
-                  className="group flex w-full items-center justify-between border-b border-black/10 py-10 transition-colors hover:bg-black/[0.02] md:py-12"
-                >
-                  <span className="text-2xl font-light tracking-[-0.02em] transition-transform duration-300 group-hover:translate-x-1 sm:text-3xl md:text-4xl lg:text-5xl">
-                    {project.title}
-                  </span>
-                  <span className="text-right text-sm font-light tracking-[-0.02em] text-black/60 sm:text-base md:text-lg">
-                    {project.category}
-                  </span>
-                </Link>
-              </li>
+              <ProjectListItem key={project.id} project={project} variant="page" />
             ))}
           </ul>
         </div>

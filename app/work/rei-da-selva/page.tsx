@@ -4,6 +4,7 @@ import LaptopFrame from "@/components/ui/LaptopFrame";
 import ParallaxBleedImage from "@/components/ui/ParallaxBleedImage";
 import NextCaseFooter from "@/components/work/NextCaseFooter";
 import { projects } from "@/lib/projects";
+import { ACCENT } from "@/lib/theme";
 
 export const metadata: Metadata = {
   title: "Rei da Selva — Fredson Santana",
@@ -57,11 +58,12 @@ export default function ReiDaSelvaPage() {
               href={LIVE_SITE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-28 w-28 items-center justify-center rounded-full bg-[#3457dc] text-center text-sm font-light leading-tight tracking-tight text-white transition-transform duration-300 hover:scale-105 sm:h-32 sm:w-32 sm:text-base"
+              className="flex h-28 w-28 items-center justify-center rounded-full text-center text-sm font-light leading-tight tracking-tight !text-white transition-transform duration-300 hover:scale-105 sm:h-32 sm:w-32 sm:text-base"
+              style={{ backgroundColor: ACCENT, color: "#ffffff" }}
             >
-              Visite o site
+              <span className="text-white">Visite o site</span>
               <br />
-              <span aria-hidden="true">↗</span>
+              <span className="text-white" aria-hidden="true">↗</span>
             </a>
           </div>
         </div>

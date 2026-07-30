@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 
 import { gsap } from "@/lib/gsap";
+import { ACCENT_MUTED } from "@/lib/theme";
 
 const profileImageSrc = "/profile.png";
 
@@ -36,7 +38,12 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
-export default function Contact() {
+type ContactProps = {
+  /** Desliga a animação de entrada amarrada ao scroll (útil em páginas curtas). */
+  animatedEntrance?: boolean;
+};
+
+export default function Contact({ animatedEntrance = true }: ContactProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<SVGPathElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -52,6 +59,12 @@ export default function Contact() {
         return;
       }
 
+      if (!animatedEntrance) {
+        path.setAttribute("d", buildElasticPath(0));
+        gsap.set(content, { y: 0 });
+        return;
+      }
+
       const curve = { controlY: 100 };
 
       path.setAttribute("d", buildElasticPath(curve.controlY));
@@ -63,7 +76,7 @@ export default function Contact() {
         scrollTrigger: {
           trigger: section,
           start: "top bottom",
-          end: "top top",
+          end: "top 82%",
           scrub: true,
           invalidateOnRefresh: true,
         },
@@ -82,7 +95,7 @@ export default function Contact() {
           scrollTrigger: {
             trigger: section,
             start: "top bottom",
-            end: "top top",
+            end: "top 82%",
             scrub: true,
             invalidateOnRefresh: true,
           },
@@ -96,7 +109,7 @@ export default function Contact() {
         contentTween.kill();
       };
     },
-    { scope: sectionRef, dependencies: [] }
+    { scope: sectionRef, dependencies: [animatedEntrance] }
   );
 
   useGSAP(
@@ -235,6 +248,7 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
+      data-header-dark
       className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-[#141516] text-white"
     >
       {/* Linha elástica branca */}
@@ -269,30 +283,31 @@ export default function Contact() {
               />
             </div>
             <h2 className="text-4xl font-light leading-[1.1] tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-7xl">
-              Let&apos;s work
+              Vamos trabalhar
               <br />
-              together
+              juntos
             </h2>
           </div>
 
           {/* Linha divisória + botão magnético */}
           <div className="relative my-12 w-full border-t border-zinc-700 md:my-20">
-            <a
+            <Link
               ref={magneticRef}
-              href="mailto:fredsonmachado02@gmail.com"
+              href="/contact"
               className="contact-interactive absolute right-0 top-1/2 flex h-36 w-36 -translate-y-1/2 will-change-transform items-center justify-center overflow-hidden rounded-full border border-zinc-700 bg-[#141516] text-center md:h-44 md:w-44"
-              aria-label="Get in touch"
+              aria-label="Entre em contato"
             >
                 <div
-                  className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full bg-[#3457dc]"
+                  className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"
+                  style={{ backgroundColor: ACCENT_MUTED }}
                   aria-hidden="true"
                 />
                 <span className="relative z-10 text-sm font-light leading-tight tracking-[-0.02em] md:text-base">
-                  Get in
+                  Entre em
                   <br />
-                  touch
+                  contato
                 </span>
-            </a>
+            </Link>
           </div>
 
           {/* Cápsulas de contato */}
@@ -302,7 +317,8 @@ export default function Contact() {
               className="contact-interactive contact-pill relative cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4"
             >
               <div
-                className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full bg-[#3457dc]"
+                className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"
+                style={{ backgroundColor: ACCENT_MUTED }}
                 aria-hidden="true"
               />
               <span className="contact-pill-text relative z-10 block text-sm font-light md:text-base">
@@ -315,7 +331,8 @@ export default function Contact() {
               className="contact-interactive contact-pill relative cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4"
             >
               <div
-                className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full bg-[#3457dc]"
+                className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"
+                style={{ backgroundColor: ACCENT_MUTED }}
                 aria-hidden="true"
               />
               <span className="contact-pill-text relative z-10 block text-sm font-light md:text-base">

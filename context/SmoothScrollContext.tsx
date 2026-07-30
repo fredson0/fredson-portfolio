@@ -33,18 +33,47 @@ export function SmoothScrollProvider({
     }
 
     const instance = new Lenis({
-      lerp: 0.08,
+      lerp: 0.1,
       smoothWheel: true,
-      smoothTouch: false,
     });
 
     lenisRef.current = instance;
     setLenis(instance);
     gsap.ticker.lagSmoothing(0);
 
+    const root = document.documentElement;
+
+    const onLenisScroll = () => {
+      ScrollTrigger.update();
+    };
+
+    const onScrollTriggerRefresh = () => {
+      instance.resize();
+    };
+
+    instance.on("scroll", onLenisScroll);
+
+    ScrollTrigger.scrollerProxy(root, {
+      scrollTop(value) {
+        if (arguments.length && typeof value === "number") {
+          instance.scrollTo(value, { immediate: true });
+        }
+        return instance.scroll;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+    });
+
+    ScrollTrigger.addEventListener("refresh", onScrollTriggerRefresh);
+
     const raf = (time: number) => {
       instance.raf(time);
-      ScrollTrigger.update();
       rafRef.current = requestAnimationFrame(raf);
     };
 
@@ -55,6 +84,10 @@ export function SmoothScrollProvider({
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
       }
+
+      instance.off("scroll", onLenisScroll);
+      ScrollTrigger.removeEventListener("refresh", onScrollTriggerRefresh);
+      ScrollTrigger.scrollerProxy(root, {});
       instance.destroy();
       lenisRef.current = null;
       setLenis(null);

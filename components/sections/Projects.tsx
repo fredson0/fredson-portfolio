@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 
 import { gsap } from "@/lib/gsap";
 import { projects } from "@/lib/projects";
+import ProjectListItem from "@/components/work/ProjectListItem";
 
 const MODAL_HEIGHT = 300;
 
@@ -86,6 +87,7 @@ export default function Projects() {
   const yToRef = useRef<QuickToFn | null>(null);
 
   const [isMounted, setIsMounted] = useState(false);
+  const [enableHoverModal, setEnableHoverModal] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useLayoutEffect(() => {
@@ -93,7 +95,17 @@ export default function Projects() {
   }, []);
 
   useLayoutEffect(() => {
-    if (!isMounted) {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const update = () => setEnableHoverModal(mediaQuery.matches);
+
+    update();
+    mediaQuery.addEventListener("change", update);
+
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!isMounted || !enableHoverModal) {
       return;
     }
 
@@ -206,12 +218,12 @@ export default function Projects() {
 
       gsap.killTweensOf([follow, modal, strip]);
     };
-  }, [isMounted]);
+  }, [isMounted, enableHoverModal]);
 
   useLayoutEffect(() => {
     const strip = stripRef.current;
 
-    if (!strip || activeIndex === null) {
+    if (!strip || activeIndex === null || !enableHoverModal) {
       return;
     }
 
@@ -221,7 +233,7 @@ export default function Projects() {
       ease: "none",
       overwrite: true,
     });
-  }, [activeIndex, isMounted]);
+  }, [activeIndex, isMounted, enableHoverModal]);
 
   return (
     <>
@@ -237,27 +249,16 @@ export default function Projects() {
             </p>
           </div>
 
-          <ul className="mt-2">
+          <ul className="mt-2 md:border-t-0">
             {projects.map((project) => (
-              <li key={project.id}>
-                <a
-                  href={project.href ?? "#"}
-                  className="project-row flex w-full cursor-pointer items-center justify-between border-b border-black/10 py-10 md:py-12"
-                >
-                  <span className="project-title inline-block text-3xl font-light tracking-[-0.02em] sm:text-4xl md:text-5xl lg:text-6xl">
-                    {project.title}
-                  </span>
-                  <span className="project-category inline-block text-right text-sm font-light tracking-[-0.02em] text-black/70 sm:text-base md:text-lg">
-                    {project.category}
-                  </span>
-                </a>
-              </li>
+              <ProjectListItem key={project.id} project={project} variant="section" />
             ))}
           </ul>
         </div>
       </section>
 
       {isMounted &&
+        enableHoverModal &&
         createPortal(
           <ProjectModal
             followRef={followRef}
