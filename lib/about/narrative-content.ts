@@ -310,11 +310,13 @@ export const aboutReiDaSelvaScene: NarrativeSceneContent = {
     "h-[min(68vh,580px)] sm:h-[min(72vh,620px)] md:h-[min(76vh,680px)]",
   collageMaxWidthClassName: "md:max-w-[min(100%,920px)]",
   body: [
-    "Freelance entregue em 2026 para um cliente real em Bahia: site completo com identidade visual, animações e experiência mobile pensada para conversão.",
-    "Do conceito ao deploy — layout, motion, integração com API NestJS e presença digital alinhada à marca do negócio.",
-    "Um case que mostra como combino design e desenvolvimento no mesmo fluxo de entrega.",
+    "Freelance entregue em 2026 para um cliente real na Bahia: front em Next.js e TypeScript, API em NestJS com arquitetura hexagonal — domínio isolado, adapters de infraestrutura e contratos claros entre camadas.",
+    "Integrações em produção: login com Google (OAuth), checkout e pagamentos com Mercado Pago — com idempotência nas operações de pagamento e webhooks para evitar cobranças duplicadas em retries — e fluxo de atendimento via WhatsApp, cada serviço com validação e tratamento de erros.",
+    "Segurança e performance no fluxo: autenticação JWT, RBAC para permissões por papel, schemas tipados, proteção de rotas, rate limiting onde faz sentido, secrets em ambiente e otimização de assets, lazy loading e motion sem sacrificar a experiência mobile.",
+    "Do design ao deploy: identidade visual, animações, responsividade e entrega ponta a ponta — um case que mostra como combino engenharia de software com produto digital real.",
   ],
-  tags: "FREELANCE · WEB · DESIGN · NEXT.JS · MOBILE · 2026",
+  tags:
+    "NEXT.JS · NESTJS · TYPESCRIPT · HEXAGONAL · RBAC · IDEMPOTENCY · MERCADO PAGO · GOOGLE AUTH · WHATSAPP · 2026",
   cta: {
     label: "Ver case completo",
     href: "/work/rei-da-selva",
