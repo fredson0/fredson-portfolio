@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { AboutProfilePhoto } from "@/components/about/AboutProfilePhoto";
+import AboutNarrativeIntro from "@/components/about/narrative/AboutNarrativeIntro";
 import Contact from "@/components/sections/Contact";
 
 export const metadata: Metadata = {
@@ -19,46 +19,7 @@ const sectionLabelClassName =
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white text-black">
-      <section className="px-6 pb-20 pt-28 sm:px-10 md:pt-36 lg:px-16 lg:pb-24">
-        <div className="mx-auto max-w-[1400px]">
-          <p className={sectionLabelClassName}>Sobre</p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-light tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-7xl lg:leading-[1.05]">
-            Ajudo pessoas a construir soluções de software e experiências
-            digitais de qualidade.
-          </h1>
-
-          <hr className="mt-14 border-0 border-t border-black/10 sm:mt-16 md:mt-20" />
-
-          <div className="mt-14 flex flex-col gap-12 sm:mt-16 md:mt-20 lg:flex-row lg:items-start lg:justify-between lg:gap-16 xl:gap-20">
-            <div className="flex-1 lg:max-w-xl xl:max-w-2xl">
-              <h2 className={sectionLabelClassName}>Sobre mim</h2>
-              <div className={`mt-6 flex flex-col gap-5 ${bodyTextClassName}`}>
-                <p>
-                  Sou Fredson Santana, desenvolvedor full stack júnior com cerca
-                  de um ano de experiência, baseado em Salvador. Atuo como
-                  freelancer ajudando pessoas e negócios que buscam soluções
-                  web — do conceito à entrega.
-                </p>
-                <p>
-                  Estou na reta final da faculdade — me formo ainda este ano —
-                  e venho construindo experiência prática com projetos reais: já
-                  realizei dois freelances e sigo desenvolvendo projetos
-                  pessoais que em breve entram no portfólio.
-                </p>
-                <p>
-                  Gosto de colaborar de perto, entender o problema antes de
-                  codar e entregar com clareza e cuidado. Meu principal
-                  objetivo neste momento é crescer como desenvolvedor web
-                  dentro de uma empresa, contribuindo com soluções que façam
-                  diferença no dia a dia.
-                </p>
-              </div>
-            </div>
-
-            <AboutProfilePhoto />
-          </div>
-        </div>
-      </section>
+      <AboutNarrativeIntro />
 
       <section className="bg-[#F5F0E8] px-6 py-16 sm:px-10 sm:py-20 md:py-24 lg:px-16 lg:py-28">
         <div className="mx-auto max-w-[1400px]">
