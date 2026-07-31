@@ -18,6 +18,7 @@ export default function AboutVerticalIntro() {
     const pin = pinRef.current;
     const wrap = textRef.current;
     const title = titleRef.current;
+    const textScale = textScaleRef.current;
 
     if (!pin || !wrap || !title) {
       return;
@@ -25,18 +26,29 @@ export default function AboutVerticalIntro() {
 
     const targetHeight = pin.clientHeight;
 
+    if (textScale) {
+      gsap.set(textScale, {
+        scaleY: 1,
+        rotateX: 0,
+        opacity: 1,
+        clearProps: "filter",
+      });
+    }
+
     gsap.set(wrap, {
-      rotation: 90,
+      rotation: 0,
+      scaleX: 1,
+      scaleY: 1,
       x: 0,
       y: 0,
       opacity: 1,
-      transformOrigin: "left center",
+      clearProps: "transform",
     });
 
     title.style.fontSize = `${PROBE_FONT_SIZE}px`;
     const widthAtProbe = title.offsetWidth;
 
-    if (!widthAtProbe) {
+    if (!widthAtProbe || !targetHeight || widthAtProbe < 80) {
       return;
     }
 
@@ -66,7 +78,8 @@ export default function AboutVerticalIntro() {
     const heightError = pinRect.bottom - wrapRect.bottom;
 
     if (Math.abs(heightError) > 0.5) {
-      const correctedFontSize = fittedFontSize * (targetHeight / wrapRect.height);
+      const correctedFontSize =
+        fittedFontSize * (targetHeight / wrapRect.height);
       title.style.fontSize = `${correctedFontSize}px`;
 
       gsap.set(wrap, { x: 0, y: 0 });
@@ -108,8 +121,10 @@ export default function AboutVerticalIntro() {
       }
 
       const resizeObserver = new ResizeObserver(() => {
-        fitVerticalTitle();
-        ScrollTrigger.refresh();
+        window.requestAnimationFrame(() => {
+          fitVerticalTitle();
+          ScrollTrigger.refresh();
+        });
       });
 
       resizeObserver.observe(pin);
@@ -147,8 +162,6 @@ export default function AboutVerticalIntro() {
           const progress = self.progress;
           const thin = progress;
 
-          // Afinamento no eixo da espessura (não na altura F→A).
-          // rotateX cria a sensação 3D de “ficar em pé” como no Atypikal.
           gsap.set(textScale, {
             scaleY: 1 - thin * 0.94,
             rotateX: -thin * 72,
@@ -159,6 +172,12 @@ export default function AboutVerticalIntro() {
             scaleY: Math.min(1, progress * 1.1),
             opacity: Math.min(1, progress * 1.35),
           });
+        },
+        onLeaveBack: () => {
+          if (textScale) {
+            gsap.set(textScale, { scaleY: 1, rotateX: 0, opacity: 1 });
+          }
+          fitVerticalTitle();
         },
       });
 
@@ -188,7 +207,7 @@ export default function AboutVerticalIntro() {
           aria-hidden="true"
         />
 
-        <div ref={textRef} className="z-[2] will-change-transform">
+        <div ref={textRef} className="z-[2] max-h-full will-change-transform">
           <div
             ref={textScaleRef}
             className="will-change-transform"

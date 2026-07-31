@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" fill="none">
+  <rect width="360" height="280" fill="#fafafa"/>
+  <text x="24" y="36" fill="#111" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600">Segurança na prática</text>
+  <g transform="translate(24 56)">
+    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">RLS habilitado no PostgreSQL</text>
+  </g>
+  <g transform="translate(24 104)">
+    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">Sessão admin httpOnly + secure</text>
+  </g>
+  <g transform="translate(24 148)">
+    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">Secrets só em variáveis de ambiente</text>
+  </g>
+  <g transform="translate(24 196)">
+    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">Service role apenas no servidor</text>
+  </g>
+  <path d="M300 56v196" stroke="#111" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.25"/>
+</svg>

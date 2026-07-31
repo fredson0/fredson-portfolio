@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 
 import { gsap, useGSAP } from "@/lib/gsap";
@@ -9,6 +10,15 @@ type NarrativeSceneProps = {
   content: NarrativeSceneContent;
 };
 
+const cardSurfaceClassName =
+  "overflow-hidden bg-black/[0.04] shadow-[0_24px_60px_-28px_rgba(0,0,0,0.35)]";
+
+const floatSurfaceClassName =
+  "overflow-visible bg-transparent shadow-none";
+
+const polaroidSurfaceClassName =
+  "overflow-hidden bg-white p-2 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.42)] sm:p-2.5";
+
 function NarrativeBodyLine({ children }: { children: string }) {
   return (
     <div className="overflow-hidden">
@@ -16,6 +26,39 @@ function NarrativeBodyLine({ children }: { children: string }) {
         {children}
       </p>
     </div>
+  );
+}
+
+function CollageMedia({
+  image,
+}: {
+  image: NarrativeSceneContent["images"][number];
+}) {
+  const className = image.imageClassName ?? "h-auto w-full object-cover";
+
+  if (image.mediaType === "video") {
+    return (
+      <video
+        className={className}
+        src={image.src}
+        poster={image.poster}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={image.alt}
+      />
+    );
+  }
+
+  return (
+    <img
+      src={image.src}
+      alt={image.alt}
+      className={className}
+      draggable={false}
+    />
   );
 }
 
@@ -45,9 +88,10 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
       );
       const bodyLines = copy.querySelectorAll<HTMLElement>(".narrative-body-line");
       const tags = copy.querySelector<HTMLElement>(".narrative-tags");
+      const cta = copy.querySelector<HTMLElement>(".narrative-cta");
 
       if (reducedMotion) {
-        gsap.set([imageEls, title, bodyLines, tags], {
+        gsap.set([imageEls, title, bodyLines, tags, cta], {
           clearProps: "all",
           opacity: 1,
           y: 0,
@@ -67,6 +111,9 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
       gsap.set(bodyLines, { y: 28, skewY: 2.2, rotateZ: 0.6, opacity: 0.4 });
       if (tags) {
         gsap.set(tags, { y: 18, opacity: 0 });
+      }
+      if (cta) {
+        gsap.set(cta, { y: 14, opacity: 0 });
       }
 
       const timeline = gsap.timeline({
@@ -133,6 +180,19 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
         );
       }
 
+      if (cta) {
+        timeline.to(
+          cta,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.55,
+            ease: "power2.out",
+          },
+          0.44
+        );
+      }
+
       return () => {
         timeline.scrollTrigger?.kill();
         timeline.kill();
@@ -141,11 +201,14 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
     { scope: sectionRef, dependencies: [content.id] }
   );
 
+  const sectionSurface =
+    content.sectionClassName ?? "bg-white text-black";
+
   return (
     <section
       ref={sectionRef}
       id={content.id}
-      className="relative min-h-[min(112vh,960px)] overflow-hidden bg-white pb-16 pt-16 text-black sm:pb-20 md:min-h-[115vh] md:pt-20 lg:pb-24"
+      className={`relative min-h-[min(112vh,960px)] overflow-hidden pb-16 pt-16 sm:pb-20 md:min-h-[115vh] md:pt-20 lg:pb-24 ${sectionSurface}`}
       aria-labelledby={`${content.id}-title`}
     >
       <div
@@ -171,21 +234,27 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
 
         <div
           ref={collageRef}
-          className="relative z-10 mx-auto mt-10 h-[min(52vh,420px)] w-full max-w-[min(100%,720px)] sm:mt-14 md:mt-16 md:h-[min(58vh,520px)] md:max-w-[820px]"
+          className={`relative z-10 mx-auto mt-10 w-full max-w-[min(100%,720px)] sm:mt-14 md:mt-16 ${
+            content.collageMaxWidthClassName ?? "md:max-w-[820px]"
+          } ${content.collageClassName ?? "h-[min(52vh,420px)] md:h-[min(58vh,520px)]"}`}
         >
-          {content.images.map((image) => (
-            <div
-              key={image.src}
-              className={`narrative-collage-item absolute overflow-hidden bg-black/[0.04] shadow-[0_24px_60px_-28px_rgba(0,0,0,0.35)] will-change-transform ${image.layoutClassName}`}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="h-auto w-full object-cover"
-                draggable={false}
-              />
-            </div>
-          ))}
+          {content.images.map((image) => {
+            const surfaceClassName =
+              image.surface === "float"
+                ? floatSurfaceClassName
+                : image.surface === "polaroid"
+                  ? polaroidSurfaceClassName
+                  : cardSurfaceClassName;
+
+            return (
+              <div
+                key={image.src}
+                className={`narrative-collage-item absolute will-change-transform ${surfaceClassName} ${image.layoutClassName}`}
+              >
+                <CollageMedia image={image} />
+              </div>
+            );
+          })}
         </div>
 
         <div
@@ -203,6 +272,15 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
           >
             {content.tags}
           </p>
+
+          {content.cta ? (
+            <Link
+              href={content.cta.href}
+              className="narrative-cta mt-6 inline-block text-sm font-light tracking-tight text-black underline decoration-black/25 underline-offset-[6px] transition-colors hover:decoration-black/60 sm:text-base"
+            >
+              {content.cta.label} ↗
+            </Link>
+          ) : null}
         </div>
       </div>
     </section>

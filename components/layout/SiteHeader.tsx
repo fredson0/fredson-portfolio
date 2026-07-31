@@ -358,6 +358,7 @@ export default function SiteHeader({
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [overDarkSection, setOverDarkSection] = useState(false);
+  const [aboutIntroVisible, setAboutIntroVisible] = useState(false);
 
   const brandShellRef = useRef<HTMLDivElement>(null);
   const brandRef = useRef<HTMLAnchorElement>(null);
@@ -476,9 +477,38 @@ export default function SiteHeader({
     };
   }, [menuOpen, lenis]);
 
-  const showInlineNav = !scrolled && !menuOpen;
-  const showBall = scrolled;
-  const showBrand = !scrolled && !menuOpen;
+  useEffect(() => {
+    if (!isMounted || pathname !== "/about") {
+      setAboutIntroVisible(false);
+      return;
+    }
+
+    const intro = document.getElementById("about-intro");
+
+    if (!intro) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setAboutIntroVisible(
+          entry.isIntersecting && entry.intersectionRatio >= 0.45
+        );
+      },
+      { threshold: [0, 0.45, 0.6, 1] }
+    );
+
+    observer.observe(intro);
+
+    return () => observer.disconnect();
+  }, [isMounted, pathname]);
+
+  const headerScrolled =
+    pathname === "/about" ? scrolled && !aboutIntroVisible : scrolled;
+
+  const showInlineNav = !headerScrolled && !menuOpen;
+  const showBall = headerScrolled;
+  const showBrand = !headerScrolled && !menuOpen;
 
   useGSAP(
     () => {

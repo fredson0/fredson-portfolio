@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" fill="none">
+  <rect width="420" height="300" fill="#fafafa"/>
+  <text x="24" y="36" fill="#111" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600">Camadas  API de contato</text>
+  <rect x="72" y="56" width="276" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+  <text x="120" y="84" fill="#111" font-family="ui-monospace, monospace" font-size="14">POST /api/contact</text>
+  <path d="M210 100v20" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="72" y="120" width="276" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+  <text x="148" y="148" fill="#111" font-family="ui-monospace, monospace" font-size="14">Rate limit (IP)</text>
+  <path d="M210 164v20" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="72" y="184" width="276" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+  <text x="156" y="212" fill="#111" font-family="ui-monospace, monospace" font-size="14">Zod validation</text>
+  <path d="M210 220v20" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="48" y="240" width="124" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+  <text x="68" y="268" fill="#111" font-family="ui-monospace, monospace" font-size="13">Supabase</text>
+  <rect x="248" y="240" width="124" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
+  <text x="276" y="268" fill="#111" font-family="ui-monospace, monospace" font-size="13">Resend</text>
+</svg>

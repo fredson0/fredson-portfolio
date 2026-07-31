@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import AboutNarrativeIntro from "@/components/about/narrative/AboutNarrativeIntro";
 import Contact from "@/components/sections/Contact";
@@ -10,78 +9,10 @@ export const metadata: Metadata = {
     "Conheça Fredson Santana — desenvolvedor web full stack júnior em Salvador, focado em soluções web de qualidade.",
 };
 
-const bodyTextClassName =
-  "text-base font-light leading-relaxed tracking-[-0.02em] text-black/65 sm:text-lg";
-
-const sectionLabelClassName =
-  "text-xs font-light uppercase tracking-tight text-black/45 sm:text-sm";
-
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white text-black">
       <AboutNarrativeIntro />
-
-      <section className="bg-[#F5F0E8] px-6 py-16 sm:px-10 sm:py-20 md:py-24 lg:px-16 lg:py-28">
-        <div className="mx-auto max-w-[1400px]">
-          <h2 className={sectionLabelClassName}>Experiência técnica</h2>
-          <div className={`mt-6 max-w-3xl flex flex-col gap-5 ${bodyTextClassName}`}>
-            <p>
-              Trabalho com foco em desenvolvimento web, unindo front-end e
-              back-end para entregar produtos completos. Tenho paixão por
-              system design e arquitetura de software — acredito que uma
-              estrutura bem pensada é o que sustenta entregas de alto nível
-              e software de qualidade.
-            </p>
-            <p>
-              Na faculdade, participei de projetos extracurriculares que me
-              levaram a desenvolver uma solução real para uma empresa — uma
-              experiência que reforçou minha capacidade de trabalhar em equipe,
-              entender demandas reais e entregar com responsabilidade.
-            </p>
-            <p>
-              Como freelancer, desenvolvi o{" "}
-              <Link
-                href="/work/rei-da-selva"
-                className="text-black underline decoration-black/25 underline-offset-[6px] transition-colors hover:decoration-black/60"
-              >
-                Rei da Selva
-              </Link>
-              , site completo para um cliente real, cuidando de design e
-              desenvolvimento do conceito ao deploy.
-            </p>
-            <p>
-              Busco oportunidade como desenvolvedor web júnior — full stack
-              ou backend — em uma empresa onde possa aprender com um time,
-              colaborar em soluções reais e evoluir na prática.
-            </p>
-            <ul className="flex flex-col gap-2 pl-4 sm:pl-5">
-              <li className="list-disc">
-                Desenvolvimento web full stack com React, Next.js e
-                TypeScript
-              </li>
-              <li className="list-disc">
-                Projeto extracurricular na faculdade com entrega real para
-                empresa
-              </li>
-              <li className="list-disc">
-                Freelance Rei da Selva — cliente real, design e desenvolvimento
-                ponta a ponta
-              </li>
-              <li className="list-disc">
-                System design e arquitetura de software
-              </li>
-              <li className="list-disc">
-                Projetos pessoais em andamento para ampliar o portfólio
-              </li>
-              <li className="list-disc">
-                Foco em código organizado, manutenibilidade e boa experiência
-                de uso
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
       <Contact animatedEntrance={false} />
     </main>
   );
