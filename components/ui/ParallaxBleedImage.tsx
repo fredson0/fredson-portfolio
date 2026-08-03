@@ -7,9 +7,18 @@ import { gsap, useGSAP } from "@/lib/gsap";
 type ParallaxBleedImageProps = {
   src: string;
   alt: string;
+  sectionClassName?: string;
+  heightClassName?: string;
+  mediaHeightClassName?: string;
 };
 
-export default function ParallaxBleedImage({ src, alt }: ParallaxBleedImageProps) {
+export default function ParallaxBleedImage({
+  src,
+  alt,
+  sectionClassName = "bg-[#f7f2e9]",
+  heightClassName = "h-[115vh]",
+  mediaHeightClassName = "h-[130%]",
+}: ParallaxBleedImageProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const mediaRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,12 +54,12 @@ export default function ParallaxBleedImage({ src, alt }: ParallaxBleedImageProps
   return (
     <section
       ref={sectionRef}
-      className="relative h-[115vh] overflow-hidden bg-[#f7f2e9]"
+      className={`relative overflow-hidden ${heightClassName} ${sectionClassName}`}
       aria-label={alt}
     >
       <div
         ref={mediaRef}
-        className="absolute inset-x-0 top-0 h-[130%] w-full will-change-transform"
+        className={`absolute inset-x-0 top-0 w-full will-change-transform ${mediaHeightClassName}`}
       >
         <img
           src={src}

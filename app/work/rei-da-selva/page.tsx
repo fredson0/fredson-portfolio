@@ -110,8 +110,8 @@ export default function ReiDaSelvaPage() {
       </section>
 
       <ParallaxBleedImage
-        src="/projects/rei-da-selva/navega%C3%A7%C3%A3oH.webp"
-        alt="Rei da Selva — navegação do projeto"
+        src="/projects/rei-da-selva/fredsonrei.webp"
+        alt="Rei da Selva — experiência na selva"
       />
 
       <section className="bg-[#e8e0d4] px-6 py-24 sm:px-10 sm:py-32 lg:px-16 lg:py-40">
