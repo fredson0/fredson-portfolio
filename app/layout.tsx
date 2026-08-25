@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import "./globals.css";
 import AppHeader from "@/components/layout/AppHeader";
+import { PageTransitionProvider } from "@/components/providers/PageTransitionProvider";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 
 const inter = Inter({
@@ -38,8 +39,10 @@ export default function RootLayout({
     >
       <body className={`${inter.className} min-h-full flex flex-col font-sans`}>
         <SmoothScrollProvider>
-          <AppHeader />
-          {children}
+          <PageTransitionProvider>
+            <AppHeader />
+            {children}
+          </PageTransitionProvider>
         </SmoothScrollProvider>
       </body>
     </html>
