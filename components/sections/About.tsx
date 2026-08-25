@@ -65,6 +65,7 @@ export default function About() {
           stagger: 0.14,
           scrollTrigger: {
             trigger: section,
+            scroller: document.documentElement,
             start: "top 78%",
             end: "bottom 20%",
             toggleActions: "play none none reset",

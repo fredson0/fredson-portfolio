@@ -75,6 +75,7 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
         ease: "none",
         scrollTrigger: {
           trigger: section,
+          scroller: document.documentElement,
           start: "top bottom",
           end: "top 82%",
           scrub: true,
@@ -94,6 +95,7 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
           immediateRender: false,
           scrollTrigger: {
             trigger: section,
+            scroller: document.documentElement,
             start: "top bottom",
             end: "top 82%",
             scrub: true,

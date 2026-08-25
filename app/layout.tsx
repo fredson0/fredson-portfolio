@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import "./globals.css";
 import AppHeader from "@/components/layout/AppHeader";
-import { SmoothScrollProvider } from "@/context/SmoothScrollContext";
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 
 const inter = Inter({
   variable: "--font-inter",

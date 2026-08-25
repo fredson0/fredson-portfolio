@@ -119,6 +119,7 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
+          scroller: document.documentElement,
           start: "top 72%",
           toggleActions: "play none none reverse",
         },

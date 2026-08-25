@@ -74,6 +74,7 @@ export default function Hero() {
       let speedTween: gsap.core.Tween | null = null;
 
       const trigger = ScrollTrigger.create({
+        scroller: document.documentElement,
         start: 0,
         end: "max",
         onUpdate: (self) => {

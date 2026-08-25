@@ -152,6 +152,7 @@ export default function AboutVerticalIntro() {
 
       const trigger = ScrollTrigger.create({
         trigger: section,
+        scroller: document.documentElement,
         start: "top top",
         end: "+=115%",
         pin: pin,

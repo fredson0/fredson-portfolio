@@ -194,6 +194,7 @@ export default function ProjectGallery() {
           immediateRender: false,
           scrollTrigger: {
             trigger: container,
+            scroller: document.documentElement,
             start: "top bottom",
             end: "bottom top",
             scrub: 1,
@@ -211,6 +212,7 @@ export default function ProjectGallery() {
           immediateRender: false,
           scrollTrigger: {
             trigger: container,
+            scroller: document.documentElement,
             start: "top bottom",
             end: "bottom top",
             scrub: 1,

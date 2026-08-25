@@ -40,6 +40,7 @@ export default function ParallaxBleedImage({
           immediateRender: false,
           scrollTrigger: {
             trigger: section,
+            scroller: document.documentElement,
             start: "top bottom",
             end: "bottom top",
             scrub: true,
