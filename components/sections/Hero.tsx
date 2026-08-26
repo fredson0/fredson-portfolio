@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef } from "react";
+import { useLenis } from "lenis/react";
 
 import { ACCENT_MUTED, DARK_BACKGROUND } from "@/lib/theme";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 const marqueeText = "Full Stack · Web · Salvador · ";
 const marqueeRepeats = 6;
@@ -14,7 +15,7 @@ const marqueeDuration = 80;
 const profileImageSrc = "/profile.png";
 
 const marqueeTextClassName =
-  "marquee-text shrink-0 font-cursive text-[24vw] font-semibold normal-case leading-[0.95] tracking-normal text-white/90 md:text-[16vw] lg:text-[14vw] xl:text-[12vw]";
+  "marquee-text shrink-0 font-cursive text-[28vw] font-medium normal-case leading-[0.82] tracking-[-0.02em] text-white md:text-[20vw] lg:text-[16vw] xl:text-[14vw]";
 
 function GlobeIcon({ className }: { className?: string }) {
   return (
@@ -48,6 +49,8 @@ function GlobeIcon({ className }: { className?: string }) {
 export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
+  const marqueeTweenRef = useRef<gsap.core.Tween | null>(null);
+  const lastDirectionRef = useRef(1);
 
   useGSAP(
     () => {
@@ -68,80 +71,49 @@ export default function Hero() {
         },
       });
 
-      marqueeTween.timeScale(1);
-
-      let lastDirection = 1;
-      let speedTween: gsap.core.Tween | null = null;
-
-      const trigger = ScrollTrigger.create({
-        scroller: document.documentElement,
-        start: 0,
-        end: "max",
-        onUpdate: (self) => {
-          const velocity = self.getVelocity();
-
-          if (Math.abs(velocity) > 1) {
-            lastDirection = velocity >= 0 ? 1 : -1;
-          }
-
-          let speedBoost = Math.abs(velocity) * 0.0008;
-          if (speedBoost > 3) {
-            speedBoost = 3;
-          }
-
-          const targetTimeScale =
-            Math.max(1 + speedBoost, 0.25) * lastDirection;
-
-          const currentTimeScale = marqueeTween.timeScale();
-          const crossesZero =
-            (currentTimeScale > 0.05 && targetTimeScale < -0.05) ||
-            (currentTimeScale < -0.05 && targetTimeScale > 0.05);
-
-          speedTween?.kill();
-
-          // Evita congelar: nunca anima o timeScale passando por zero
-          if (crossesZero) {
-            gsap.set(marqueeTween, { timeScale: targetTimeScale });
-          } else {
-            speedTween = gsap.to(marqueeTween, {
-              timeScale: targetTimeScale,
-              duration: 0.4,
-              ease: "power1.out",
-              overwrite: true,
-            });
-          }
-        },
-      });
+      marqueeTweenRef.current = marqueeTween;
 
       return () => {
-        speedTween?.kill();
-        trigger.kill();
         marqueeTween.kill();
+        marqueeTweenRef.current = null;
       };
     },
     { scope: sectionRef, dependencies: [] }
   );
 
+  useLenis((lenis) => {
+    const tween = marqueeTweenRef.current;
+    if (!tween) return;
+
+    // Lenis.velocity is px per frame; convert so a wheel tick is a real nudge.
+    const velocity = lenis.velocity * 60;
+    const absVelocity = Math.abs(velocity);
+
+    if (absVelocity > 40) {
+      lastDirectionRef.current = Math.sign(velocity);
+    }
+
+    const boost = gsap.utils.clamp(0, 15, absVelocity * 0.0028);
+    tween.timeScale((1 + boost) * lastDirectionRef.current);
+  });
+
   return (
     <section
       ref={sectionRef}
       data-header-dark
-      className="relative isolate z-10 min-h-screen w-full overflow-x-hidden text-white"
+      className="relative z-10 min-h-[112vh] w-full text-white"
       style={{ backgroundColor: DARK_BACKGROUND }}
     >
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] flex items-end justify-center max-md:z-0">
-        <div
-          className="leading-[0]"
-          style={{ backgroundColor: DARK_BACKGROUND }}
-        >
-          <img
-            src={profileImageSrc}
-            alt="Fredson Santana"
-            className="block h-auto max-h-[min(96vh,920px)] w-auto max-w-[min(52vw,720px)] max-md:max-h-[min(62vh,520px)] max-md:max-w-[min(78vw,420px)]"
-            draggable={false}
-          />
-        </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] flex justify-center">
+        <img
+          src={profileImageSrc}
+          alt="Fredson Santana"
+          className="block h-auto w-auto max-h-[112vh] max-w-[min(62vw,900px)] object-contain object-bottom max-md:max-h-[112vh] max-md:max-w-[min(90vw,520px)]"
+          draggable={false}
+        />
       </div>
+
+      <div className="relative h-svh min-h-screen w-full overflow-x-clip">
 
       <div className="relative z-30 px-6 pt-24 pb-32 max-md:flex max-md:flex-col md:hidden">
         <div className="max-w-[min(100%,18rem)]">
@@ -196,7 +168,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-20 overflow-hidden pb-[2vh] max-md:pb-3 md:pb-[2vh]">
+      <div className="absolute inset-x-0 bottom-[11vh] z-20 overflow-hidden max-md:bottom-[8vh]">
         <div
           ref={marqueeRef}
           className="marquee-container flex w-max flex-nowrap whitespace-nowrap will-change-transform"
@@ -206,6 +178,7 @@ export default function Hero() {
             {marqueeBlock}
           </p>
         </div>
+      </div>
       </div>
     </section>
   );

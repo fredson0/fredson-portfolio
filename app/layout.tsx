@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Inter } from "next/font/google";
+import { Dancing_Script, Inter } from "next/font/google";
 import "./globals.css";
 import AppHeader from "@/components/layout/AppHeader";
 import { PageTransitionProvider } from "@/components/providers/PageTransitionProvider";
@@ -11,10 +11,10 @@ const inter = Inter({
   weight: ["300", "400", "500", "700"],
 });
 
-const caveat = Caveat({
-  variable: "--font-caveat",
+const dancingScript = Dancing_Script({
+  variable: "--font-dancing-script",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${caveat.variable} h-full antialiased`}
+      className={`${inter.variable} ${dancingScript.variable} h-full antialiased`}
     >
       <body className={`${inter.className} min-h-full flex flex-col font-sans`}>
         <SmoothScrollProvider>

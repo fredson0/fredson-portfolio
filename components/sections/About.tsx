@@ -109,7 +109,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative bg-white px-6 py-24 font-sans text-black sm:px-10 md:py-32 lg:px-16"
+      className="relative z-20 bg-white px-6 py-24 font-sans text-black sm:px-10 md:py-32 lg:px-16"
     >
       <div className="mx-auto flex max-w-[1680px] flex-col gap-14 lg:flex-row lg:items-start lg:justify-between lg:gap-10 xl:gap-16">
         <div className="w-full lg:w-[68%] lg:max-w-[62rem]">

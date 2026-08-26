@@ -1,9 +1,7 @@
-export const LENIS_EASING = (t: number) =>
-  Math.min(1, 1.001 - Math.pow(2, -10 * t));
-
 export const LENIS_OPTIONS = {
-  duration: 1.15,
-  easing: LENIS_EASING,
+  // Lerp fecha a distância até o alvo a cada frame.
+  // Valores altos = freada mais seca (Dennis ~0.1). Duration+expo deixa um rastro longo.
+  lerp: 0.1,
   smoothWheel: true,
   wheelMultiplier: 1,
   touchMultiplier: 1,
