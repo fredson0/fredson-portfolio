@@ -46,6 +46,32 @@ function GlobeIcon({ className }: { className?: string }) {
   );
 }
 
+function DiagonalArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M7 7L17 17"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M9 17H17V9"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
@@ -108,32 +134,32 @@ export default function Hero() {
         <img
           src={profileImageSrc}
           alt="Fredson Santana"
-          className="block h-auto w-auto max-h-[112vh] max-w-[min(62vw,900px)] object-contain object-bottom max-md:max-h-[112vh] max-md:max-w-[min(90vw,520px)]"
+          className="block h-auto w-auto max-h-[112vh] max-w-[min(62vw,900px)] object-contain object-bottom max-md:max-h-[132vh] max-md:max-w-[min(108vw,600px)]"
           draggable={false}
         />
       </div>
 
       <div className="relative h-svh min-h-screen w-full overflow-x-clip">
 
-      <div className="relative z-30 px-6 pt-24 pb-32 max-md:flex max-md:flex-col md:hidden">
-        <div className="max-w-[min(100%,18rem)]">
-          <p className="text-[clamp(1.75rem,7vw,2.25rem)] font-light leading-tight tracking-tight text-white/90">
+      <div
+        className="absolute inset-x-0 bottom-5 z-30 flex items-end justify-between gap-8 px-6 md:hidden"
+      >
+        <div className="min-w-0">
+          <DiagonalArrowIcon className="mb-2.5 h-4 w-4 text-white/90" />
+          <p className="text-[17px] font-light leading-[1.2] tracking-[-0.02em] text-white/90">
             <span className="block">Desenvolvedor</span>
             <span className="block">web full stack</span>
           </p>
-          <p className="mt-4 text-sm font-light tracking-[-0.02em] text-white/55">
-            Soluções web de qualidade — do conceito à entrega
-          </p>
         </div>
-      </div>
 
-      <div
-        className="absolute bottom-[max(7.5rem,22vh)] right-6 z-30 md:hidden"
-        aria-label="Localizado na Bahia, Brasil"
-      >
-        <GlobeIcon
-          className="h-11 w-11 animate-[spin_20s_linear_infinite] text-white/90"
-        />
+        <div
+          className="shrink-0 self-end"
+          aria-label="Localizado na Bahia, Brasil"
+        >
+          <GlobeIcon
+            className="h-10 w-10 animate-[spin_20s_linear_infinite] text-white/90"
+          />
+        </div>
       </div>
 
       <div className="absolute left-0 top-1/2 z-30 hidden -translate-y-1/2 px-6 md:block sm:px-10 lg:px-16">
@@ -168,7 +194,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-[11vh] z-20 overflow-hidden max-md:bottom-[8vh]">
+      <div className="absolute inset-x-0 bottom-[11vh] z-20 overflow-hidden max-md:bottom-[16vh]">
         <div
           ref={marqueeRef}
           className="marquee-container flex w-max flex-nowrap whitespace-nowrap will-change-transform"
