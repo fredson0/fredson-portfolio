@@ -41,9 +41,9 @@ export default function ProjectListItem({
 
         {isSection ? (
           <div
-            className="project-row hidden w-full cursor-pointer items-center justify-between border-b border-black/10 py-10 md:flex md:py-12"
+            className="project-row hidden w-full cursor-pointer items-center justify-between border-b border-black/10 py-12 md:flex md:py-14 lg:py-16"
           >
-            <span className="project-title inline-block text-3xl font-light tracking-[-0.02em] sm:text-4xl md:text-5xl lg:text-6xl">
+            <span className="project-title inline-block text-3xl font-light tracking-[-0.03em] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               {project.title}
             </span>
             <span className="project-category inline-block text-right text-sm font-light tracking-[-0.02em] text-black/70 sm:text-base md:text-lg">

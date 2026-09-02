@@ -5,6 +5,8 @@ export type Project = {
   year: string;
   imageSrc: string;
   href?: string;
+  hoverBg?: string;
+  hoverBgImage?: string;
 };
 
 export const projects: Project[] = [
@@ -15,6 +17,7 @@ export const projects: Project[] = [
     year: "2026",
     imageSrc: "/projects/enem-ia/project.png",
     href: "/work/enem-ia",
+    hoverBg: "#2a2f38",
   },
   {
     id: "rei-da-selva",
@@ -23,6 +26,8 @@ export const projects: Project[] = [
     year: "2026",
     imageSrc: "/projects/rei-da-selva/reidaselva.webp",
     href: "/work/rei-da-selva",
+    hoverBg: "#2c2a24",
+    hoverBgImage: "/projects/rei-da-selva/fredsonrei.webp",
   },
   {
     id: "faculty",
@@ -32,6 +37,7 @@ export const projects: Project[] = [
     imageSrc:
       "https://images.unsplash.com/photo-1558591710-4bfb4a27904a?w=900&h=1100&fit=crop&q=80",
     href: "#",
+    hoverBg: "#3f3f3f",
   },
   {
     id: "nice",
@@ -41,6 +47,7 @@ export const projects: Project[] = [
     imageSrc:
       "https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=900&h=1100&fit=crop&q=80",
     href: "#",
+    hoverBg: "#d6cfc4",
   },
   {
     id: "nexus",
@@ -50,5 +57,6 @@ export const projects: Project[] = [
     imageSrc:
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&h=1100&fit=crop&q=80",
     href: "#",
+    hoverBg: "#1c1d20",
   },
 ];

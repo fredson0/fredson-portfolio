@@ -7,7 +7,9 @@ import { gsap } from "@/lib/gsap";
 import { projects } from "@/lib/projects";
 import ProjectListItem from "@/components/work/ProjectListItem";
 
-const MODAL_HEIGHT = 300;
+const SLIDE_EASE = "power3.out";
+const FOLLOW_DURATION = 0.665;
+const SLIDE_DURATION = 0.76;
 
 type QuickToFn = ((value: number) => void) & { tween: gsap.core.Tween };
 
@@ -22,16 +24,16 @@ function animateRowText(row: HTMLElement, isActive: boolean) {
   gsap.to(title, {
     x: isActive ? -30 : 0,
     opacity: isActive ? 0.4 : 1,
-    duration: 0.45,
-    ease: "power2.out",
+    duration: 0.4,
+    ease: "power3.out",
     overwrite: true,
   });
 
   gsap.to(category, {
     x: isActive ? 30 : 0,
     opacity: isActive ? 0.4 : 1,
-    duration: 0.45,
-    ease: "power2.out",
+    duration: 0.4,
+    ease: "power3.out",
     overwrite: true,
   });
 }
@@ -39,10 +41,12 @@ function animateRowText(row: HTMLElement, isActive: boolean) {
 function ProjectModal({
   followRef,
   modalRef,
+  clipRef,
   stripRef,
 }: {
   followRef: React.RefObject<HTMLDivElement | null>;
   modalRef: React.RefObject<HTMLDivElement | null>;
+  clipRef: React.RefObject<HTMLDivElement | null>;
   stripRef: React.RefObject<HTMLDivElement | null>;
 }) {
   return (
@@ -53,23 +57,47 @@ function ProjectModal({
     >
       <div
         ref={modalRef}
-        className="project-modal-container h-[300px] w-[400px] overflow-hidden bg-[#999d9e]"
+        className="project-modal-container h-[min(32vw,440px)] w-[min(34vw,480px)] overflow-hidden bg-[#2f2f2f] shadow-[0_28px_70px_-24px_rgba(0,0,0,0.35)]"
       >
-        <div ref={stripRef} className="project-modal-strip flex w-full flex-col">
-          {projects.map((project) => (
-            <div key={project.id} className="relative h-[300px] w-full shrink-0">
-              <img
-                src={project.imageSrc}
-                alt=""
-                className="h-full w-full object-cover"
-                draggable={false}
-              />
-            </div>
-          ))}
+        <div ref={clipRef} className="relative h-full w-full overflow-hidden">
+          <div
+            ref={stripRef}
+            className="project-modal-strip absolute left-0 top-0 w-full will-change-transform"
+            style={{ height: `${projects.length * 100}%` }}
+          >
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className="relative w-full overflow-hidden"
+                style={{
+                  height: `${100 / projects.length}%`,
+                  backgroundColor: project.hoverBg ?? "#2f2f2f",
+                }}
+              >
+                {project.hoverBgImage ? (
+                  <img
+                    src={project.hoverBgImage}
+                    alt=""
+                    className="absolute inset-0 h-full w-full scale-110 object-cover"
+                    draggable={false}
+                  />
+                ) : null}
+
+                <div className="absolute inset-0 flex items-center justify-center p-[10%]">
+                  <img
+                    src={project.imageSrc}
+                    alt=""
+                    className="h-full w-full rounded-[10px] object-cover shadow-[0_18px_40px_-18px_rgba(0,0,0,0.55)]"
+                    draggable={false}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="absolute inset-0 z-10 flex items-center justify-center">
-          <span className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-600 text-sm font-light tracking-tight text-white">
+          <span className="flex h-[5.5rem] w-[5.5rem] items-center justify-center rounded-full bg-[#455CE9] text-[15px] font-light tracking-tight text-white">
             View
           </span>
         </div>
@@ -82,9 +110,11 @@ export default function Projects() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const followRef = useRef<HTMLDivElement | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const clipRef = useRef<HTMLDivElement | null>(null);
   const stripRef = useRef<HTMLDivElement | null>(null);
   const xToRef = useRef<QuickToFn | null>(null);
   const yToRef = useRef<QuickToFn | null>(null);
+  const lastIndexRef = useRef(0);
 
   const [isMounted, setIsMounted] = useState(false);
   const [enableHoverModal, setEnableHoverModal] = useState(false);
@@ -133,18 +163,18 @@ export default function Projects() {
       clearProps: "transition",
     });
 
-    gsap.set(strip, { y: 0 });
+    gsap.set(strip, { y: 0, force3D: true });
 
     xToRef.current?.tween.kill();
     yToRef.current?.tween.kill();
 
     xToRef.current = gsap.quickTo(follow, "x", {
-      duration: 0.8,
+      duration: FOLLOW_DURATION,
       ease: "power3",
     }) as QuickToFn;
 
     yToRef.current = gsap.quickTo(follow, "y", {
-      duration: 0.8,
+      duration: FOLLOW_DURATION,
       ease: "power3",
     }) as QuickToFn;
 
@@ -153,17 +183,17 @@ export default function Projects() {
       yToRef.current?.(event.clientY);
     };
 
-    const onSectionEnter = () => {
+    const showModal = () => {
       gsap.to(modal, {
         scale: 1,
         opacity: 1,
-        duration: 0.3,
-        ease: "power2.out",
+        duration: 0.4,
+        ease: "power3.out",
         overwrite: "auto",
       });
     };
 
-    const onSectionLeave = () => {
+    const hideModal = () => {
       setActiveIndex(null);
 
       gsap.utils
@@ -173,15 +203,14 @@ export default function Projects() {
       gsap.to(modal, {
         scale: 0,
         opacity: 0,
-        duration: 0.3,
-        ease: "power2.out",
+        duration: 0.32,
+        ease: "power3.in",
         overwrite: "auto",
       });
     };
 
     window.addEventListener("mousemove", moveModal, { passive: true });
-    section.addEventListener("mouseenter", onSectionEnter);
-    section.addEventListener("mouseleave", onSectionLeave);
+    section.addEventListener("mouseleave", hideModal);
 
     const rows = gsap.utils.toArray<HTMLElement>(".project-row", section);
     const rowCleanups: Array<() => void> = [];
@@ -190,6 +219,7 @@ export default function Projects() {
       const onRowEnter = () => {
         setActiveIndex(index);
         animateRowText(row, true);
+        showModal();
       };
 
       const onRowLeave = () => {
@@ -207,8 +237,7 @@ export default function Projects() {
 
     return () => {
       window.removeEventListener("mousemove", moveModal);
-      section.removeEventListener("mouseenter", onSectionEnter);
-      section.removeEventListener("mouseleave", onSectionLeave);
+      section.removeEventListener("mouseleave", hideModal);
       rowCleanups.forEach((cleanup) => cleanup());
 
       xToRef.current?.tween.kill();
@@ -222,16 +251,22 @@ export default function Projects() {
 
   useLayoutEffect(() => {
     const strip = stripRef.current;
+    const clip = clipRef.current;
 
-    if (!strip || activeIndex === null || !enableHoverModal) {
+    if (!strip || !clip || activeIndex === null || !enableHoverModal) {
       return;
     }
 
+    const slideHeight = clip.clientHeight;
+    const distance = Math.abs(activeIndex - lastIndexRef.current);
+    lastIndexRef.current = activeIndex;
+
     gsap.to(strip, {
-      y: -activeIndex * MODAL_HEIGHT,
-      duration: 0.55,
-      ease: "none",
+      y: -activeIndex * slideHeight,
+      duration: gsap.utils.clamp(0.665, 0.9975, SLIDE_DURATION + distance * 0.114),
+      ease: SLIDE_EASE,
       overwrite: true,
+      force3D: true,
     });
   }, [activeIndex, isMounted, enableHoverModal]);
 
@@ -263,6 +298,7 @@ export default function Projects() {
           <ProjectModal
             followRef={followRef}
             modalRef={modalRef}
+            clipRef={clipRef}
             stripRef={stripRef}
           />,
           document.body
