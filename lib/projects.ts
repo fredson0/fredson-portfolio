@@ -9,6 +9,14 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: "enem-ia",
+    title: "ENEM+IA",
+    category: "EdTech — Web & AI",
+    year: "2026",
+    imageSrc: "/projects/enem-ia/project.png",
+    href: "/work/enem-ia",
+  },
+  {
     id: "rei-da-selva",
     title: "REI DA SELVA",
     category: "Freelance — Web & Development",

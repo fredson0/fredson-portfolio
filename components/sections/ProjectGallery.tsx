@@ -23,6 +23,23 @@ export type GalleryCard = {
 const rowOneCards: GalleryCard[] = [
   {
     id: "r1-1",
+    title: "ENEM+IA",
+    media: {
+      type: "image",
+      src: "/projects/enem-ia/project.png",
+    },
+  },
+  {
+    id: "r1-2",
+    title: "ENEM+IA — Tutor",
+    media: {
+      type: "video",
+      src: "/projects/enem-ia/video-1.webm",
+      poster: "/projects/enem-ia/project.png",
+    },
+  },
+  {
+    id: "r1-3",
     title: "Rei da Selva",
     media: {
       type: "image",
@@ -30,7 +47,7 @@ const rowOneCards: GalleryCard[] = [
     },
   },
   {
-    id: "r1-2",
+    id: "r1-4",
     title: "Rei da Selva — Site",
     media: {
       type: "video",
@@ -39,7 +56,7 @@ const rowOneCards: GalleryCard[] = [
     },
   },
   {
-    id: "r1-3",
+    id: "r1-5",
     title: "Product UI",
     media: {
       type: "image",
@@ -47,7 +64,7 @@ const rowOneCards: GalleryCard[] = [
     },
   },
   {
-    id: "r1-4",
+    id: "r1-6",
     title: "Data Viz",
     media: {
       type: "image",
