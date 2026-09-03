@@ -239,7 +239,7 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
             content.collageMaxWidthClassName ?? "md:max-w-[820px]"
           } ${content.collageClassName ?? "h-[min(52vh,420px)] md:h-[min(58vh,520px)]"}`}
         >
-          {content.images.map((image) => {
+          {content.images.map((image, index) => {
             const surfaceClassName =
               image.surface === "float"
                 ? floatSurfaceClassName
@@ -249,7 +249,7 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
 
             return (
               <div
-                key={image.src}
+                key={`${image.src}-${index}`}
                 className={`narrative-collage-item absolute will-change-transform ${surfaceClassName} ${image.layoutClassName}`}
               >
                 <CollageMedia image={image} />

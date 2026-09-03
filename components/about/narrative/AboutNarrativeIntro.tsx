@@ -1,4 +1,5 @@
 import AboutArchitectureScene from "@/components/about/narrative/AboutArchitectureScene";
+import AboutEnemIaScene from "@/components/about/narrative/AboutEnemIaScene";
 import AboutReiDaSelvaScene from "@/components/about/narrative/AboutReiDaSelvaScene";
 import AboutStackScene from "@/components/about/narrative/AboutStackScene";
 import AboutStoryScene from "@/components/about/narrative/AboutStoryScene";
@@ -11,6 +12,7 @@ export default function AboutNarrativeIntro() {
       <AboutStoryScene />
       <AboutStackScene />
       <AboutArchitectureScene />
+      <AboutEnemIaScene />
       <AboutReiDaSelvaScene />
     </>
   );

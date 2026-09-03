@@ -66,7 +66,7 @@ export default function EnemIaPage() {
             <LaptopFrame>
               <video
                 className="absolute inset-0 h-full w-full object-cover"
-                src="/projects/enem-ia/video-1.webm"
+                src="/projects/enem-ia/hero-1.webm"
                 autoPlay
                 muted
                 loop
@@ -80,7 +80,7 @@ export default function EnemIaPage() {
           <div className="mt-16 overflow-hidden sm:mt-20 lg:mt-28">
             <video
               className="h-auto w-full object-cover"
-              src="/projects/enem-ia/video-2.webm"
+              src="/projects/enem-ia/hero-2.webm"
               autoPlay
               muted
               loop
@@ -97,7 +97,7 @@ export default function EnemIaPage() {
           <div className="overflow-hidden">
             <video
               className="h-auto w-full object-cover"
-              src="/projects/enem-ia/video-4.webm"
+              src="/projects/enem-ia/product-1.webm"
               autoPlay
               muted
               loop
@@ -111,7 +111,7 @@ export default function EnemIaPage() {
             <LaptopFrame>
               <video
                 className="absolute inset-0 h-full w-full object-cover"
-                src="/projects/enem-ia/video-5.webm"
+                src="/projects/enem-ia/product-2.webm"
                 autoPlay
                 muted
                 loop

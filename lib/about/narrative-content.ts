@@ -431,3 +431,132 @@ export const aboutReiDaSelvaScene: NarrativeSceneContent = {
     },
   ],
 };
+
+const enemMediaClassName = "h-full w-full object-cover";
+
+export const aboutEnemIaScene: NarrativeSceneContent = {
+  id: "about-enem-ia",
+  titleLines: ["ENEM+", "IA"],
+  collageClassName:
+    "h-[min(68vh,580px)] sm:h-[min(72vh,620px)] md:h-[min(76vh,680px)]",
+  collageMaxWidthClassName: "md:max-w-[min(100%,920px)]",
+  body: [
+    "Produto de preparação adaptativa para o ENEM: tutor com IA, simulados e trilha de estudos ajustados ao que o aluno ainda precisa dominar — não é um chat genérico, é foco de prova.",
+    "A interface organiza conversa, progresso e treinos no mesmo fluxo: o aluno pergunta, revisa lacunas e marca etapas, com métricas que acompanham o que já foi coberto.",
+    "Do design à implementação, o case mostra produto digital de ponta a ponta — visual escuro, motion e responsividade sem perder clareza no mobile.",
+  ],
+  tags: "NEXT.JS · EDTECH · TUTOR IA · SIMULADOS · TRILHA · PRODUTO · 2026",
+  cta: {
+    label: "Ver case completo",
+    href: "/work/enem-ia",
+  },
+  images: [
+    {
+      src: "/projects/enem-ia/project.png",
+      alt: "ENEM+IA — preview amplo",
+      surface: "card",
+      layoutClassName:
+        "left-[2%] top-[54%] z-10 aspect-[21/9] w-[88%] md:left-[4%] md:top-[52%] md:w-[84%]",
+      imageClassName: enemMediaClassName,
+      riseY: 140,
+      duration: 1,
+      delay: 0.02,
+    },
+    {
+      src: "/projects/enem-ia/project.png",
+      alt: "ENEM+IA — preview do produto",
+      surface: "card",
+      layoutClassName:
+        "left-[6%] top-[12%] z-25 aspect-[16/10] w-[48%] sm:w-[46%] md:left-[8%] md:top-[10%] md:w-[44%]",
+      imageClassName: enemMediaClassName,
+      riseY: 85,
+      duration: 0.78,
+      delay: 0.04,
+    },
+    {
+      src: "/projects/enem-ia/hero-1.webm",
+      alt: "ENEM+IA — hero",
+      surface: "card",
+      mediaType: "video",
+      poster: "/projects/enem-ia/project.png",
+      layoutClassName:
+        "left-[44%] top-[6%] z-40 aspect-video w-[40%] sm:w-[38%] md:left-[46%] md:top-[5%] md:w-[36%] rotate-[2deg]",
+      imageClassName: enemMediaClassName,
+      riseY: 120,
+      duration: 0.95,
+      delay: 0.08,
+    },
+    {
+      src: "/projects/enem-ia/hero-2.webm",
+      alt: "ENEM+IA — hero 2",
+      surface: "card",
+      mediaType: "video",
+      poster: "/projects/enem-ia/project.png",
+      layoutClassName:
+        "left-[4%] top-[40%] z-35 aspect-video w-[34%] sm:w-[32%] md:left-[6%] md:top-[38%] md:w-[30%] -rotate-[2deg]",
+      imageClassName: enemMediaClassName,
+      riseY: 155,
+      duration: 0.88,
+      delay: 0.1,
+    },
+    {
+      src: "/projects/enem-ia/product-1.webm",
+      alt: "ENEM+IA — produto",
+      surface: "card",
+      mediaType: "video",
+      poster: "/projects/enem-ia/project.png",
+      layoutClassName:
+        "left-[48%] top-[46%] z-[45] aspect-video w-[36%] sm:w-[34%] md:left-[50%] md:top-[44%] md:w-[32%] rotate-[1deg]",
+      imageClassName: enemMediaClassName,
+      riseY: 170,
+      duration: 1.05,
+      delay: 0.14,
+    },
+    {
+      src: "/projects/enem-ia/product-2.webm",
+      alt: "ENEM+IA — produto 2",
+      surface: "card",
+      mediaType: "video",
+      poster: "/projects/enem-ia/project.png",
+      layoutClassName:
+        "left-[28%] top-[28%] z-30 aspect-video w-[32%] sm:w-[30%] md:left-[30%] md:top-[26%] md:w-[28%] -rotate-[1deg]",
+      imageClassName: enemMediaClassName,
+      riseY: 110,
+      duration: 0.82,
+      delay: 0.06,
+    },
+    {
+      src: "/projects/enem-ia/cell1.png",
+      alt: "ENEM+IA — mobile 1",
+      surface: "polaroid",
+      layoutClassName:
+        "left-[66%] top-[2%] z-50 aspect-[9/19] w-[17%] sm:w-[16%] md:left-[68%] md:top-[1%] md:w-[14%] rotate-[5deg]",
+      imageClassName: enemMediaClassName,
+      riseY: 95,
+      duration: 0.72,
+      delay: 0.12,
+    },
+    {
+      src: "/projects/enem-ia/cell2.png",
+      alt: "ENEM+IA — mobile 2",
+      surface: "polaroid",
+      layoutClassName:
+        "left-[74%] top-[34%] z-[48] aspect-[9/19] w-[16%] sm:w-[15%] md:left-[76%] md:top-[32%] md:w-[13%] -rotate-[4deg]",
+      imageClassName: enemMediaClassName,
+      riseY: 130,
+      duration: 0.9,
+      delay: 0.16,
+    },
+    {
+      src: "/projects/enem-ia/cell3.png",
+      alt: "ENEM+IA — mobile 3",
+      surface: "polaroid",
+      layoutClassName:
+        "left-[60%] top-[60%] z-[46] aspect-[9/19] w-[15%] sm:w-[14%] md:left-[62%] md:top-[58%] md:w-[12%] rotate-[3deg]",
+      imageClassName: enemMediaClassName,
+      riseY: 145,
+      duration: 0.98,
+      delay: 0.18,
+    },
+  ],
+};

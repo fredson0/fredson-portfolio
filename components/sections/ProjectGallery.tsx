@@ -34,7 +34,7 @@ const rowOneCards: GalleryCard[] = [
     title: "ENEM+IA — Tutor",
     media: {
       type: "video",
-      src: "/projects/enem-ia/video-1.webm",
+      src: "/projects/enem-ia/hero-1.webm",
       poster: "/projects/enem-ia/project.png",
     },
   },
