@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
+import { useLenis } from "lenis/react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import type Lenis from "lenis";
 
 export type GalleryMedia =
   | { type: "video"; src: string; poster?: string }
@@ -18,20 +15,25 @@ export type GalleryCard = {
   id: string;
   title: string;
   media: GalleryMedia;
+  surface: string;
+  inverted?: boolean;
 };
 
 const rowOneCards: GalleryCard[] = [
   {
     id: "r1-1",
     title: "ENEM+IA",
+    surface: "#dfe3e8",
     media: {
-      type: "image",
-      src: "/projects/enem-ia/project.png",
+      type: "video",
+      src: "/projects/enem-ia/product-1.webm",
+      poster: "/projects/enem-ia/project.png",
     },
   },
   {
     id: "r1-2",
     title: "ENEM+IA — Tutor",
+    surface: "#e6dfd6",
     media: {
       type: "video",
       src: "/projects/enem-ia/hero-1.webm",
@@ -41,14 +43,7 @@ const rowOneCards: GalleryCard[] = [
   {
     id: "r1-3",
     title: "Rei da Selva",
-    media: {
-      type: "image",
-      src: "/projects/rei-da-selva/reidaselva.webp",
-    },
-  },
-  {
-    id: "r1-4",
-    title: "Rei da Selva — Site",
+    surface: "#d4d8d2",
     media: {
       type: "video",
       src: "/projects/rei-da-selva/Reidaselvavideo.webm",
@@ -56,19 +51,13 @@ const rowOneCards: GalleryCard[] = [
     },
   },
   {
-    id: "r1-5",
-    title: "Product UI",
+    id: "r1-4",
+    title: "Rei da Selva — Site",
+    surface: "#1c1d20",
+    inverted: true,
     media: {
       type: "image",
-      src: "https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=800&h=600&fit=crop&q=80",
-    },
-  },
-  {
-    id: "r1-6",
-    title: "Data Viz",
-    media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&q=80",
+      src: "/projects/rei-da-selva/reidaselva.webp",
     },
   },
 ];
@@ -77,6 +66,7 @@ const rowTwoCards: GalleryCard[] = [
   {
     id: "r2-1",
     title: "Brand System",
+    surface: "#cfd6dc",
     media: {
       type: "image",
       src: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&h=600&fit=crop&q=80",
@@ -85,6 +75,7 @@ const rowTwoCards: GalleryCard[] = [
   {
     id: "r2-2",
     title: "Scroll Experience",
+    surface: "#e8e2d8",
     media: {
       type: "video",
       src: "https://cdn.coverr.co/videos/coverr-coding-on-a-laptop-9765/1080p.mp4",
@@ -95,6 +86,7 @@ const rowTwoCards: GalleryCard[] = [
   {
     id: "r2-3",
     title: "SaaS Dashboard",
+    surface: "#d6d9d4",
     media: {
       type: "image",
       src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80",
@@ -103,23 +95,13 @@ const rowTwoCards: GalleryCard[] = [
   {
     id: "r2-4",
     title: "Mobile Flow",
+    surface: "#ddd8e0",
     media: {
       type: "image",
       src: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop&q=80",
     },
   },
 ];
-
-/** Duplica cards para a fileira ser mais larga que qualquer viewport */
-function expandRow(cards: GalleryCard[]): GalleryCard[] {
-  return [
-    ...cards,
-    ...cards.map((card) => ({ ...card, id: `${card.id}-dup` })),
-  ];
-}
-
-const rowOneExpanded = expandRow(rowOneCards);
-const rowTwoExpanded = expandRow(rowTwoCards);
 
 function GalleryCardMedia({ media, title }: { media: GalleryMedia; title: string }) {
   if (media.type === "video") {
@@ -133,7 +115,7 @@ function GalleryCardMedia({ media, title }: { media: GalleryMedia; title: string
         playsInline
         controls={false}
         poster={media.poster}
-        className="h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
         aria-label={title}
       >
         <source src={media.src} type={isWebm ? "video/webm" : "video/mp4"} />
@@ -145,7 +127,7 @@ function GalleryCardMedia({ media, title }: { media: GalleryMedia; title: string
     <img
       src={media.src}
       alt={title}
-      className="h-full w-full object-cover"
+      className="absolute inset-0 h-full w-full object-cover"
       draggable={false}
     />
   );
@@ -153,13 +135,15 @@ function GalleryCardMedia({ media, title }: { media: GalleryMedia; title: string
 
 function GalleryCardItem({ card }: { card: GalleryCard }) {
   return (
-    <article className="w-[min(72vw,420px)] shrink-0 rounded-xl bg-[#e3e3e3] p-3 sm:w-[380px] sm:p-4">
-      <div className="aspect-[4/3] overflow-hidden rounded-lg bg-[#d4d4d4]">
-        <GalleryCardMedia media={card.media} title={card.title} />
+    <article className="w-1/4 shrink-0 p-[1.25vw]">
+      <div
+        className="relative flex aspect-[4/3] items-center justify-center overflow-hidden"
+        style={{ backgroundColor: card.surface }}
+      >
+        <div className="relative aspect-video w-[90%] overflow-hidden">
+          <GalleryCardMedia media={card.media} title={card.title} />
+        </div>
       </div>
-      <p className="mt-3 text-sm font-light tracking-[-0.02em] text-black/70">
-        {card.title}
-      </p>
     </article>
   );
 }
@@ -175,7 +159,10 @@ function GalleryRow({
 }) {
   return (
     <div className="w-full overflow-hidden">
-      <div ref={rowRef} className={`flex w-max gap-8 will-change-transform ${className}`}>
+      <div
+        ref={rowRef}
+        className={`relative left-[-10vw] flex w-[120vw] will-change-transform ${className}`}
+      >
         {cards.map((card) => (
           <GalleryCardItem key={card.id} card={card} />
         ))}
@@ -188,67 +175,58 @@ export default function ProjectGallery() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rowOneRef = useRef<HTMLDivElement | null>(null);
   const rowTwoRef = useRef<HTMLDivElement | null>(null);
+  const setRowOneX = useRef<((value: number) => void) | null>(null);
+  const setRowTwoX = useRef<((value: number) => void) | null>(null);
 
   useGSAP(
     () => {
-      const container = containerRef.current;
       const rowOne = rowOneRef.current;
       const rowTwo = rowTwoRef.current;
 
-      if (!container || !rowOne || !rowTwo) {
+      if (!rowOne || !rowTwo) {
         return;
       }
 
-      gsap.set(rowOne, { xPercent: 5 });
-      gsap.set(rowTwo, { xPercent: -25 });
-
-      const rowOneTween = gsap.fromTo(
-        rowOne,
-        { xPercent: 5 },
-        {
-          xPercent: -20,
-          ease: "none",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: container,
-            scroller: document.documentElement,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        }
-      );
-
-      const rowTwoTween = gsap.fromTo(
-        rowTwo,
-        { xPercent: -25 },
-        {
-          xPercent: 0,
-          ease: "none",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: container,
-            scroller: document.documentElement,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        }
-      );
-
-      ScrollTrigger.refresh();
+      gsap.set([rowOne, rowTwo], { x: 0, force3D: true });
+      setRowOneX.current = gsap.quickSetter(rowOne, "x", "px") as (value: number) => void;
+      setRowTwoX.current = gsap.quickSetter(rowTwo, "x", "px") as (value: number) => void;
 
       return () => {
-        rowOneTween.scrollTrigger?.kill();
-        rowOneTween.kill();
-        rowTwoTween.scrollTrigger?.kill();
-        rowTwoTween.kill();
+        setRowOneX.current = null;
+        setRowTwoX.current = null;
       };
     },
     { scope: containerRef, dependencies: [] }
   );
+
+  const updateRows = useCallback((lenis: Lenis) => {
+    const container = containerRef.current;
+    const setOne = setRowOneX.current;
+    const setTwo = setRowTwoX.current;
+
+    if (!container || !setOne || !setTwo) {
+      return;
+    }
+
+    // targetScroll congela no mesmo instante em que o wheel para.
+    // animatedScroll ainda tem a cauda do lerp — era isso que fazia os cards
+    // andarem um pouco depois do scroll “parar”.
+    const remaining = lenis.targetScroll - lenis.scroll;
+    const targetTop = container.getBoundingClientRect().top - remaining;
+    const traveled = window.innerHeight - targetTop;
+    const progress = gsap.utils.clamp(
+      0,
+      1,
+      traveled / (window.innerHeight + container.offsetHeight)
+    );
+    const maxShift = Math.min(67, window.innerWidth * 0.042);
+    const x = (progress - 0.5) * 2 * maxShift;
+
+    setOne(-x);
+    setTwo(x);
+  }, []);
+
+  useLenis(updateRows, [], 1);
 
   return (
     <section
@@ -268,15 +246,15 @@ export default function ProjectGallery() {
         </Link>
       </div>
 
-      <div className="flex w-full flex-col gap-8 overflow-hidden py-20">
+      <div className="flex w-full flex-col overflow-hidden py-20">
         <GalleryRow
           rowRef={rowOneRef}
-          cards={rowOneExpanded}
+          cards={rowOneCards}
           className="gallery-row-one"
         />
         <GalleryRow
           rowRef={rowTwoRef}
-          cards={rowTwoExpanded}
+          cards={rowTwoCards}
           className="gallery-row-two"
         />
       </div>

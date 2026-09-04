@@ -1,7 +1,6 @@
 export const LENIS_OPTIONS = {
-  // Lerp fecha a distância até o alvo a cada frame.
-  // Valores altos = freada mais seca (Dennis ~0.1). Duration+expo deixa um rastro longo.
-  lerp: 0.1,
+  // Lerp mais alto = freada mais seca. 0.1 deixa uma cauda longa depois do wheel.
+  lerp: 0.2,
   smoothWheel: true,
   wheelMultiplier: 1,
   touchMultiplier: 1,
