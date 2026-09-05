@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 
 import { gsap } from "@/lib/gsap";
 import ContactWordCycle from "@/components/sections/ContactWordCycle";
+import { prefersReducedMotion } from "@/lib/page-transition";
 
 const socialLinks = [
   {
@@ -38,6 +39,7 @@ type ContactProps = {
 };
 
 export default function Contact({ animatedEntrance = true }: ContactProps) {
+  const revealRef = useRef<HTMLDivElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
   const pathRef = useRef<SVGPathElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -45,6 +47,7 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
 
   useGSAP(
     () => {
+      const reveal = revealRef.current;
       const section = sectionRef.current;
       const path = pathRef.current;
       const content = contentRef.current;
@@ -53,56 +56,51 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
         return;
       }
 
-      if (!animatedEntrance) {
+      if (!animatedEntrance || prefersReducedMotion()) {
         path.setAttribute("d", buildElasticPath(0));
         gsap.set(content, { y: 0 });
         return;
       }
 
+      const trigger = reveal ?? section;
       const curve = { controlY: 100 };
 
       path.setAttribute("d", buildElasticPath(curve.controlY));
-      gsap.set(content, { y: -200 });
+      gsap.set(content, { y: -140 });
 
-      const curveTween = gsap.to(curve, {
-        controlY: 0,
-        ease: "none",
+      const revealTween = gsap.timeline({
         scrollTrigger: {
-          trigger: section,
+          trigger,
           scroller: document.documentElement,
-          start: "top bottom",
-          end: "top 82%",
-          scrub: true,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.45,
           invalidateOnRefresh: true,
-        },
-        onUpdate: () => {
-          path.setAttribute("d", buildElasticPath(curve.controlY));
         },
       });
 
-      const contentTween = gsap.fromTo(
-        content,
-        { y: -200 },
+      revealTween.to(
+        curve,
         {
-          y: 0,
+          controlY: 0,
           ease: "none",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: section,
-            scroller: document.documentElement,
-            start: "top bottom",
-            end: "top 82%",
-            scrub: true,
-            invalidateOnRefresh: true,
+          onUpdate: () => {
+            path.setAttribute("d", buildElasticPath(curve.controlY));
           },
-        }
+        },
+        0
+      );
+
+      revealTween.fromTo(
+        content,
+        { y: -140 },
+        { y: 0, ease: "none", immediateRender: false },
+        0
       );
 
       return () => {
-        curveTween.scrollTrigger?.kill();
-        curveTween.kill();
-        contentTween.scrollTrigger?.kill();
-        contentTween.kill();
+        revealTween.scrollTrigger?.kill();
+        revealTween.kill();
       };
     },
     { scope: sectionRef, dependencies: [animatedEntrance] }
@@ -150,13 +148,25 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
   );
 
   return (
-    <section
-      ref={sectionRef}
-      id="contact"
-      data-header-dark
-      className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-black text-white"
+    <div
+      ref={revealRef}
+      className={
+        animatedEntrance
+          ? "relative z-0 -mt-[100svh] h-[200svh]"
+          : "relative z-0"
+      }
     >
-      <div className="pointer-events-none absolute left-0 top-[-99px] z-10 h-[100px] w-full overflow-visible">
+      <section
+        ref={sectionRef}
+        id="contact"
+        data-header-dark
+        className={
+          animatedEntrance
+            ? "sticky top-0 flex h-[100svh] w-full flex-col justify-between bg-black text-white"
+            : "relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-black text-white"
+        }
+      >
+      <div className="pointer-events-none absolute left-0 top-[-22vh] z-10 h-[22vh] w-full overflow-visible">
         <svg
           className="h-full w-full"
           viewBox="0 0 100 100"
@@ -277,5 +287,6 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
         </footer>
       </div>
     </section>
+    </div>
   );
 }

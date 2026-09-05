@@ -41,7 +41,10 @@ export default function LandingIntro({ children }: { children: React.ReactNode }
       if (landingIntroPlayed || prefersReducedMotion()) {
         landingIntroPlayed = true;
         setVisible(false);
-        gsap.set(contentRef.current, { y: 0 });
+        gsap.set(contentRef.current, { clearProps: "transform" });
+        if (contentRef.current) {
+          contentRef.current.style.willChange = "auto";
+        }
         return;
       }
 
@@ -58,7 +61,7 @@ export default function LandingIntro({ children }: { children: React.ReactNode }
       document.body.style.overflow = "hidden";
 
       gsap.set(overlay, { yPercent: 0 });
-      gsap.set(content, { y: 48 });
+      gsap.set(content, { y: 48, willChange: "transform" });
       gsap.set(nameWrap, { opacity: 0 });
       gsap.set(fill, { clipPath: "inset(0% 100% 0% 0%)" });
       gsap.set(wait, { y: 10, opacity: 0 });
@@ -69,6 +72,8 @@ export default function LandingIntro({ children }: { children: React.ReactNode }
           landingIntroPlayed = true;
           document.documentElement.style.overflow = "";
           document.body.style.overflow = "";
+          gsap.set(content, { clearProps: "transform" });
+          content.style.willChange = "auto";
           lenisRef.current?.start();
           ScrollTrigger.refresh();
           setVisible(false);
@@ -182,7 +187,7 @@ export default function LandingIntro({ children }: { children: React.ReactNode }
         </div>
       ) : null}
 
-      <div ref={contentRef} className="will-change-transform">
+      <div ref={contentRef}>
         {children}
       </div>
     </>

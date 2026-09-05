@@ -428,30 +428,31 @@ export default function SiteHeader({
 
     setOverDarkSection(false);
 
-    const darkSections = document.querySelectorAll("[data-header-dark]");
+    const probeDark = () => {
+      const x = Math.round(window.innerWidth / 2);
+      const y = 56;
+      const hit = document.elementFromPoint(x, y);
+      setOverDarkSection(Boolean(hit?.closest("[data-header-dark]")));
+    };
 
-    if (!darkSections.length) {
-      return;
+    probeDark();
+
+    if (lenis) {
+      lenis.on("scroll", probeDark);
+      window.addEventListener("resize", probeDark);
+      return () => {
+        lenis.off("scroll", probeDark);
+        window.removeEventListener("resize", probeDark);
+      };
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const isOverDark = entries.some(
-          (entry) => entry.isIntersecting && entry.intersectionRatio > 0
-        );
-        setOverDarkSection(isOverDark);
-      },
-      {
-        root: null,
-        rootMargin: "-72px 0px 0px 0px",
-        threshold: [0, 0.05, 0.15],
-      }
-    );
-
-    darkSections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, [isMounted, lightHeader, pathname]);
+    window.addEventListener("scroll", probeDark, { passive: true });
+    window.addEventListener("resize", probeDark);
+    return () => {
+      window.removeEventListener("scroll", probeDark);
+      window.removeEventListener("resize", probeDark);
+    };
+  }, [isMounted, lightHeader, pathname, lenis]);
 
   useEffect(() => {
     if (!menuOpen) {

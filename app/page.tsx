@@ -10,10 +10,14 @@ import Projects from "@/components/sections/Projects";
 export default function Home() {
   return (
     <LandingIntro>
-      <Hero />
-      <About />
-      <Projects />
-      <ProjectGallery />
+      <div className="relative z-10">
+        <Hero />
+        <div className="relative bg-white">
+          <About />
+          <Projects />
+          <ProjectGallery />
+        </div>
+      </div>
       <Contact />
     </LandingIntro>
   );
