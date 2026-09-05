@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 
 import { gsap } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/page-transition";
 
 const headlineLines = [
   "Construindo soluções digitais de alto impacto",
@@ -27,6 +28,31 @@ const headlineTypography =
 const secondaryTypography =
   "text-base font-light leading-[1.2] tracking-[-0.02em] text-black/80 sm:text-lg";
 
+function HeadlineLine({
+  text,
+  className,
+}: {
+  text: string;
+  className: string;
+}) {
+  const words = text.split(/\s+/).filter(Boolean);
+
+  return (
+    <p className={`flex flex-wrap ${className}`}>
+      {words.map((word, index) => (
+        <span
+          key={`${word}-${index}`}
+          className="mr-[0.28em] inline-block overflow-hidden pb-[0.12em] last:mr-0"
+        >
+          <span className="about-headline-word inline-block will-change-transform">
+            {word}
+          </span>
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function TextLine({
   children,
   className = "",
@@ -43,16 +69,39 @@ function TextLine({
 
 export default function About() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const headlineRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLAnchorElement | null>(null);
 
   useGSAP(
     () => {
       const section = sectionRef.current;
-      if (!section) {
+      const headline = headlineRef.current;
+      if (!section || !headline) {
         return;
       }
 
+      const words = headline.querySelectorAll<HTMLElement>(".about-headline-word");
       const lines = section.querySelectorAll<HTMLElement>(".about-reveal-line");
+
+      if (!prefersReducedMotion() && words.length > 0) {
+        gsap.fromTo(
+          words,
+          { yPercent: 115 },
+          {
+            yPercent: 0,
+            ease: "none",
+            stagger: 0.045,
+            scrollTrigger: {
+              trigger: headline,
+              scroller: document.documentElement,
+              start: "top 82%",
+              end: "top 38%",
+              scrub: 0.55,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      }
 
       gsap.fromTo(
         lines,
@@ -113,11 +162,13 @@ export default function About() {
     >
       <div className="mx-auto flex max-w-[1680px] flex-col gap-14 lg:flex-row lg:items-start lg:justify-between lg:gap-10 xl:gap-16">
         <div className="w-full lg:w-[68%] lg:max-w-[62rem]">
-          <div className="flex flex-col">
+          <div ref={headlineRef} className="flex flex-col">
             {headlineLines.map((line) => (
-              <TextLine key={line} className={headlineTypography}>
-                {line}
-              </TextLine>
+              <HeadlineLine
+                key={line}
+                text={line}
+                className={headlineTypography}
+              />
             ))}
           </div>
         </div>

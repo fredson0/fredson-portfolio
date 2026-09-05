@@ -5,9 +5,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 
 import { gsap } from "@/lib/gsap";
-import { ACCENT_MUTED } from "@/lib/theme";
-
-const profileImageSrc = "/profile.png";
+import ContactWordCycle from "@/components/sections/ContactWordCycle";
 
 const socialLinks = [
   {
@@ -32,10 +30,6 @@ type QuickToFn = ((value: number) => void) & { tween: gsap.core.Tween };
 /** Curva branca elástica — controlY 100 = curvada; controlY 0 = achatada */
 function buildElasticPath(controlY: number) {
   return `M0 0 Q 50 ${controlY} 100 0 L 100 100 L 0 100 Z`;
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
 }
 
 type ContactProps = {
@@ -116,131 +110,40 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
 
   useGSAP(
     () => {
-      const section = sectionRef.current;
-      if (!section) {
-        return;
-      }
-
-      const cleanups: Array<() => void> = [];
-
-      const interactiveButtons =
-        section.querySelectorAll<HTMLElement>(".contact-interactive");
-
-      interactiveButtons.forEach((button) => {
-        const fill = button.querySelector<HTMLElement>(".contact-fill-bg");
-        if (!fill) {
-          return;
-        }
-
-        gsap.set(fill, { scale: 0, transformOrigin: "center center" });
-
-        const onEnter = () => {
-          gsap.to(fill, {
-            scale: 1,
-            duration: 0.4,
-            ease: "power2.out",
-            overwrite: true,
-          });
-        };
-
-        const onLeave = () => {
-          gsap.to(fill, {
-            scale: 0,
-            duration: 0.4,
-            ease: "power2.out",
-            overwrite: true,
-          });
-        };
-
-        button.addEventListener("mouseenter", onEnter);
-        button.addEventListener("mouseleave", onLeave);
-
-        cleanups.push(() => {
-          button.removeEventListener("mouseenter", onEnter);
-          button.removeEventListener("mouseleave", onLeave);
-        });
-      });
-
       const magneticButton = magneticRef.current;
-      if (magneticButton) {
-        const xTo = gsap.quickTo(magneticButton, "x", {
-          duration: 0.6,
-          ease: "power3.out",
-        }) as QuickToFn;
+      if (!magneticButton) return;
 
-        const yTo = gsap.quickTo(magneticButton, "y", {
-          duration: 0.6,
-          ease: "power3.out",
-        }) as QuickToFn;
+      const xTo = gsap.quickTo(magneticButton, "x", {
+        duration: 0.6,
+        ease: "power3.out",
+      }) as QuickToFn;
 
-        const onMagneticMove = (event: MouseEvent) => {
-          const rect = magneticButton.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          xTo((event.clientX - centerX) * 0.35);
-          yTo((event.clientY - centerY) * 0.35);
-        };
+      const yTo = gsap.quickTo(magneticButton, "y", {
+        duration: 0.6,
+        ease: "power3.out",
+      }) as QuickToFn;
 
-        const onMagneticLeave = () => {
-          xTo(0);
-          yTo(0);
-        };
+      const onMagneticMove = (event: MouseEvent) => {
+        const rect = magneticButton.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        xTo((event.clientX - centerX) * 0.28);
+        yTo((event.clientY - centerY) * 0.28);
+      };
 
-        magneticButton.addEventListener("mousemove", onMagneticMove);
-        magneticButton.addEventListener("mouseleave", onMagneticLeave);
+      const onMagneticLeave = () => {
+        xTo(0);
+        yTo(0);
+      };
 
-        cleanups.push(() => {
-          magneticButton.removeEventListener("mousemove", onMagneticMove);
-          magneticButton.removeEventListener("mouseleave", onMagneticLeave);
-          xTo.tween.kill();
-          yTo.tween.kill();
-        });
-      }
-
-      const pills = section.querySelectorAll<HTMLElement>(".contact-pill");
-
-      pills.forEach((pill) => {
-        const text = pill.querySelector<HTMLElement>(".contact-pill-text");
-        if (!text) {
-          return;
-        }
-
-        const xTo = gsap.quickTo(text, "x", {
-          duration: 0.3,
-          ease: "power2.out",
-        }) as QuickToFn;
-
-        const yTo = gsap.quickTo(text, "y", {
-          duration: 0.3,
-          ease: "power2.out",
-        }) as QuickToFn;
-
-        const onPillMove = (event: MouseEvent) => {
-          const rect = pill.getBoundingClientRect();
-          const offsetX = ((event.clientX - rect.left) / rect.width - 0.5) * 16;
-          const offsetY = ((event.clientY - rect.top) / rect.height - 0.5) * 8;
-          xTo(clamp(offsetX, -8, 8));
-          yTo(clamp(offsetY, -4, 4));
-        };
-
-        const onPillLeave = () => {
-          xTo(0);
-          yTo(0);
-        };
-
-        pill.addEventListener("mousemove", onPillMove);
-        pill.addEventListener("mouseleave", onPillLeave);
-
-        cleanups.push(() => {
-          pill.removeEventListener("mousemove", onPillMove);
-          pill.removeEventListener("mouseleave", onPillLeave);
-          xTo.tween.kill();
-          yTo.tween.kill();
-        });
-      });
+      magneticButton.addEventListener("mousemove", onMagneticMove);
+      magneticButton.addEventListener("mouseleave", onMagneticLeave);
 
       return () => {
-        cleanups.forEach((cleanup) => cleanup());
+        magneticButton.removeEventListener("mousemove", onMagneticMove);
+        magneticButton.removeEventListener("mouseleave", onMagneticLeave);
+        xTo.tween.kill();
+        yTo.tween.kill();
       };
     },
     { dependencies: [] }
@@ -251,9 +154,8 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
       ref={sectionRef}
       id="contact"
       data-header-dark
-      className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-[#141516] text-white"
+      className="relative flex min-h-screen w-full flex-col justify-between overflow-hidden bg-black text-white"
     >
-      {/* Linha elástica branca */}
       <div className="pointer-events-none absolute left-0 top-[-99px] z-10 h-[100px] w-full overflow-visible">
         <svg
           className="h-full w-full"
@@ -269,102 +171,109 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
         </svg>
       </div>
 
+      <svg
+        className="pointer-events-none absolute left-[-8%] top-1/2 h-[42vw] w-[18vw] -translate-y-1/2 text-white/80 max-md:hidden"
+        viewBox="0 0 80 200"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M72 12 C 18 70, 18 130, 72 188"
+          stroke="currentColor"
+          strokeWidth="0.7"
+        />
+      </svg>
+      <svg
+        className="pointer-events-none absolute right-[-8%] top-1/2 h-[42vw] w-[18vw] -translate-y-1/2 text-white/80 max-md:hidden"
+        viewBox="0 0 80 200"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M8 12 C 62 70, 62 130, 8 188"
+          stroke="currentColor"
+          strokeWidth="0.7"
+        />
+      </svg>
+
       <div
         ref={contentRef}
-        className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col justify-between px-6 pb-8 pt-32 md:px-16 lg:px-20"
+        className="mx-auto flex min-h-screen w-full max-w-[1400px] flex-1 flex-col justify-between px-6 pb-8 pt-28 md:px-16 lg:px-20"
       >
-        <div>
-          {/* Parte superior */}
-          <div className="flex flex-wrap items-center gap-5 md:gap-8">
-            <div className="h-[70px] w-[70px] shrink-0 overflow-hidden rounded-full bg-[#999d9e] ring-2 ring-[#999d9e]">
-              <img
-                src={profileImageSrc}
-                alt="Fredson Santana"
-                className="h-full w-full object-cover object-[center_17%]"
-                draggable={false}
-              />
-            </div>
-            <h2 className="text-4xl font-light leading-[1.1] tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-7xl">
-              Vamos trabalhar
-              <br />
-              juntos
-            </h2>
+        <div className="flex flex-1 flex-col items-center justify-center text-center">
+          <div className="mb-8 flex items-center gap-3 sm:mb-10">
+            <span className="relative flex h-3 w-3 items-center justify-center">
+              <span className="absolute inset-0 rounded-full border border-white/70" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#7CFF6B]" />
+            </span>
+            <p className="text-sm font-light tracking-[-0.02em] text-white sm:text-base md:text-lg">
+              Tem um projeto?
+            </p>
           </div>
 
-          {/* Linha divisória + botão magnético */}
-          <div className="relative my-12 w-full border-t border-zinc-700 md:my-20">
-            <Link
-              ref={magneticRef}
-              href="/contact"
-              className="contact-interactive relative mx-auto mt-8 flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border border-zinc-700 bg-[#141516] text-center will-change-transform max-md:mb-2 md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:h-44 md:w-44 md:-translate-y-1/2"
-              aria-label="Entre em contato"
-            >
-                <div
-                  className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"
-                  style={{ backgroundColor: ACCENT_MUTED }}
-                  aria-hidden="true"
-                />
-                <span className="relative z-10 text-sm font-light leading-tight tracking-[-0.02em] md:text-base">
-                  Entre em
-                  <br />
-                  contato
-                </span>
-            </Link>
+          <h2 className="sr-only">Vamos trabalhar juntos. Me contate.</h2>
+          <div
+            className="font-medium leading-none tracking-[-0.06em] text-white"
+            style={{ fontSize: "clamp(3.4rem, 13vw, 9.5rem)" }}
+          >
+            <ContactWordCycle />
           </div>
 
-          {/* Cápsulas de contato */}
-          <div className="flex flex-col gap-4 max-md:mt-6 sm:flex-row sm:flex-wrap">
-            <a
-              href="mailto:fredsonmachado02@gmail.com"
-              className="contact-interactive contact-pill relative w-full cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4 sm:w-auto"
+          <Link
+            ref={magneticRef}
+            href="/contact"
+            className="mt-10 inline-flex items-center justify-between gap-4 rounded-full bg-white py-2 pl-5 pr-2 text-sm font-medium tracking-[-0.02em] will-change-transform sm:mt-12 sm:py-2.5 sm:pl-6 sm:pr-2.5 sm:text-base"
+            style={{ color: "#111111" }}
+          >
+            <span style={{ color: "#111111" }}>Clique aqui</span>
+            <span
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black text-base leading-none"
+              style={{ color: "#ffffff" }}
+              aria-hidden="true"
             >
-              <div
-                className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"
-                style={{ backgroundColor: ACCENT_MUTED }}
-                aria-hidden="true"
-              />
-              <span className="contact-pill-text relative z-10 block text-sm font-light md:text-base">
-                fredsonmachado02@gmail.com
-              </span>
-            </a>
-
-            <a
-              href="tel:+5571991407870"
-              className="contact-interactive contact-pill relative w-full cursor-pointer overflow-hidden rounded-full border border-zinc-700 px-8 py-4 sm:w-auto"
-            >
-              <div
-                className="contact-fill-bg pointer-events-none absolute inset-0 z-0 rounded-full"
-                style={{ backgroundColor: ACCENT_MUTED }}
-                aria-hidden="true"
-              />
-              <span className="contact-pill-text relative z-10 block text-sm font-light md:text-base">
-                +55 71 99140-7870
-              </span>
-            </a>
-          </div>
+              +
+            </span>
+          </Link>
         </div>
 
-        <footer className="mt-16 flex flex-col gap-8 border-t border-white/10 pt-10 md:mt-24 md:flex-row md:items-end md:justify-between">
-          <nav aria-label="Social links">
-            <ul className="flex flex-wrap gap-x-8 gap-y-3">
-              {socialLinks.map((link) => (
-                <li key={link.id}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-light tracking-[-0.02em] text-white/70 transition-colors duration-300 hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <footer className="mt-16 border-t border-white/10 pt-8 sm:mt-20">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <nav aria-label="Social links">
+              <ul className="flex flex-wrap gap-x-8 gap-y-3">
+                {socialLinks.map((link) => (
+                  <li key={link.id}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-light tracking-[-0.02em] text-white/70 transition-colors duration-300 hover:text-white"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          <p className="text-sm font-light tracking-[-0.02em] text-white/45">
-            © {new Date().getFullYear()} Fredson Santana. All rights reserved.
-          </p>
+            <p className="text-sm font-light tracking-[-0.02em] text-white/45">
+              © {new Date().getFullYear()} Fredson Santana
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-2 text-sm font-light tracking-[-0.02em] text-white/55 sm:mt-8 sm:flex-row sm:gap-10">
+            <a
+              href="mailto:fredsonmachado02@gmail.com"
+              className="transition-colors hover:text-white"
+            >
+              fredsonmachado02@gmail.com
+            </a>
+            <a
+              href="tel:+5571991407870"
+              className="transition-colors hover:text-white"
+            >
+              +55 71 99140-7870
+            </a>
+          </div>
         </footer>
       </div>
     </section>
