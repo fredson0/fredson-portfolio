@@ -6,7 +6,7 @@ import { useLenis } from "lenis/react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { prefersReducedMotion } from "@/lib/page-transition";
 
-const NAME = "fredson";
+const NAME = "Fredson";
 
 /** Resets on F5; survives client-side navigations so the intro only plays on real loads of `/`. */
 let landingIntroPlayed = false;
