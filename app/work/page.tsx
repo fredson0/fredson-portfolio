@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
-import ProjectListItem from "@/components/work/ProjectListItem";
-import { projects } from "@/lib/projects";
+import ProjectHoverList from "@/components/work/ProjectHoverList";
 
 export const metadata: Metadata = {
   title: "Trabalho — Fredson Santana",
@@ -24,11 +23,10 @@ export default function WorkPage() {
             Projetos reais e estudos selecionados — do conceito à entrega.
           </p>
 
-          <ul className="mt-8 md:mt-16 md:border-t md:border-black/10">
-            {projects.map((project) => (
-              <ProjectListItem key={project.id} project={project} variant="page" />
-            ))}
-          </ul>
+          <ProjectHoverList
+            variant="page"
+            listClassName="mt-8 md:mt-16 md:border-t md:border-black/10"
+          />
         </div>
       </section>
     </main>

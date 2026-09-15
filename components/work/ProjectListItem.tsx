@@ -51,13 +51,11 @@ export default function ProjectListItem({
             </span>
           </div>
         ) : (
-          <div
-            className="hidden w-full items-center justify-between border-b border-black/10 py-10 transition-colors hover:bg-black/[0.02] md:flex md:py-12"
-          >
-            <span className="text-2xl font-light tracking-[-0.02em] transition-transform duration-300 group-hover:translate-x-1 sm:text-3xl md:text-4xl lg:text-5xl">
+          <div className="project-row hidden w-full cursor-pointer items-center justify-between border-b border-black/10 py-10 md:flex md:py-12">
+            <span className="project-title inline-block text-2xl font-light tracking-[-0.02em] sm:text-3xl md:text-4xl lg:text-5xl">
               {project.title}
             </span>
-            <span className="text-right text-sm font-light tracking-[-0.02em] text-black/60 sm:text-base md:text-lg">
+            <span className="project-category inline-block text-right text-sm font-light tracking-[-0.02em] text-black/60 sm:text-base md:text-lg">
               {project.category}
             </span>
           </div>
