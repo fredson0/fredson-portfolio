@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { prefersReducedMotion } from "@/lib/page-transition";
 
 const headlineLines = [
@@ -84,23 +84,67 @@ export default function About() {
       const lines = section.querySelectorAll<HTMLElement>(".about-reveal-line");
 
       if (!prefersReducedMotion() && words.length > 0) {
-        gsap.fromTo(
-          words,
-          { yPercent: 115 },
-          {
-            yPercent: 0,
-            ease: "none",
-            stagger: 0.045,
-            scrollTrigger: {
-              trigger: headline,
-              scroller: document.documentElement,
-              start: "top 82%",
-              end: "top 38%",
-              scrub: 0.55,
-              invalidateOnRefresh: true,
-            },
+        let headlineVisible = false;
+
+        const headlineInView = () => {
+          const rect = headline.getBoundingClientRect();
+          const vh = window.innerHeight;
+          return rect.top < vh * 0.82 && rect.bottom > vh * 0.12;
+        };
+
+        const showHeadline = (immediate = false) => {
+          if (headlineVisible && !immediate) return;
+          headlineVisible = true;
+          gsap.killTweensOf(words);
+          if (immediate) {
+            gsap.set(words, { yPercent: 0 });
+            return;
           }
-        );
+          gsap.to(words, {
+            yPercent: 0,
+            duration: 0.85,
+            ease: "power3.out",
+            stagger: 0.045,
+            overwrite: true,
+          });
+        };
+
+        const hideHeadline = (immediate = false) => {
+          if (!headlineVisible && !immediate) return;
+          headlineVisible = false;
+          gsap.killTweensOf(words);
+          if (immediate) {
+            gsap.set(words, { yPercent: 115 });
+            return;
+          }
+          gsap.to(words, {
+            yPercent: 115,
+            duration: 0.7,
+            ease: "power3.in",
+            stagger: { each: 0.03, from: "end" },
+            overwrite: true,
+          });
+        };
+
+        gsap.set(words, { yPercent: 115 });
+
+        ScrollTrigger.create({
+          trigger: headline,
+          scroller: document.documentElement,
+          start: "top 82%",
+          end: "bottom 12%",
+          onEnter: () => showHeadline(),
+          onEnterBack: () => showHeadline(),
+          onLeaveBack: () => hideHeadline(),
+          onRefresh: () => {
+            if (headlineInView()) showHeadline(true);
+            else hideHeadline(true);
+          },
+        });
+
+        if (headlineInView()) {
+          showHeadline(true);
+        }
       }
 
       gsap.fromTo(
@@ -110,14 +154,13 @@ export default function About() {
           yPercent: 0,
           opacity: 1,
           duration: 0.95,
-          ease: "none",
+          ease: "power3.out",
           stagger: 0.14,
           scrollTrigger: {
             trigger: section,
             scroller: document.documentElement,
             start: "top 78%",
-            end: "bottom 20%",
-            toggleActions: "play none none reset",
+            toggleActions: "play reverse play reverse",
           },
         }
       );

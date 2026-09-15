@@ -45,6 +45,7 @@ export default function LandingIntro({ children }: { children: React.ReactNode }
         if (contentRef.current) {
           contentRef.current.style.willChange = "auto";
         }
+        requestAnimationFrame(() => ScrollTrigger.refresh());
         return;
       }
 
