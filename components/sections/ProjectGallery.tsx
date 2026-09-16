@@ -135,7 +135,7 @@ function GalleryCardMedia({ media, title }: { media: GalleryMedia; title: string
 
 function GalleryCardItem({ card }: { card: GalleryCard }) {
   return (
-    <article className="w-1/4 shrink-0 p-[1.25vw]">
+    <article className="w-1/2 shrink-0 p-[2.5vw] md:w-1/4 md:p-[1.25vw]">
       <div
         className="relative flex aspect-[4/3] items-center justify-center overflow-hidden"
         style={{ backgroundColor: card.surface }}
@@ -161,7 +161,7 @@ function GalleryRow({
     <div className="w-full overflow-hidden">
       <div
         ref={rowRef}
-        className={`relative left-[-10vw] flex w-[120vw] will-change-transform ${className}`}
+        className={`relative flex w-full flex-wrap will-change-transform md:left-[-10vw] md:w-[120vw] md:flex-nowrap ${className}`}
       >
         {cards.map((card) => (
           <GalleryCardItem key={card.id} card={card} />
@@ -219,7 +219,10 @@ export default function ProjectGallery() {
       1,
       traveled / (window.innerHeight + container.offsetHeight)
     );
-    const maxShift = Math.min(67, window.innerWidth * 0.042);
+    const isMobile = window.innerWidth < 768;
+    const maxShift = isMobile
+      ? Math.min(36, window.innerWidth * 0.08)
+      : Math.min(67, window.innerWidth * 0.042);
     const x = (progress - 0.5) * 2 * maxShift;
 
     setOne(-x);

@@ -7,12 +7,8 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { prefersReducedMotion } from "@/lib/page-transition";
 
-const headlineLines = [
-  "Construindo soluções digitais de alto impacto",
-  "na era moderna. Juntos vamos desenhar",
-  "sistemas robustos, sem enrolação e",
-  "sempre na vanguarda da tecnologia.",
-];
+const headlineText =
+  "Construindo soluções digitais de alto impacto na era moderna. Juntos vamos desenhar sistemas robustos, sem enrolação e sempre na vanguarda da tecnologia.";
 
 const secondaryLines = [
   "A combinação da minha paixão por",
@@ -23,7 +19,7 @@ const secondaryLines = [
 ];
 
 const headlineTypography =
-  "text-[1.65rem] font-light leading-[1.2] tracking-[-0.02em] sm:text-3xl md:text-4xl lg:text-[2.65rem] xl:text-5xl";
+  "text-[1.65rem] font-light leading-[1.22] tracking-[-0.02em] sm:text-3xl md:text-[2.15rem] lg:text-[2.35rem] xl:text-5xl";
 
 const secondaryTypography =
   "text-base font-light leading-[1.2] tracking-[-0.02em] text-black/80 sm:text-lg";
@@ -205,14 +201,8 @@ export default function About() {
     >
       <div className="mx-auto flex max-w-[1680px] flex-col gap-14 lg:flex-row lg:items-start lg:justify-between lg:gap-10 xl:gap-16">
         <div className="w-full lg:w-[68%] lg:max-w-[62rem]">
-          <div ref={headlineRef} className="flex flex-col">
-            {headlineLines.map((line) => (
-              <HeadlineLine
-                key={line}
-                text={line}
-                className={headlineTypography}
-              />
-            ))}
+          <div ref={headlineRef}>
+            <HeadlineLine text={headlineText} className={headlineTypography} />
           </div>
         </div>
 
