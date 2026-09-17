@@ -48,12 +48,41 @@ function LenisGsapSync() {
       scroller: root,
     });
 
+    let lastTick = 0;
+
     const onTick = (time: number) => {
+      if (document.hidden) {
+        lastTick = time;
+        return;
+      }
+
+      // Aba voltando: o ticker acumula um delta enorme e o pin da About
+      // rebobina o nome. Só sincroniza o relógio, sem avançar o scroll.
+      if (lastTick && time - lastTick > 0.25) {
+        lastTick = time;
+        return;
+      }
+
+      lastTick = time;
       lenis.raf(time * 1000);
     };
 
     gsap.ticker.add(onTick);
     gsap.ticker.lagSmoothing(0);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        return;
+      }
+
+      lastTick = 0;
+      lenis.time = 0;
+      window.requestAnimationFrame(() => {
+        ScrollTrigger.update();
+      });
+    };
+
+    document.addEventListener("visibilitychange", onVisibility);
 
     const onRefresh = () => {
       lenis.resize();
@@ -63,6 +92,7 @@ function LenisGsapSync() {
     ScrollTrigger.refresh();
 
     return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
       lenis.off("scroll", onLenisScroll);
       gsap.ticker.remove(onTick);
       ScrollTrigger.removeEventListener("refresh", onRefresh);

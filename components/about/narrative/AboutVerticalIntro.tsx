@@ -28,9 +28,6 @@ export default function AboutVerticalIntro() {
 
     if (textScale) {
       gsap.set(textScale, {
-        scaleY: 1,
-        rotateX: 0,
-        opacity: 1,
         clearProps: "filter",
       });
     }
@@ -110,6 +107,9 @@ export default function AboutVerticalIntro() {
       ).matches;
 
       const setup = () => {
+        if (document.hidden) {
+          return;
+        }
         fitVerticalTitle();
         ScrollTrigger.refresh();
       };
@@ -120,8 +120,37 @@ export default function AboutVerticalIntro() {
         setup();
       }
 
+      let lastPinWidth = pin.clientWidth;
+      let lastPinHeight = pin.clientHeight;
+      let resizeRaf = 0;
+
       const resizeObserver = new ResizeObserver(() => {
-        window.requestAnimationFrame(() => {
+        if (document.hidden) {
+          return;
+        }
+
+        const width = pin.clientWidth;
+        const height = pin.clientHeight;
+
+        if (
+          Math.abs(width - lastPinWidth) < 2 &&
+          Math.abs(height - lastPinHeight) < 2
+        ) {
+          return;
+        }
+
+        lastPinWidth = width;
+        lastPinHeight = height;
+
+        if (resizeRaf) {
+          window.cancelAnimationFrame(resizeRaf);
+        }
+
+        resizeRaf = window.requestAnimationFrame(() => {
+          resizeRaf = 0;
+          if (document.hidden) {
+            return;
+          }
           fitVerticalTitle();
           ScrollTrigger.refresh();
         });
@@ -129,10 +158,28 @@ export default function AboutVerticalIntro() {
 
       resizeObserver.observe(pin);
 
+      const onVisibility = () => {
+        if (document.hidden) {
+          return;
+        }
+
+        window.requestAnimationFrame(() => {
+          ScrollTrigger.update();
+        });
+      };
+
+      document.addEventListener("visibilitychange", onVisibility);
+
       if (reducedMotion) {
         gsap.set(text, { opacity: 0, visibility: "hidden" });
         gsap.set(line, { scaleY: 1, opacity: 1 });
-        return () => resizeObserver.disconnect();
+        return () => {
+          if (resizeRaf) {
+            window.cancelAnimationFrame(resizeRaf);
+          }
+          document.removeEventListener("visibilitychange", onVisibility);
+          resizeObserver.disconnect();
+        };
       }
 
       gsap.set(pin, { perspective: 1400 });
@@ -183,6 +230,10 @@ export default function AboutVerticalIntro() {
       });
 
       return () => {
+        if (resizeRaf) {
+          window.cancelAnimationFrame(resizeRaf);
+        }
+        document.removeEventListener("visibilitychange", onVisibility);
         resizeObserver.disconnect();
         trigger.kill();
       };
