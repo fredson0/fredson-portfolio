@@ -49,14 +49,4 @@ export const projects: Project[] = [
     href: "#",
     hoverBg: "#d6cfc4",
   },
-  {
-    id: "nexus",
-    title: "NEXUS",
-    category: "Systems Architecture",
-    year: "2023",
-    imageSrc:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&h=1100&fit=crop&q=80",
-    href: "#",
-    hoverBg: "#1c1d20",
-  },
 ];
