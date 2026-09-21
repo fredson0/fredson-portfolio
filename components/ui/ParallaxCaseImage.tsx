@@ -21,9 +21,9 @@ export default function ParallaxCaseImage({ src, alt }: ParallaxCaseImageProps) 
 
       gsap.fromTo(
         media,
-        { yPercent: 8 },
+        { yPercent: 4 },
         {
-          yPercent: -16,
+          yPercent: -8,
           ease: "none",
           immediateRender: false,
           scrollTrigger: {
@@ -41,18 +41,21 @@ export default function ParallaxCaseImage({ src, alt }: ParallaxCaseImageProps) 
   );
 
   return (
-    <div
-      ref={frameRef}
-      className="relative aspect-[5/3] w-full overflow-hidden sm:aspect-[16/10]"
-    >
+    <div ref={frameRef} className="relative overflow-hidden">
+      <img
+        src={src}
+        alt=""
+        aria-hidden="true"
+        className="invisible block h-auto w-full"
+      />
       <div
         ref={mediaRef}
-        className="absolute inset-x-0 -top-[12%] h-[130%] w-full will-change-transform"
+        className="absolute inset-0 will-change-transform"
       >
         <img
           src={src}
           alt={alt}
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full origin-center scale-[1.12] object-cover object-center"
         />
       </div>
     </div>
