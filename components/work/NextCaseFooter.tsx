@@ -122,9 +122,10 @@ export default function NextCaseFooter({
 
           <Link
             href="/work"
-            className="mt-10 inline-flex items-center justify-center rounded-full border border-white/35 px-8 py-3 text-sm font-light tracking-[-0.02em] text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-[#1c1d20] max-md:w-full md:mt-12 sm:px-10 sm:py-3.5 sm:text-base md:w-auto"
+            className="btn-pill group relative mt-10 inline-flex w-full items-center justify-center overflow-hidden rounded-full border border-white/35 px-8 py-3 text-sm font-light tracking-[-0.02em] text-white transition-[border-color] duration-500 hover:border-transparent focus-visible:border-transparent md:mt-12 sm:px-10 sm:py-3.5 sm:text-base md:w-auto"
           >
-            All work
+            <span className="btn-pill-fill" aria-hidden="true" />
+            <span className="relative z-10">All work</span>
           </Link>
         </div>
 
