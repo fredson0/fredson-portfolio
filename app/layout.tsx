@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Dancing_Script, Inter } from "next/font/google";
 import "./globals.css";
 import AppHeader from "@/components/layout/AppHeader";
@@ -8,7 +8,6 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
 });
 
 const dancingScript = Dancing_Script({
@@ -27,6 +26,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,11 +42,13 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${inter.variable} ${dancingScript.variable} h-full antialiased`}
     >
-      <body className={`${inter.className} min-h-full flex flex-col font-sans`}>
+      <body className={`${inter.className} min-h-full font-sans`}>
         <SmoothScrollProvider>
           <PageTransitionProvider>
             <AppHeader />
-            {children}
+            <div id="site-root" className="relative min-h-full">
+              {children}
+            </div>
           </PageTransitionProvider>
         </SmoothScrollProvider>
       </body>

@@ -58,8 +58,11 @@ export default function LandingIntro({ children }: { children: React.ReactNode }
       if (!overlay || !nameWrap || !fill || !wait || !hello || !content) return;
 
       lenisRef.current?.stop();
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
+      const siteRoot = document.getElementById("site-root");
+      if (siteRoot) {
+        siteRoot.style.overflow = "hidden";
+        siteRoot.style.height = "100svh";
+      }
 
       gsap.set(overlay, { yPercent: 0 });
       gsap.set(content, { y: 48, willChange: "transform" });
@@ -71,8 +74,11 @@ export default function LandingIntro({ children }: { children: React.ReactNode }
       const tl = gsap.timeline({
         onComplete: () => {
           landingIntroPlayed = true;
-          document.documentElement.style.overflow = "";
-          document.body.style.overflow = "";
+          const siteRoot = document.getElementById("site-root");
+          if (siteRoot) {
+            siteRoot.style.overflow = "";
+            siteRoot.style.height = "";
+          }
           gsap.set(content, { clearProps: "transform" });
           content.style.willChange = "auto";
           lenisRef.current?.start();

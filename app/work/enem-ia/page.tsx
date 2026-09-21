@@ -20,7 +20,7 @@ const NEXT_PROJECT =
 export default function EnemIaPage() {
   return (
     <main className="min-h-screen bg-white text-black">
-      <section className="px-6 pb-0 pt-28 sm:px-10 md:pt-36 lg:px-16">
+      <section className="px-6 pb-16 pt-28 sm:px-10 sm:pb-20 md:pt-36 lg:px-16 lg:pb-24">
         <div className="mx-auto max-w-[1400px]">
           <h1 className="text-5xl font-light tracking-[-0.03em] sm:text-6xl md:text-7xl lg:text-8xl">
             ENEM+IA
@@ -56,28 +56,28 @@ export default function EnemIaPage() {
         </div>
       </section>
 
-      <section className="relative overflow-visible bg-[#f7f2e9] px-6 pb-24 pt-0 sm:px-10 sm:pb-32 lg:px-16 lg:pb-40">
-        <div className="relative mx-auto -mt-14 max-w-[1400px] sm:-mt-16">
+      <section className="relative overflow-visible bg-[#f7f2e9] pb-24 pt-0 sm:pb-32 lg:pb-40">
+        <div className="relative md:mx-auto md:max-w-[1400px] md:px-10 lg:px-16">
           <LiveSiteOrb href={LIVE_SITE_URL} />
           <ParallaxCaseImage
             src="/projects/enem-ia/project.png"
             alt="ENEM+IA — preview do projeto"
           />
+        </div>
 
-          <div className="mt-16 sm:mt-20 lg:mt-28">
-            <LaptopFrame>
-              <video
-                className="absolute inset-0 h-full w-full object-cover"
-                src="/projects/enem-ia/hero-1.webm"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label="ENEM+IA — vídeo do tutor IA"
-              />
-            </LaptopFrame>
-          </div>
+        <div className="mx-auto mt-16 max-w-[1400px] px-6 sm:mt-20 sm:px-10 lg:mt-28 lg:px-16">
+          <LaptopFrame>
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src="/projects/enem-ia/hero-1.webm"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="ENEM+IA — vídeo do tutor IA"
+            />
+          </LaptopFrame>
 
           <div className="mt-16 overflow-hidden sm:mt-20 lg:mt-28">
             <video

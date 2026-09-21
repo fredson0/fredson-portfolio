@@ -110,6 +110,7 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
     () => {
       const magneticButton = magneticRef.current;
       if (!magneticButton) return;
+      if (window.matchMedia("(pointer: coarse)").matches) return;
 
       const xTo = gsap.quickTo(magneticButton, "x", {
         duration: 0.6,

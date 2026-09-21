@@ -105,22 +105,17 @@ function OverlayNavLink({
   const linkRef = useMagnetic<HTMLAnchorElement>(0.22);
 
   return (
-    <li className="menu-overlay-link overflow-hidden">
+    <li className="menu-overlay-link w-full overflow-hidden">
       <Link
         ref={linkRef}
         href={href}
         onClick={onClose}
-        className="group inline-flex items-center gap-4 will-change-transform"
+        className={`menu-overlay-item group relative flex w-full items-center will-change-transform ${
+          isActive ? "is-active" : ""
+        }`}
       >
-        <span
-          className={`h-2 w-2 rounded-full bg-white transition-opacity duration-300 ${
-            isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-          }`}
-          aria-hidden="true"
-        />
-        <span className="text-3xl font-light tracking-[-0.03em] sm:text-4xl md:text-5xl lg:text-6xl">
-          {label}
-        </span>
+        <span className="menu-overlay-item-label">{label}</span>
+        <span className="menu-overlay-item-dot" aria-hidden="true" />
       </Link>
     </li>
   );
@@ -130,10 +125,12 @@ function MenuOverlay({
   open,
   onClose,
   active,
+  pathname,
 }: {
   open: boolean;
   onClose: () => void;
   active?: ActiveNav;
+  pathname: string;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -270,59 +267,60 @@ function MenuOverlay({
     >
       <button
         type="button"
-        className="absolute inset-0 bg-black/35"
+        className="absolute inset-0 hidden bg-black/35 md:block"
         aria-label="Fechar menu"
         onClick={onClose}
       />
 
       <div
         ref={panelRef}
-        className="relative z-10 flex h-[min(58vh,660px)] min-h-[440px] w-full flex-col overflow-hidden bg-[#141516] shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+        className="menu-overlay-panel relative z-10 flex h-[100dvh] min-h-full w-full flex-col overflow-hidden md:h-[min(72vh,760px)] md:min-h-[560px] md:shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
       >
-        <div className="relative flex h-full flex-col px-6 py-6 sm:px-10 sm:py-8 lg:px-16">
-          <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col justify-between pt-4 pb-6 sm:pt-6">
-            <div>
-              <p
-                ref={labelRef}
-                className="text-xs font-light uppercase tracking-tight text-white/45"
-              >
-                Navegação
-              </p>
-              <div className="mt-4 border-t border-white/15" />
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fechar menu"
+          className="menu-overlay-close"
+        >
+          <span className="menu-overlay-close-icon" aria-hidden="true" />
+        </button>
 
-              <ul
-                ref={linksRef}
-                className="menu-parallax-links mt-8 flex flex-col gap-1 will-change-transform sm:mt-10 sm:gap-2"
-              >
-                {overlayLinks.map((link) => {
-                  const isActive =
-                    (link.href === "/work" && active === "work") ||
-                    (link.href === "/contact" && active === "contact") ||
-                    (link.href === "/about" && active === "about");
+        <div className="menu-overlay-inner">
+          <div className="menu-overlay-nav">
+            <p ref={labelRef} className="menu-overlay-kicker">
+              Navegação
+            </p>
+            <div className="menu-overlay-stripe" />
 
-                  return (
-                    <OverlayNavLink
-                      key={link.href}
-                      href={link.href}
-                      label={link.label}
-                      isActive={isActive}
-                      onClose={onClose}
-                    />
-                  );
-                })}
-              </ul>
-            </div>
+            <ul ref={linksRef} className="menu-overlay-links menu-parallax-links">
+              {overlayLinks.map((link) => {
+                const isActive =
+                  (link.href === "/" && pathname === "/") ||
+                  (link.href === "/work" && active === "work") ||
+                  (link.href === "/contact" && active === "contact") ||
+                  (link.href === "/about" && active === "about");
 
-            <div ref={socialsRef} className="menu-parallax-socials will-change-transform">
-              <p className="text-xs font-light uppercase tracking-tight text-white/45">
-                Redes
-              </p>
-              <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
-                {socialLinks.map((link) => (
-                  <OverlaySocialLink key={link.label} href={link.href} label={link.label} />
-                ))}
-              </ul>
-            </div>
+                return (
+                  <OverlayNavLink
+                    key={link.href}
+                    href={link.href}
+                    label={link.label}
+                    isActive={isActive}
+                    onClose={onClose}
+                  />
+                );
+              })}
+            </ul>
+          </div>
+
+          <div ref={socialsRef} className="menu-overlay-socials menu-parallax-socials">
+            <div className="menu-overlay-stripe" />
+            <p className="menu-overlay-kicker menu-overlay-socials-kicker">Redes</p>
+            <ul className="menu-overlay-social-list">
+              {socialLinks.map((link) => (
+                <OverlaySocialLink key={link.label} href={link.href} label={link.label} />
+              ))}
+            </ul>
           </div>
         </div>
       </div>
@@ -340,7 +338,7 @@ function OverlaySocialLink({ href, label }: { href: string; label: string }) {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block text-sm font-light tracking-tight text-white/80 transition-colors hover:text-white will-change-transform sm:text-base"
+        className="menu-overlay-social-link will-change-transform"
       >
         {label}
       </a>
@@ -359,6 +357,7 @@ export default function SiteHeader({
   const [isMounted, setIsMounted] = useState(false);
   const [overDarkSection, setOverDarkSection] = useState(false);
   const [aboutIntroVisible, setAboutIntroVisible] = useState(false);
+  const [compactHeader, setCompactHeader] = useState(false);
 
   const brandShellRef = useRef<HTMLDivElement>(null);
   const brandRef = useRef<HTMLAnchorElement>(null);
@@ -370,6 +369,14 @@ export default function SiteHeader({
 
   useLayoutEffect(() => {
     setIsMounted(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const sync = () => setCompactHeader(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
   }, []);
 
   useLayoutEffect(() => {
@@ -396,6 +403,12 @@ export default function SiteHeader({
 
     updateScrolled(lenis ? lenis.scroll : window.scrollY);
 
+    const onWindowScroll = () => {
+      updateScrolled(window.scrollY);
+    };
+
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
+
     if (lenis) {
       const onLenisScroll = ({ scroll }: { scroll: number }) => {
         updateScrolled(scroll);
@@ -405,14 +418,10 @@ export default function SiteHeader({
 
       return () => {
         lenis.off("scroll", onLenisScroll);
+        window.removeEventListener("scroll", onWindowScroll);
       };
     }
 
-    const onWindowScroll = () => {
-      updateScrolled(window.scrollY);
-    };
-
-    window.addEventListener("scroll", onWindowScroll, { passive: true });
     return () => window.removeEventListener("scroll", onWindowScroll);
   }, [lenis, pathname]);
 
@@ -437,17 +446,18 @@ export default function SiteHeader({
 
     probeDark();
 
+    window.addEventListener("scroll", probeDark, { passive: true });
+    window.addEventListener("resize", probeDark);
+
     if (lenis) {
       lenis.on("scroll", probeDark);
-      window.addEventListener("resize", probeDark);
       return () => {
         lenis.off("scroll", probeDark);
+        window.removeEventListener("scroll", probeDark);
         window.removeEventListener("resize", probeDark);
       };
     }
 
-    window.addEventListener("scroll", probeDark, { passive: true });
-    window.addEventListener("resize", probeDark);
     return () => {
       window.removeEventListener("scroll", probeDark);
       window.removeEventListener("resize", probeDark);
@@ -508,52 +518,38 @@ export default function SiteHeader({
     pathname === "/about" ? scrolled && !aboutIntroVisible : scrolled;
 
   const showInlineNav = !headerScrolled && !menuOpen;
-  const showBall = headerScrolled;
-  const showBrand = !headerScrolled && !menuOpen;
+  const showBall = headerScrolled && !compactHeader;
+  const showMobileMenuLabel = compactHeader && !headerScrolled && !menuOpen;
+  const showMobileBall = compactHeader && (headerScrolled || menuOpen);
+  const showBrand = !menuOpen && !headerScrolled;
 
   useGSAP(
     () => {
       const shell = brandShellRef.current;
-      if (!shell) {
+      if (!shell || !isMounted) {
         return;
       }
 
-      if (showBrand) {
-        gsap.killTweensOf(shell);
-        gsap.set(shell, { pointerEvents: "auto" });
-        gsap.fromTo(
-          shell,
-          { opacity: 0, y: -8 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.45,
-            ease: "power3.out",
-            overwrite: true,
-          }
-        );
-      } else {
-        gsap.killTweensOf(shell);
+      gsap.killTweensOf(shell);
 
-        const opacity = gsap.getProperty(shell, "opacity") as number;
-        if (opacity > 0.35) {
-          gsap.to(shell, {
-            opacity: 0,
-            y: -8,
-            duration: 0.35,
-            ease: "power3.in",
-            overwrite: true,
-            onComplete: () => {
-              gsap.set(shell, { pointerEvents: "none" });
-            },
-          });
-        } else {
-          gsap.set(shell, {
-            opacity: 0,
-            y: -8,
-            pointerEvents: "none",
-          });
-        }
+      if (showBrand) {
+        gsap.set(shell, { pointerEvents: "auto" });
+        gsap.to(shell, {
+          opacity: 1,
+          duration: 0.35,
+          ease: "power3.out",
+          overwrite: true,
+        });
+      } else {
+        gsap.to(shell, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power3.in",
+          overwrite: true,
+          onComplete: () => {
+            gsap.set(shell, { pointerEvents: "none" });
+          },
+        });
       }
     },
     { dependencies: [showBrand, isMounted] }
@@ -614,99 +610,122 @@ export default function SiteHeader({
   };
 
   const headerMarkup = (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-[9999]">
-      <div
-        ref={brandShellRef}
-        className="pointer-events-auto fixed left-6 top-6 will-change-transform max-md:max-w-[calc(100%-5.5rem)] sm:left-10 lg:left-16"
-        style={{ pointerEvents: "none" }}
-      >
-        <Link
-          ref={brandRef}
-          href="/"
-          className="inline-block text-sm font-light tracking-tight transition-opacity max-md:text-xs hover:opacity-70"
-          style={{ color: useLightStyle ? "#ffffff" : "#000000" }}
+    <header className="pointer-events-none fixed left-0 top-0 z-[9999] w-full min-w-0 max-w-full pt-[max(1.25rem,env(safe-area-inset-top))] pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] sm:pl-10 sm:pr-10 lg:pl-16 lg:pr-16">
+      <div className="flex min-w-0 items-start justify-between">
+        <div
+          ref={brandShellRef}
+          className="pointer-events-auto max-md:max-w-[calc(100%-6rem)]"
         >
-          Fredson Santana
-        </Link>
-      </div>
+          <Link
+            ref={brandRef}
+            href="/"
+            className="inline-block text-sm font-light tracking-tight transition-opacity hover:opacity-70"
+            style={{ color: useLightStyle ? "#ffffff" : "#000000" }}
+          >
+            Fredson Santana
+          </Link>
+        </div>
 
-      <div
-        className={`pointer-events-auto fixed right-6 top-6 md:hidden ${
-          menuOpen ? "z-[10060]" : ""
-        }`}
-      >
-        <button
-          type="button"
-          onClick={menuOpen ? () => setMenuOpen(false) : openMenu}
-          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={menuOpen}
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1c1d20] text-white"
+        <div
+          className={`pointer-events-auto relative flex min-h-[1.25rem] min-w-[4.5rem] items-center justify-end md:hidden ${
+            menuOpen ? "invisible" : ""
+          }`}
         >
-          {menuOpen ? (
-            <span className="text-2xl font-light leading-none" aria-hidden="true">
-              ×
-            </span>
-          ) : (
-            <span className="flex flex-col gap-2" aria-hidden="true">
-              <span className="block h-px w-5 bg-white/90" />
-              <span className="block h-px w-5 bg-white/90" />
-            </span>
-          )}
-        </button>
-      </div>
-
-      <div
-        className={`pointer-events-auto fixed right-6 top-6 hidden sm:right-10 lg:right-16 md:block ${
-          menuOpen ? "z-[10060]" : ""
-        }`}
-      >
-        <div className="relative flex h-[7.65rem] w-[7.65rem] items-center justify-end sm:h-[8.5rem] sm:w-[8.5rem]">
-          <nav
-            className={`absolute right-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-out ${
-              showInlineNav
-                ? "pointer-events-auto translate-y-[-50%] opacity-100"
-                : "pointer-events-none translate-y-[-40%] opacity-0"
+          <button
+            type="button"
+            onClick={openMenu}
+            aria-label="Abrir menu"
+            aria-expanded={menuOpen}
+            className={`flex items-center gap-2 text-sm tracking-tight transition-opacity duration-300 ${
+              showMobileMenuLabel
+                ? "opacity-100"
+                : "pointer-events-none opacity-0"
             }`}
-            aria-label="Navegação principal"
+            style={{ color: useLightStyle ? "#ffffff" : "#000000" }}
           >
-            <ul className="flex items-center gap-10 sm:gap-14">
-              {navLinks.map((link) => (
-                <HeaderNavLink
-                  key={link.id}
-                  href={link.href}
-                  label={link.label}
-                  isActive={active === link.id}
-                  onNavigate={() => setMenuOpen(false)}
-                  light={useLightStyle}
-                />
-              ))}
-            </ul>
-          </nav>
+            <span
+              className="block h-[0.42em] w-[0.42em] rounded-full"
+              style={{ backgroundColor: useLightStyle ? "#ffffff" : "#000000" }}
+              aria-hidden="true"
+            />
+            Menu
+          </button>
 
-          <div
-            ref={ballShellRef}
-            className="absolute right-0 top-0 flex h-[7.65rem] w-[7.65rem] origin-center items-center justify-center opacity-0 will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
-            style={{ pointerEvents: "none", transform: "scale(0.12)" }}
+          <button
+            type="button"
+            onClick={menuOpen ? () => setMenuOpen(false) : openMenu}
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={menuOpen}
+            className={`mobile-menu-ball absolute -right-2 -top-3 flex h-16 w-16 origin-center items-center justify-center rounded-full bg-[#1c1d20] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.225)] ${
+              showMobileBall ? "is-visible" : "pointer-events-none"
+            }`}
           >
-            <button
-              ref={ballRef}
-              type="button"
-              onClick={menuOpen ? () => setMenuOpen(false) : openMenu}
-              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-              aria-expanded={menuOpen}
-              className="relative z-10 flex h-[7.65rem] w-[7.65rem] shrink-0 items-center justify-center rounded-full bg-[#1c1d20] text-white will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
+            {menuOpen ? (
+              <span className="text-2xl font-light leading-none" aria-hidden="true">
+                ×
+              </span>
+            ) : (
+              <span className="relative block h-1 w-[1.15rem]" aria-hidden="true">
+                <span className="absolute inset-x-0 top-0 h-px bg-white" />
+                <span className="absolute inset-x-0 bottom-0 h-px bg-white" />
+              </span>
+            )}
+          </button>
+        </div>
+
+        <div
+          className={`pointer-events-auto hidden md:block ${
+            menuOpen ? "z-[10060]" : ""
+          }`}
+        >
+          <div className="relative flex h-[7.65rem] w-[7.65rem] items-center justify-end sm:h-[8.5rem] sm:w-[8.5rem]">
+            <nav
+              className={`absolute right-0 top-1/2 -translate-y-1/2 transition-all duration-300 ease-out ${
+                showInlineNav
+                  ? "pointer-events-auto translate-y-[-50%] opacity-100"
+                  : "pointer-events-none translate-y-[-40%] opacity-0"
+              }`}
+              aria-label="Navegação principal"
             >
-              {menuOpen ? (
-                <span className="text-3xl font-light leading-none" aria-hidden="true">
-                  ×
-                </span>
-              ) : (
-                <span className="flex flex-col gap-3" aria-hidden="true">
-                  <span className="block h-px w-8 bg-white/90 sm:w-9" />
-                  <span className="block h-px w-8 bg-white/90 sm:w-9" />
-                </span>
-              )}
-            </button>
+              <ul className="flex items-center gap-10 sm:gap-14">
+                {navLinks.map((link) => (
+                  <HeaderNavLink
+                    key={link.id}
+                    href={link.href}
+                    label={link.label}
+                    isActive={active === link.id}
+                    onNavigate={() => setMenuOpen(false)}
+                    light={useLightStyle}
+                  />
+                ))}
+              </ul>
+            </nav>
+
+            <div
+              ref={ballShellRef}
+              className="absolute right-0 top-0 flex h-[7.65rem] w-[7.65rem] origin-center items-center justify-center opacity-0 will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
+              style={{ pointerEvents: "none", transform: "scale(0.12)" }}
+            >
+              <button
+                ref={ballRef}
+                type="button"
+                onClick={menuOpen ? () => setMenuOpen(false) : openMenu}
+                aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+                aria-expanded={menuOpen}
+                className="relative z-10 flex h-[7.65rem] w-[7.65rem] shrink-0 items-center justify-center rounded-full bg-[#1c1d20] text-white will-change-transform sm:h-[8.5rem] sm:w-[8.5rem]"
+              >
+                {menuOpen ? (
+                  <span className="text-3xl font-light leading-none" aria-hidden="true">
+                    ×
+                  </span>
+                ) : (
+                  <span className="flex flex-col gap-3" aria-hidden="true">
+                    <span className="block h-px w-8 bg-white/90 sm:w-9" />
+                    <span className="block h-px w-8 bg-white/90 sm:w-9" />
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -715,7 +734,7 @@ export default function SiteHeader({
 
   return (
     <>
-      {isMounted ? createPortal(headerMarkup, document.body) : null}
+      {headerMarkup}
 
       {isMounted &&
         createPortal(
@@ -723,6 +742,7 @@ export default function SiteHeader({
             open={menuOpen}
             onClose={() => setMenuOpen(false)}
             active={active}
+            pathname={pathname}
           />,
           document.body
         )}

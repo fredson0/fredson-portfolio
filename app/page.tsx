@@ -10,7 +10,7 @@ import Projects from "@/components/sections/Projects";
 export default function Home() {
   return (
     <LandingIntro>
-      <div className="relative z-10">
+      <div className="relative z-10 overflow-x-clip">
         <Hero />
         <div className="relative bg-white">
           <About />

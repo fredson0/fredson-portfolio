@@ -5,6 +5,7 @@ import { useLenis } from "lenis/react";
 
 import { ACCENT_MUTED, DARK_BACKGROUND } from "@/lib/theme";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/page-transition";
 
 const marqueeText = "Full Stack · Web · Salvador · ";
 const marqueeRepeats = 6;
@@ -74,9 +75,50 @@ function DiagonalArrowIcon({ className }: { className?: string }) {
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const photoRef = useRef<HTMLDivElement | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
   const marqueeTweenRef = useRef<gsap.core.Tween | null>(null);
   const lastDirectionRef = useRef(1);
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      const photo = photoRef.current;
+      if (!section || !photo || prefersReducedMotion()) {
+        return;
+      }
+
+      const enableParallax = window.matchMedia("(min-width: 768px)").matches;
+      if (!enableParallax) {
+        gsap.set(photo, { yPercent: 0 });
+        return;
+      }
+
+      const tween = gsap.fromTo(
+        photo,
+        { yPercent: 4 },
+        {
+          yPercent: -12,
+          ease: "none",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: section,
+            scroller: document.documentElement,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+      };
+    },
+    { scope: sectionRef, dependencies: [] }
+  );
 
   useGSAP(
     () => {
@@ -127,22 +169,27 @@ export default function Hero() {
     <section
       ref={sectionRef}
       data-header-dark
-      className="relative z-10 min-h-[112vh] w-full text-white"
+      className="relative z-10 h-[100svh] min-h-[100svh] w-full overflow-hidden text-white md:h-[112vh] md:min-h-[112vh]"
       style={{ backgroundColor: DARK_BACKGROUND }}
     >
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] flex justify-center">
-        <img
-          src={profileImageSrc}
-          alt="Fredson Santana"
-          className="block h-auto w-auto max-h-[112vh] max-w-[min(62vw,900px)] object-contain object-bottom max-md:max-h-[132vh] max-md:max-w-[min(108vw,600px)]"
-          draggable={false}
-        />
+      <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
+        <div
+          ref={photoRef}
+          className="absolute inset-x-0 bottom-0 flex h-full items-end justify-center md:top-0 md:h-[120%] md:will-change-transform"
+        >
+          <img
+            src={profileImageSrc}
+            alt="Fredson Santana"
+            className="block h-auto w-[min(88vw,400px)] object-contain object-bottom md:h-full md:w-auto md:max-w-[min(62vw,900px)]"
+            draggable={false}
+          />
+        </div>
       </div>
 
-      <div className="relative h-svh min-h-screen w-full overflow-x-clip">
+      <div className="relative h-full min-h-full w-full overflow-x-clip">
 
       <div
-        className="absolute inset-x-0 bottom-5 z-30 flex items-end justify-between gap-8 px-6 md:hidden"
+        className="absolute inset-x-0 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-30 flex items-end justify-between gap-8 px-6 md:hidden"
       >
         <div className="min-w-0">
           <DiagonalArrowIcon className="mb-2.5 h-4 w-4 text-white/90" />
