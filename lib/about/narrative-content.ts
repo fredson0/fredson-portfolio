@@ -227,7 +227,7 @@ export const aboutArchitectureScene: NarrativeSceneContent = {
       surface: "card",
       layoutClassName:
         "left-[14%] top-[8%] z-40 aspect-[420/300] w-[52%] sm:w-[50%] md:left-[16%] md:top-[6%] md:w-[46%]",
-      imageClassName: "h-full w-full object-cover",
+      imageClassName: "h-full w-full object-contain bg-[#f4f4f5]",
       riseY: 95,
       duration: 0.82,
       delay: 0.04,
@@ -238,7 +238,7 @@ export const aboutArchitectureScene: NarrativeSceneContent = {
       surface: "card",
       layoutClassName:
         "left-[8%] top-[42%] z-50 aspect-[320/200] w-[44%] sm:w-[42%] md:left-[10%] md:top-[40%] md:w-[38%]",
-      imageClassName: "h-full w-full object-cover",
+      imageClassName: "h-full w-full object-contain bg-[#f4f4f5]",
       riseY: 165,
       duration: 1.05,
       delay: 0.14,
@@ -249,7 +249,7 @@ export const aboutArchitectureScene: NarrativeSceneContent = {
       surface: "card",
       layoutClassName:
         "left-[48%] top-[38%] z-[45] aspect-[360/280] w-[42%] sm:w-[40%] md:left-[50%] md:top-[36%] md:w-[36%]",
-      imageClassName: "h-full w-full object-cover",
+      imageClassName: "h-full w-full object-contain bg-[#f4f4f5]",
       riseY: 140,
       duration: 0.92,
       delay: 0.08,

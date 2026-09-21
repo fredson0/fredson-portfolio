@@ -1,17 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" fill="none">
-  <rect width="420" height="300" fill="#fafafa"/>
-  <text x="24" y="36" fill="#111" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600">Camadas  API de contato</text>
-  <rect x="72" y="56" width="276" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-  <text x="120" y="84" fill="#111" font-family="ui-monospace, monospace" font-size="14">POST /api/contact</text>
-  <path d="M210 100v20" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
-  <rect x="72" y="120" width="276" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-  <text x="148" y="148" fill="#111" font-family="ui-monospace, monospace" font-size="14">Rate limit (IP)</text>
-  <path d="M210 164v20" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
-  <rect x="72" y="184" width="276" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-  <text x="156" y="212" fill="#111" font-family="ui-monospace, monospace" font-size="14">Zod validation</text>
-  <path d="M210 220v20" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
-  <rect x="48" y="240" width="124" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-  <text x="68" y="268" fill="#111" font-family="ui-monospace, monospace" font-size="13">Supabase</text>
-  <rect x="248" y="240" width="124" height="44" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-  <text x="276" y="268" fill="#111" font-family="ui-monospace, monospace" font-size="13">Resend</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" fill="none" role="img" aria-label="Diagrama de camadas da API de contato">
+  <rect width="420" height="300" fill="#ffffff"/>
+
+  <text x="210" y="22" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Arquitetura em camadas</text>
+  <text x="210" y="38" fill="#555555" font-family="Arial, Helvetica, sans-serif" font-size="10" text-anchor="middle">API de contato do portf&#243;lio</text>
+
+  <!-- Client -->
+  <rect x="145" y="48" width="130" height="28" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="210" y="66" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="11" text-anchor="middle">Cliente (browser)</text>
+
+  <line x1="210" y1="76" x2="210" y2="90" stroke="#111111" stroke-width="1.5"/>
+  <polygon points="210,94 205,86 215,86" fill="#111111"/>
+
+  <!-- Layer 1 -->
+  <rect x="70" y="96" width="280" height="38" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="82" y="112" fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="9">Camada 1 &#8212; Apresenta&#231;&#227;o</text>
+  <text x="82" y="126" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="11">Rota HTTP  POST /api/contact</text>
+
+  <line x1="210" y1="134" x2="210" y2="144" stroke="#111111" stroke-width="1.5"/>
+  <polygon points="210,148 205,140 215,140" fill="#111111"/>
+
+  <!-- Layer 2 -->
+  <rect x="70" y="150" width="280" height="38" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="82" y="166" fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="9">Camada 2 &#8212; Aplica&#231;&#227;o</text>
+  <text x="82" y="180" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="11">Rate limit por IP</text>
+
+  <line x1="210" y1="188" x2="210" y2="198" stroke="#111111" stroke-width="1.5"/>
+  <polygon points="210,202 205,194 215,194" fill="#111111"/>
+
+  <!-- Layer 3 -->
+  <rect x="70" y="204" width="280" height="38" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="82" y="220" fill="#666666" font-family="Arial, Helvetica, sans-serif" font-size="9">Camada 3 &#8212; Dom&#237;nio</text>
+  <text x="82" y="234" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="11">Valida&#231;&#227;o Zod (schema)</text>
+
+  <line x1="210" y1="242" x2="210" y2="250" stroke="#111111" stroke-width="1.5"/>
+  <line x1="140" y1="250" x2="280" y2="250" stroke="#111111" stroke-width="1.5"/>
+  <line x1="140" y1="250" x2="140" y2="258" stroke="#111111" stroke-width="1.5"/>
+  <line x1="280" y1="250" x2="280" y2="258" stroke="#111111" stroke-width="1.5"/>
+  <polygon points="140,262 135,254 145,254" fill="#111111"/>
+  <polygon points="280,262 275,254 285,254" fill="#111111"/>
+
+  <!-- Layer 4 -->
+  <rect x="70" y="264" width="140" height="28" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="140" y="282" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="10" text-anchor="middle">Supabase (Postgres)</text>
+
+  <rect x="210" y="264" width="140" height="28" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="280" y="282" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="10" text-anchor="middle">Resend (e-mail)</text>
 </svg>

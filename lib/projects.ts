@@ -29,24 +29,4 @@ export const projects: Project[] = [
     hoverBg: "#2c2a24",
     hoverBgImage: "/projects/rei-da-selva/fredsonrei.webp",
   },
-  {
-    id: "faculty",
-    title: "THE FACULTY",
-    category: "Interaction & Development",
-    year: "2024",
-    imageSrc:
-      "https://images.unsplash.com/photo-1558591710-4bfb4a27904a?w=900&h=1100&fit=crop&q=80",
-    href: "#",
-    hoverBg: "#3f3f3f",
-  },
-  {
-    id: "nice",
-    title: "NIC(T)E",
-    category: "Web & Development",
-    year: "2024",
-    imageSrc:
-      "https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=900&h=1100&fit=crop&q=80",
-    href: "#",
-    hoverBg: "#d6cfc4",
-  },
 ];

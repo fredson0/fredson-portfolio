@@ -1,21 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" fill="none">
-  <rect width="360" height="280" fill="#fafafa"/>
-  <text x="24" y="36" fill="#111" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600">Segurança na prática</text>
-  <g transform="translate(24 56)">
-    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">RLS habilitado no PostgreSQL</text>
-  </g>
-  <g transform="translate(24 104)">
-    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">Sessão admin httpOnly + secure</text>
-  </g>
-  <g transform="translate(24 148)">
-    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">Secrets só em variáveis de ambiente</text>
-  </g>
-  <g transform="translate(24 196)">
-    <rect width="312" height="36" rx="6" fill="#fff" stroke="#111" stroke-width="1.5"/>
-    <text x="14" y="23" fill="#111" font-family="ui-monospace, monospace" font-size="12">Service role apenas no servidor</text>
-  </g>
-  <path d="M300 56v196" stroke="#111" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.25"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" fill="none" role="img" aria-label="Praticas de seguranca aplicadas">
+  <rect width="360" height="280" fill="#ffffff"/>
+
+  <text x="180" y="22" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Modelo de confian&#231;a</text>
+  <text x="180" y="38" fill="#555555" font-family="Arial, Helvetica, sans-serif" font-size="10" text-anchor="middle">Defesa em profundidade</text>
+
+  <!-- Outer: untrusted -->
+  <rect x="16" y="50" width="328" height="216" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="28" y="68" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700">Zona n&#227;o confi&#225;vel</text>
+  <text x="28" y="82" fill="#555555" font-family="Arial, Helvetica, sans-serif" font-size="9">Browser  &#183;  sem service role  &#183;  sem secrets</text>
+
+  <!-- Arrow into API -->
+  <line x1="180" y1="90" x2="180" y2="104" stroke="#111111" stroke-width="1.5"/>
+  <polygon points="180,108 175,100 185,100" fill="#111111"/>
+
+  <!-- Middle: API -->
+  <rect x="40" y="110" width="280" height="140" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="52" y="128" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700">Zona da API (servidor)</text>
+  <text x="52" y="144" fill="#333333" font-family="Arial, Helvetica, sans-serif" font-size="9">Rate limit  |  Zod  |  cookie httpOnly + Secure</text>
+
+  <line x1="180" y1="154" x2="180" y2="168" stroke="#111111" stroke-width="1.5"/>
+  <polygon points="180,172 175,164 185,164" fill="#111111"/>
+
+  <!-- Inner: data -->
+  <rect x="58" y="174" width="120" height="60" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="118" y="198" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" text-anchor="middle">Postgres</text>
+  <text x="118" y="214" fill="#333333" font-family="Arial, Helvetica, sans-serif" font-size="9" text-anchor="middle">RLS ativo</text>
+
+  <rect x="182" y="174" width="120" height="60" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+  <text x="242" y="198" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" text-anchor="middle">Secrets</text>
+  <text x="242" y="214" fill="#333333" font-family="Arial, Helvetica, sans-serif" font-size="9" text-anchor="middle">somente env</text>
 </svg>

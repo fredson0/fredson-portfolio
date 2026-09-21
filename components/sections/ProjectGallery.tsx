@@ -65,40 +65,42 @@ const rowOneCards: GalleryCard[] = [
 const rowTwoCards: GalleryCard[] = [
   {
     id: "r2-1",
-    title: "Brand System",
-    surface: "#cfd6dc",
+    title: "ENEM+IA — Hero",
+    surface: "#e6dfd6",
     media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&h=600&fit=crop&q=80",
+      type: "video",
+      src: "/projects/enem-ia/hero-2.webm",
+      poster: "/projects/enem-ia/project.png",
     },
   },
   {
     id: "r2-2",
-    title: "Scroll Experience",
-    surface: "#e8e2d8",
+    title: "ENEM+IA — Produto",
+    surface: "#dfe3e8",
     media: {
       type: "video",
-      src: "https://cdn.coverr.co/videos/coverr-coding-on-a-laptop-9765/1080p.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80",
+      src: "/projects/enem-ia/product-2.webm",
+      poster: "/projects/enem-ia/project.png",
     },
   },
   {
     id: "r2-3",
-    title: "SaaS Dashboard",
-    surface: "#d6d9d4",
+    title: "Rei da Selva — Landing",
+    surface: "#d4d8d2",
     media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80",
+      type: "video",
+      src: "/projects/rei-da-selva/Landinpage2rei.webm",
+      poster: "/projects/rei-da-selva/reiV2.webp",
     },
   },
   {
     id: "r2-4",
-    title: "Mobile Flow",
-    surface: "#ddd8e0",
+    title: "Rei da Selva — Menu",
+    surface: "#c8ccc6",
     media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop&q=80",
+      type: "video",
+      src: "/projects/rei-da-selva/Menusectionrei.webm",
+      poster: "/projects/rei-da-selva/reiV3.webp",
     },
   },
 ];

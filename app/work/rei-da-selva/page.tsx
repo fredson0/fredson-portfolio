@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const LIVE_SITE_URL = "https://www.reidasselvas.com.br/";
 const NEXT_PROJECT =
-  projects.find((project) => project.id === "faculty") ?? projects[1];
+  projects.find((project) => project.id === "enem-ia") ?? projects[0];
 
 export default function ReiDaSelvaPage() {
   return (
