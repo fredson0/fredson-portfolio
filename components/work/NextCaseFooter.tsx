@@ -61,28 +61,38 @@ export default function NextCaseFooter({
 
               <Link
                 href={nextProject.href ?? "/work"}
-                className="next-case-btn group relative mt-6 inline-flex w-full flex-col items-center pb-[13em] sm:mt-8 md:pb-[9.5em]"
+                className="group relative mt-6 inline-flex flex-col items-center max-md:w-full max-md:pb-[13em] sm:mt-8"
               >
-                <span className="relative z-10 text-5xl font-medium tracking-[-0.04em] transition-opacity duration-500 md:group-hover:opacity-25 sm:text-6xl md:text-7xl lg:text-8xl">
+                <span className="relative z-10 text-5xl font-medium tracking-[-0.04em] transition-transform duration-500 group-hover:-translate-y-1 max-md:group-hover:translate-y-0 sm:text-6xl md:text-7xl lg:text-8xl">
                   {nextProject.title}
                 </span>
 
-                <span className="next-case-tile">
-                  <span className="next-case-tile-image">
+                <span className="relative z-0 mt-[-0.35em] hidden overflow-hidden md:block md:h-[5.5rem] md:w-[17rem] lg:h-[6.5rem] lg:w-[20rem]">
+                  <span className="absolute inset-x-0 top-full block translate-y-0 transition-transform duration-500 ease-out group-hover:-translate-y-[92%]">
                     <img
                       src={nextProject.imageSrc}
                       alt=""
-                      className="h-auto w-full object-cover"
+                      className="h-[5.5rem] w-full object-cover lg:h-[6.5rem]"
                     />
                   </span>
                 </span>
+
+                <span className="next-case-tile md:hidden" aria-hidden="true">
+                  <span className="next-case-tile-image">
+                    <span
+                      className="next-case-tile-media"
+                      style={{ backgroundImage: `url(${nextProject.imageSrc})` }}
+                    />
+                  </span>
+                </span>
+                <span className="next-case-stripe md:hidden" aria-hidden="true" />
               </Link>
             </>
           ) : null}
 
           <Link
             href="/work"
-            className="mt-10 inline-flex items-center justify-center rounded-full border border-white/35 px-8 py-3 text-sm font-light tracking-[-0.02em] text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-[#1c1d20] sm:mt-12 sm:px-10 sm:py-3.5 sm:text-base"
+            className="mt-10 inline-flex items-center justify-center rounded-full border border-white/35 px-8 py-3 text-sm font-light tracking-[-0.02em] text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-[#1c1d20] max-md:w-full sm:mt-12 sm:px-10 sm:py-3.5 sm:text-base md:w-auto"
           >
             All work
           </Link>
