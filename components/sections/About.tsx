@@ -38,7 +38,7 @@ function HeadlineLine({
       {words.map((word, index) => (
         <span
           key={`${word}-${index}`}
-          className="mr-[0.28em] inline-block overflow-hidden pb-[0.12em] last:mr-0"
+          className="mr-[0.28em] inline-block overflow-hidden pb-[0.22em] last:mr-0"
         >
           <span className="about-headline-word inline-block will-change-transform">
             {word}
@@ -80,67 +80,24 @@ export default function About() {
       const lines = section.querySelectorAll<HTMLElement>(".about-reveal-line");
 
       if (!prefersReducedMotion() && words.length > 0) {
-        let headlineVisible = false;
-
-        const headlineInView = () => {
-          const rect = headline.getBoundingClientRect();
-          const vh = window.innerHeight;
-          return rect.top < vh * 0.82 && rect.bottom > vh * 0.12;
-        };
-
-        const showHeadline = (immediate = false) => {
-          if (headlineVisible && !immediate) return;
-          headlineVisible = true;
-          gsap.killTweensOf(words);
-          if (immediate) {
-            gsap.set(words, { yPercent: 0 });
-            return;
-          }
-          gsap.to(words, {
-            yPercent: 0,
-            duration: 0.85,
-            ease: "power3.out",
-            stagger: 0.045,
-            overwrite: true,
-          });
-        };
-
-        const hideHeadline = (immediate = false) => {
-          if (!headlineVisible && !immediate) return;
-          headlineVisible = false;
-          gsap.killTweensOf(words);
-          if (immediate) {
-            gsap.set(words, { yPercent: 115 });
-            return;
-          }
-          gsap.to(words, {
-            yPercent: 115,
-            duration: 0.7,
-            ease: "power3.in",
-            stagger: { each: 0.03, from: "end" },
-            overwrite: true,
-          });
-        };
-
         gsap.set(words, { yPercent: 115 });
+
+        const headlineTl = gsap.timeline({ paused: true });
+        headlineTl.to(words, {
+          yPercent: 0,
+          duration: 0.85,
+          ease: "power3.out",
+          stagger: 0.045,
+        });
 
         ScrollTrigger.create({
           trigger: headline,
           scroller: document.documentElement,
           start: "top 82%",
-          end: "bottom 12%",
-          onEnter: () => showHeadline(),
-          onEnterBack: () => showHeadline(),
-          onLeaveBack: () => hideHeadline(),
-          onRefresh: () => {
-            if (headlineInView()) showHeadline(true);
-            else hideHeadline(true);
-          },
+          onEnter: () => headlineTl.play(),
+          onEnterBack: () => headlineTl.play(),
+          onLeaveBack: () => headlineTl.reverse(),
         });
-
-        if (headlineInView()) {
-          showHeadline(true);
-        }
       }
 
       gsap.fromTo(
