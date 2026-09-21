@@ -5,6 +5,33 @@ import { useEffect, useState } from "react";
 
 import type { Project } from "@/lib/projects";
 
+function NextCasePreviewCard({ project }: { project: Project }) {
+  return (
+    <div
+      className="next-case-card absolute inset-0 overflow-hidden shadow-[0_28px_70px_-24px_rgba(0,0,0,0.35)]"
+      style={{ backgroundColor: project.hoverBg ?? "#2f2f2f" }}
+    >
+      {project.hoverBgImage ? (
+        <img
+          src={project.hoverBgImage}
+          alt=""
+          className="absolute inset-0 h-full w-full scale-110 object-cover"
+          draggable={false}
+        />
+      ) : null}
+
+      <div className="absolute inset-0 flex items-center justify-center p-[10%]">
+        <img
+          src={project.imageSrc}
+          alt=""
+          className="h-full w-full rounded-[10px] object-cover shadow-[0_18px_40px_-18px_rgba(0,0,0,0.55)]"
+          draggable={false}
+        />
+      </div>
+    </div>
+  );
+}
+
 const socialLinks = [
   {
     label: "LinkedIn",
@@ -61,20 +88,10 @@ export default function NextCaseFooter({
 
               <Link
                 href={nextProject.href ?? "/work"}
-                className="group relative mt-6 inline-flex flex-col items-center max-md:w-full max-md:pb-[13em] sm:mt-8"
+                className="next-case-btn group relative mt-6 inline-flex w-full flex-col items-center max-md:pb-[13em] sm:mt-8"
               >
-                <span className="relative z-10 text-5xl font-medium tracking-[-0.04em] transition-transform duration-500 group-hover:-translate-y-1 max-md:group-hover:translate-y-0 sm:text-6xl md:text-7xl lg:text-8xl">
+                <span className="next-case-title relative z-10 text-5xl font-medium tracking-[-0.04em] transition-[transform,opacity] duration-500 group-hover:-translate-y-1 max-md:group-hover:translate-y-0 sm:text-6xl md:text-7xl md:group-hover:translate-y-0 lg:text-8xl">
                   {nextProject.title}
-                </span>
-
-                <span className="relative z-0 mt-[-0.35em] hidden overflow-hidden md:block md:h-[5.5rem] md:w-[17rem] lg:h-[6.5rem] lg:w-[20rem]">
-                  <span className="absolute inset-x-0 top-full block translate-y-0 transition-transform duration-500 ease-out group-hover:-translate-y-[92%]">
-                    <img
-                      src={nextProject.imageSrc}
-                      alt=""
-                      className="h-[5.5rem] w-full object-cover lg:h-[6.5rem]"
-                    />
-                  </span>
                 </span>
 
                 <span className="next-case-tile md:hidden" aria-hidden="true">
@@ -86,13 +103,26 @@ export default function NextCaseFooter({
                   </span>
                 </span>
                 <span className="next-case-stripe md:hidden" aria-hidden="true" />
+
+                <span className="next-case-tile-desktop hidden md:block" aria-hidden="true">
+                  <span className="next-case-tile-image-desktop">
+                    <span className="absolute inset-0">
+                      <NextCasePreviewCard project={nextProject} />
+                    </span>
+                  </span>
+                </span>
               </Link>
+
+              <div
+                className="next-case-stripe-row hidden w-full md:block"
+                aria-hidden="true"
+              />
             </>
           ) : null}
 
           <Link
             href="/work"
-            className="mt-10 inline-flex items-center justify-center rounded-full border border-white/35 px-8 py-3 text-sm font-light tracking-[-0.02em] text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-[#1c1d20] max-md:w-full sm:mt-12 sm:px-10 sm:py-3.5 sm:text-base md:w-auto"
+            className="mt-10 inline-flex items-center justify-center rounded-full border border-white/35 px-8 py-3 text-sm font-light tracking-[-0.02em] text-white transition-colors duration-300 hover:border-white hover:bg-white hover:text-[#1c1d20] max-md:w-full md:mt-12 sm:px-10 sm:py-3.5 sm:text-base md:w-auto"
           >
             All work
           </Link>
