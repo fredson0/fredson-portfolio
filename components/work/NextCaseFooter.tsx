@@ -21,7 +21,7 @@ const socialLinks = [
 ] as const;
 
 type NextCaseFooterProps = {
-  nextProject: Project;
+  nextProject?: Project;
   versionYear?: number;
 };
 
@@ -53,28 +53,32 @@ export default function NextCaseFooter({
     <section className="relative bg-[#1c1d20] px-6 pb-10 pt-28 text-white sm:px-10 sm:pb-12 sm:pt-36 lg:px-16 lg:pb-14 lg:pt-44">
       <div className="mx-auto flex min-h-[70vh] max-w-[1400px] flex-col">
         <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <p className="text-xs font-light uppercase tracking-[0.08em] text-white/55 sm:text-sm">
-            Next case
-          </p>
+          {nextProject ? (
+            <>
+              <p className="text-xs font-light uppercase tracking-[0.08em] text-white/55 sm:text-sm">
+                Next case
+              </p>
 
-          <Link
-            href={nextProject.href ?? "/work"}
-            className="group relative mt-6 inline-flex flex-col items-center sm:mt-8"
-          >
-            <span className="relative z-10 text-5xl font-medium tracking-[-0.04em] transition-transform duration-500 group-hover:-translate-y-1 sm:text-6xl md:text-7xl lg:text-8xl">
-              {nextProject.title}
-            </span>
+              <Link
+                href={nextProject.href ?? "/work"}
+                className="group relative mt-6 inline-flex flex-col items-center sm:mt-8"
+              >
+                <span className="relative z-10 text-5xl font-medium tracking-[-0.04em] transition-transform duration-500 group-hover:-translate-y-1 sm:text-6xl md:text-7xl lg:text-8xl">
+                  {nextProject.title}
+                </span>
 
-            <span className="relative z-0 mt-[-0.35em] block h-[3.6rem] w-[11rem] overflow-hidden sm:h-[4.5rem] sm:w-[14rem] md:h-[5.5rem] md:w-[17rem] lg:h-[6.5rem] lg:w-[20rem]">
-              <span className="absolute inset-x-0 top-full block translate-y-0 transition-transform duration-500 ease-out group-hover:-translate-y-[92%]">
-                <img
-                  src={nextProject.imageSrc}
-                  alt=""
-                  className="h-[3.6rem] w-full object-cover sm:h-[4.5rem] md:h-[5.5rem] lg:h-[6.5rem]"
-                />
-              </span>
-            </span>
-          </Link>
+                <span className="relative z-0 mt-[-0.35em] block h-[3.6rem] w-[11rem] overflow-hidden sm:h-[4.5rem] sm:w-[14rem] md:h-[5.5rem] md:w-[17rem] lg:h-[6.5rem] lg:w-[20rem]">
+                  <span className="absolute inset-x-0 top-full block translate-y-0 transition-transform duration-500 ease-out group-hover:-translate-y-[92%]">
+                    <img
+                      src={nextProject.imageSrc}
+                      alt=""
+                      className="h-[3.6rem] w-full object-cover sm:h-[4.5rem] md:h-[5.5rem] lg:h-[6.5rem]"
+                    />
+                  </span>
+                </span>
+              </Link>
+            </>
+          ) : null}
 
           <Link
             href="/work"

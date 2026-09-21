@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 
 import LaptopFrame from "@/components/ui/LaptopFrame";
+import ParallaxCaseImage from "@/components/ui/ParallaxCaseImage";
+import LiveSiteOrb from "@/components/work/LiveSiteOrb";
 import NextCaseFooter from "@/components/work/NextCaseFooter";
 import { projects } from "@/lib/projects";
+
+const LIVE_SITE_URL = "https://enem.fredsondev.com.br/";
 
 export const metadata: Metadata = {
   title: "ENEM+IA — Fredson Santana",
@@ -52,15 +56,13 @@ export default function EnemIaPage() {
         </div>
       </section>
 
-      <section className="bg-[#f7f2e9] px-6 pb-24 pt-0 sm:px-10 sm:pb-32 lg:px-16 lg:pb-40">
+      <section className="relative overflow-visible bg-[#f7f2e9] px-6 pb-24 pt-0 sm:px-10 sm:pb-32 lg:px-16 lg:pb-40">
         <div className="relative mx-auto -mt-14 max-w-[1400px] sm:-mt-16">
-          <div className="overflow-hidden">
-            <img
-              src="/projects/enem-ia/project.png"
-              alt="ENEM+IA — preview do projeto"
-              className="h-auto w-full object-cover"
-            />
-          </div>
+          <LiveSiteOrb href={LIVE_SITE_URL} />
+          <ParallaxCaseImage
+            src="/projects/enem-ia/project.png"
+            alt="ENEM+IA — preview do projeto"
+          />
 
           <div className="mt-16 sm:mt-20 lg:mt-28">
             <LaptopFrame>

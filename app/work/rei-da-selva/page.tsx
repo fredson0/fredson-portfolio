@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 
 import LaptopFrame from "@/components/ui/LaptopFrame";
 import ParallaxBleedImage from "@/components/ui/ParallaxBleedImage";
+import ParallaxCaseImage from "@/components/ui/ParallaxCaseImage";
+import LiveSiteOrb from "@/components/work/LiveSiteOrb";
 import NextCaseFooter from "@/components/work/NextCaseFooter";
-import { projects } from "@/lib/projects";
-import { ACCENT } from "@/lib/theme";
 
 export const metadata: Metadata = {
   title: "Rei da Selva — Fredson Santana",
@@ -13,8 +13,6 @@ export const metadata: Metadata = {
 };
 
 const LIVE_SITE_URL = "https://www.reidasselvas.com.br/";
-const NEXT_PROJECT =
-  projects.find((project) => project.id === "enem-ia") ?? projects[0];
 
 export default function ReiDaSelvaPage() {
   return (
@@ -52,32 +50,16 @@ export default function ReiDaSelvaPage() {
               </dd>
             </div>
           </dl>
-
-          <div className="relative flex justify-end pb-10 pt-14 sm:pb-14 sm:pt-20">
-            <a
-              href={LIVE_SITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-28 w-28 items-center justify-center rounded-full text-center text-sm font-light leading-tight tracking-tight !text-white transition-transform duration-300 hover:scale-105 sm:h-32 sm:w-32 sm:text-base"
-              style={{ backgroundColor: ACCENT, color: "#ffffff" }}
-            >
-              <span className="text-white">Visite o site</span>
-              <br />
-              <span className="text-white" aria-hidden="true">↗</span>
-            </a>
-          </div>
         </div>
       </section>
 
-      <section className="bg-[#f7f2e9] px-6 pb-24 pt-0 sm:px-10 sm:pb-32 lg:px-16 lg:pb-40">
+      <section className="relative overflow-visible bg-[#f7f2e9] px-6 pb-24 pt-0 sm:px-10 sm:pb-32 lg:px-16 lg:pb-40">
         <div className="relative mx-auto -mt-14 max-w-[1400px] sm:-mt-16">
-          <div className="overflow-hidden">
-            <img
-              src="/projects/rei-da-selva/reidaselva.webp"
-              alt="Rei da Selva — preview do projeto"
-              className="h-auto w-full object-cover"
-            />
-          </div>
+          <LiveSiteOrb href={LIVE_SITE_URL} />
+          <ParallaxCaseImage
+            src="/projects/rei-da-selva/reidaselva.webp"
+            alt="Rei da Selva — preview do projeto"
+          />
 
           <div className="mt-16 sm:mt-20 lg:mt-28">
             <LaptopFrame>
@@ -181,7 +163,7 @@ export default function ReiDaSelvaPage() {
         </div>
       </section>
 
-      <NextCaseFooter nextProject={NEXT_PROJECT} versionYear={2026} />
+      <NextCaseFooter versionYear={2026} />
     </main>
   );
 }
