@@ -5,6 +5,7 @@ import ParallaxBleedImage from "@/components/ui/ParallaxBleedImage";
 import ParallaxCaseImage from "@/components/ui/ParallaxCaseImage";
 import LiveSiteOrb from "@/components/work/LiveSiteOrb";
 import NextCaseFooter from "@/components/work/NextCaseFooter";
+import { projects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Rei da Selva — Fredson Santana",
@@ -13,6 +14,9 @@ export const metadata: Metadata = {
 };
 
 const LIVE_SITE_URL = "https://www.reidasselvas.com.br/";
+
+const NEXT_PROJECT =
+  projects.find((project) => project.id === "enem-ia") ?? projects[0];
 
 export default function ReiDaSelvaPage() {
   return (
@@ -163,7 +167,7 @@ export default function ReiDaSelvaPage() {
         </div>
       </section>
 
-      <NextCaseFooter versionYear={2026} />
+      <NextCaseFooter nextProject={NEXT_PROJECT} versionYear={2026} />
     </main>
   );
 }

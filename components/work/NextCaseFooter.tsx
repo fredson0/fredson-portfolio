@@ -61,18 +61,18 @@ export default function NextCaseFooter({
 
               <Link
                 href={nextProject.href ?? "/work"}
-                className="group relative mt-6 inline-flex flex-col items-center sm:mt-8"
+                className="next-case-btn group relative mt-6 inline-flex w-full flex-col items-center pb-[13em] sm:mt-8 md:pb-[9.5em]"
               >
-                <span className="relative z-10 text-5xl font-medium tracking-[-0.04em] transition-transform duration-500 group-hover:-translate-y-1 sm:text-6xl md:text-7xl lg:text-8xl">
+                <span className="relative z-10 text-5xl font-medium tracking-[-0.04em] transition-opacity duration-500 md:group-hover:opacity-25 sm:text-6xl md:text-7xl lg:text-8xl">
                   {nextProject.title}
                 </span>
 
-                <span className="relative z-0 mt-[-0.35em] block h-[3.6rem] w-[11rem] overflow-hidden sm:h-[4.5rem] sm:w-[14rem] md:h-[5.5rem] md:w-[17rem] lg:h-[6.5rem] lg:w-[20rem]">
-                  <span className="absolute inset-x-0 top-full block translate-y-0 transition-transform duration-500 ease-out group-hover:-translate-y-[92%]">
+                <span className="next-case-tile">
+                  <span className="next-case-tile-image">
                     <img
                       src={nextProject.imageSrc}
                       alt=""
-                      className="h-[3.6rem] w-full object-cover sm:h-[4.5rem] md:h-[5.5rem] lg:h-[6.5rem]"
+                      className="h-auto w-full object-cover"
                     />
                   </span>
                 </span>
