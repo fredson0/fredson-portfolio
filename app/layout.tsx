@@ -42,6 +42,24 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${inter.variable} ${dancingScript.variable} h-full antialiased`}
     >
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/profile-sm.webp"
+          type="image/webp"
+          media="(max-width: 767px)"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/profile.webp"
+          type="image/webp"
+          media="(min-width: 768px)"
+          fetchPriority="high"
+        />
+      </head>
       <body className={`${inter.className} min-h-full font-sans`}>
         <SmoothScrollProvider>
           <PageTransitionProvider>

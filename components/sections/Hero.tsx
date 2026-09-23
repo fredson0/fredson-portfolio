@@ -5,15 +5,15 @@ import { useLenis } from "lenis/react";
 
 import { ACCENT_MUTED, DARK_BACKGROUND } from "@/lib/theme";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { prefersReducedMotion } from "@/lib/page-transition";
 
 const marqueeText = "Full Stack · Web · Salvador · ";
 const marqueeRepeats = 6;
 const marqueeBlock = marqueeText.repeat(marqueeRepeats);
 const marqueeDuration = 80;
 
-/** Coloque sua foto em public/profile.png (PNG recortado, fundo transparente). */
-const profileImageSrc = "/profile.png";
+/** Foto otimizada: WebP com alpha. PNG original tem ~4MB e trava no 4G. */
+const profileImageMobile = "/profile-sm.webp";
+const profileImageDesktop = "/profile.webp";
 
 const marqueeTextClassName =
   "marquee-text shrink-0 font-cursive text-[28vw] font-medium normal-case leading-[0.82] tracking-[-0.02em] text-white md:text-[20vw] lg:text-[16vw] xl:text-[14vw]";
@@ -78,43 +78,23 @@ export default function Hero() {
   const photoRef = useRef<HTMLDivElement | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
   const marqueeTweenRef = useRef<gsap.core.Tween | null>(null);
+  const setPhotoY = useRef<((value: number) => void) | null>(null);
   const lastDirectionRef = useRef(1);
 
   useGSAP(
     () => {
-      const section = sectionRef.current;
       const photo = photoRef.current;
-      if (!section || !photo || prefersReducedMotion()) {
+      if (!photo) {
         return;
       }
 
-      const enableParallax = window.matchMedia("(min-width: 768px)").matches;
-      if (!enableParallax) {
-        gsap.set(photo, { yPercent: 0 });
-        return;
-      }
-
-      const tween = gsap.fromTo(
-        photo,
-        { yPercent: 4 },
-        {
-          yPercent: -12,
-          ease: "none",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: section,
-            scroller: document.documentElement,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        }
-      );
+      gsap.set(photo, { y: 0, force3D: true });
+      setPhotoY.current = gsap.quickSetter(photo, "y", "px") as (
+        value: number
+      ) => void;
 
       return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
+        setPhotoY.current = null;
       };
     },
     { scope: sectionRef, dependencies: [] }
@@ -151,18 +131,36 @@ export default function Hero() {
 
   useLenis((lenis) => {
     const tween = marqueeTweenRef.current;
-    if (!tween) return;
+    if (tween) {
+      const velocity = lenis.velocity * 60;
+      const absVelocity = Math.abs(velocity);
 
-    // Lenis.velocity is px per frame; convert so a wheel tick is a real nudge.
-    const velocity = lenis.velocity * 60;
-    const absVelocity = Math.abs(velocity);
+      if (absVelocity > 40) {
+        lastDirectionRef.current = Math.sign(velocity);
+      }
 
-    if (absVelocity > 40) {
-      lastDirectionRef.current = Math.sign(velocity);
+      const boost = gsap.utils.clamp(0, 15, absVelocity * 0.0028);
+      tween.timeScale((1 + boost) * lastDirectionRef.current);
     }
 
-    const boost = gsap.utils.clamp(0, 15, absVelocity * 0.0028);
-    tween.timeScale((1 + boost) * lastDirectionRef.current);
+    const section = sectionRef.current;
+    const setY = setPhotoY.current;
+    if (!section || !setY) {
+      return;
+    }
+
+    if (
+      window.innerWidth < 768 ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setY(0);
+      return;
+    }
+
+    const remaining = lenis.targetScroll - lenis.scroll;
+    const top = section.getBoundingClientRect().top - remaining;
+    const progress = gsap.utils.clamp(0, 1, -top / section.offsetHeight);
+    setY(progress * section.offsetHeight * -0.16);
   });
 
   return (
@@ -175,14 +173,25 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
         <div
           ref={photoRef}
-          className="absolute inset-x-0 bottom-0 flex h-full items-end justify-center md:top-0 md:h-[120%] md:will-change-transform"
+          className="absolute inset-x-0 bottom-0 flex h-full items-end justify-center md:top-0 md:h-[130%] md:will-change-transform"
         >
-          <img
-            src={profileImageSrc}
-            alt="Fredson Santana"
-            className="block h-auto w-[min(88vw,400px)] object-contain object-bottom md:h-full md:w-auto md:max-w-[min(62vw,900px)]"
-            draggable={false}
-          />
+          <picture className="block h-auto w-[min(88vw,400px)] md:h-full md:w-auto md:max-w-[min(62vw,900px)]">
+            <source
+              media="(max-width: 767px)"
+              srcSet={profileImageMobile}
+              type="image/webp"
+            />
+            <img
+              src={profileImageDesktop}
+              alt="Fredson Santana"
+              width={1400}
+              height={2038}
+              fetchPriority="high"
+              decoding="async"
+              className="block h-auto w-full object-contain object-bottom md:h-full md:w-auto"
+              draggable={false}
+            />
+          </picture>
         </div>
       </div>
 
