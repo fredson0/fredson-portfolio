@@ -6,7 +6,7 @@ import { useLenis } from "lenis/react";
 import { ACCENT_MUTED, DARK_BACKGROUND } from "@/lib/theme";
 import { gsap, useGSAP } from "@/lib/gsap";
 
-const marqueeText = "Full Stack · Web · Salvador · ";
+const marqueeText = "Fredson Santana · ";
 const marqueeRepeats = 6;
 const marqueeBlock = marqueeText.repeat(marqueeRepeats);
 const marqueeDuration = 80;
@@ -116,6 +116,11 @@ export default function Hero() {
         ease: "none",
         modifiers: {
           xPercent: gsap.utils.wrap(-50, 0),
+        },
+        // Em reverso o playhead chega no tempo 0 e o loop morre.
+        // Empurra várias iterações à frente — mesmo truque do helper oficial da GSAP.
+        onReverseComplete() {
+          this.totalTime(this.rawTime() + this.duration() * 10);
         },
       });
 
