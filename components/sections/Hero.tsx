@@ -120,7 +120,7 @@ export default function Hero() {
         // Em reverso o playhead chega no tempo 0 e o loop morre.
         // Empurra várias iterações à frente — mesmo truque do helper oficial da GSAP.
         onReverseComplete() {
-          this.totalTime(this.rawTime() + this.duration() * 10);
+          this.totalTime(this.rawTime() + marqueeDuration * 10);
         },
       });
 
