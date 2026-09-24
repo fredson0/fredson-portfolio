@@ -215,7 +215,7 @@ export default function Hero() {
 
         <div
           className="shrink-0 self-end"
-          aria-label="Localizado na Bahia, Brasil"
+          aria-label="Localizado em Salvador, Bahia, Brasil"
         >
           <GlobeIcon
             className="h-10 w-10 animate-[spin_20s_linear_infinite] text-white/90"
@@ -225,19 +225,21 @@ export default function Hero() {
 
       <div className="absolute left-0 top-1/2 z-30 hidden -translate-y-1/2 px-6 md:block sm:px-10 lg:px-16">
         <div
-          className="flex items-center gap-4 rounded-full border border-white/12 bg-white/[0.04] px-5 py-3 text-white shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+          className="flex w-max items-center gap-3 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2.5 text-white shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
         >
-          <div className="text-left text-xs font-light leading-tight tracking-[0.08em] sm:text-sm">
-            <span className="block">Localizado</span>
-            <span className="block">na</span>
+          <p
+            className="text-left text-[11px] font-light leading-[1.25] tracking-[0.06em]"
+          >
+            <span className="block">Localizado em</span>
+            <span className="block">Salvador,</span>
             <span className="block">Bahia, Brasil</span>
-          </div>
+          </p>
           <div
-            className="flex h-12 w-12 items-center justify-center rounded-full"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
             style={{ backgroundColor: ACCENT_MUTED }}
           >
             <GlobeIcon
-              className="h-7 w-7 animate-[spin_20s_linear_infinite] text-white/85"
+              className="h-6 w-6 animate-[spin_20s_linear_infinite] text-white/85"
             />
           </div>
         </div>

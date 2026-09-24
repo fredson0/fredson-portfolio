@@ -37,9 +37,9 @@ export const aboutStoryScene: NarrativeSceneContent = {
   id: "about-story",
   titleLines: ["Sobre", "mim"],
   body: [
-    "Sou desenvolvedor web full stack júnior, baseado em Salvador. Atuo como freelancer ajudando pessoas e negócios que buscam soluções web — do conceito à entrega.",
+    "Sou desenvolvedor web full stack júnior, de Salvador, Bahia. Quero atuar em empresas e times de tecnologia — e também faço freelances quando o projeto pede uma entrega ponta a ponta, do conceito à produção.",
     "Estou na reta final da faculdade e venho construindo experiência prática com projetos reais: freelances entregues e projetos pessoais que em breve entram no portfólio.",
-    "Gosto de colaborar de perto, entender o problema antes de codar e entregar com clareza. Busco crescer como desenvolvedor dentro de uma empresa, contribuindo com soluções que façam diferença no dia a dia.",
+    "Gosto de colaborar de perto, entender o problema antes de codar e entregar com clareza. Estou em busca de oportunidade em empresa para crescer com um time, sem deixar de lado o que aprendi em projetos autônomos.",
   ],
   tags: "DESENVOLVEDOR WEB · FULL STACK · SALVADOR",
   images: [

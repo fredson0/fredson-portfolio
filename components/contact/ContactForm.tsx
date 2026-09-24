@@ -8,7 +8,6 @@ import {
   CONTACT_API_URL,
   CONTACT_EMAIL,
   CONTACT_PHONE,
-  LIGHT_SECTION,
   socialLinks,
 } from "@/lib/contact/constants";
 import { ACCENT_MUTED, DARK_BACKGROUND } from "@/lib/theme";
@@ -223,7 +222,7 @@ export default function ContactForm() {
       <form onSubmit={handleSubmit} noValidate>
         <section
           className="px-6 pb-0 pt-28 sm:px-10 md:pt-36 lg:px-16"
-          style={{ backgroundColor: LIGHT_SECTION }}
+          style={{ backgroundColor: DARK_BACKGROUND }}
         >
           <div className="mx-auto max-w-[1400px]">
             <div className="flex flex-col gap-12 border-b border-white/12 pb-16 lg:flex-row lg:items-end lg:justify-between lg:pb-20">

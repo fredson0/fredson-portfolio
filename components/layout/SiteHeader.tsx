@@ -330,7 +330,7 @@ function MenuOverlay({
 
       <div
         ref={panelRef}
-        className="menu-overlay-panel relative z-10 flex h-[100dvh] min-h-full w-full flex-col overflow-hidden md:h-[min(72vh,760px)] md:min-h-[560px] md:shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+        className="menu-overlay-panel relative z-10 flex h-[100dvh] min-h-full w-full flex-col overflow-x-hidden overflow-y-auto md:h-auto md:max-h-[100dvh] md:min-h-[min(72vh,760px)] md:shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
       >
         <button
           type="button"
