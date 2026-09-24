@@ -102,19 +102,75 @@ function OverlayNavLink({
   isActive: boolean;
   onClose: () => void;
 }) {
-  const linkRef = useMagnetic<HTMLAnchorElement>(0.22);
+  const itemRef = useRef<HTMLAnchorElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const item = itemRef.current;
+    const word = labelRef.current;
+    if (!item || !word) {
+      return;
+    }
+
+    gsap.set(word, { x: 0, y: 0, rotate: 0.001, force3D: true });
+
+    const xTo = gsap.quickTo(word, "x", {
+      duration: 0.7,
+      ease: "power3.out",
+    });
+    const yTo = gsap.quickTo(word, "y", {
+      duration: 0.7,
+      ease: "power3.out",
+    });
+    const rotateTo = gsap.quickTo(word, "rotation", {
+      duration: 0.8,
+      ease: "power3.out",
+    });
+
+    const onMove = (event: MouseEvent) => {
+      const rect = word.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const deltaX = event.clientX - centerX;
+      const deltaY = event.clientY - centerY;
+
+      xTo(gsap.utils.clamp(-36, 36, deltaX * 0.22));
+      yTo(gsap.utils.clamp(-28, 28, deltaY * 0.28));
+      rotateTo(gsap.utils.clamp(-2.4, 2.4, deltaX * 0.012));
+    };
+
+    const onLeave = () => {
+      xTo(0);
+      yTo(0);
+      rotateTo(0);
+    };
+
+    item.addEventListener("mousemove", onMove);
+    item.addEventListener("mouseleave", onLeave);
+
+    return () => {
+      item.removeEventListener("mousemove", onMove);
+      item.removeEventListener("mouseleave", onLeave);
+      xTo.tween.kill();
+      yTo.tween.kill();
+      rotateTo.tween.kill();
+      gsap.set(word, { x: 0, y: 0, rotate: 0 });
+    };
+  }, []);
 
   return (
-    <li className="menu-overlay-link w-full overflow-hidden">
+    <li className="menu-overlay-link w-full">
       <Link
-        ref={linkRef}
+        ref={itemRef}
         href={href}
         onClick={onClose}
-        className={`menu-overlay-item group relative flex w-full items-center will-change-transform ${
+        className={`menu-overlay-item group relative flex w-full items-center ${
           isActive ? "is-active" : ""
         }`}
       >
-        <span className="menu-overlay-item-label">{label}</span>
+        <span ref={labelRef} className="menu-overlay-item-label will-change-transform">
+          {label}
+        </span>
         <span className="menu-overlay-item-dot" aria-hidden="true" />
       </Link>
     </li>

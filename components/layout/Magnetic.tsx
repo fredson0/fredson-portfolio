@@ -7,7 +7,8 @@ import { gsap } from "@/lib/gsap";
 type QuickToFn = ((value: number) => void) & { tween: gsap.core.Tween };
 
 export function useMagnetic<T extends HTMLElement>(
-  strength = 0.35
+  strength = 0.35,
+  maxOffset?: number
 ): RefObject<T | null> {
   const ref = useRef<T>(null);
 
@@ -33,8 +34,14 @@ export function useMagnetic<T extends HTMLElement>(
       const rect = element.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      xTo((event.clientX - centerX) * strength);
-      yTo((event.clientY - centerY) * strength);
+      let x = (event.clientX - centerX) * strength;
+      let y = (event.clientY - centerY) * strength;
+      if (maxOffset != null) {
+        x = gsap.utils.clamp(-maxOffset, maxOffset, x);
+        y = gsap.utils.clamp(-maxOffset, maxOffset, y);
+      }
+      xTo(x);
+      yTo(y);
     };
 
     const onLeave = () => {
@@ -52,7 +59,7 @@ export function useMagnetic<T extends HTMLElement>(
       yTo.tween.kill();
       gsap.set(element, { x: 0, y: 0 });
     };
-  }, [strength]);
+  }, [strength, maxOffset]);
 
   return ref;
 }
