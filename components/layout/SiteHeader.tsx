@@ -19,7 +19,7 @@ const navLinks: { id: ActiveNav; label: string; href: string }[] = [
 ];
 
 const overlayLinks = [
-  { label: "Home", href: "/" },
+  { label: "Início", href: "/" },
   { label: "Trabalho", href: "/work" },
   { label: "Sobre", href: "/about" },
   { label: "Contato", href: "/contact" },

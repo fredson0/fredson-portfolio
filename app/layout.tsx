@@ -17,9 +17,9 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Fredson Santana — Freelance Developer & Systems Analyst",
+  title: "Fredson Santana — Desenvolvedor freelancer e analista de sistemas",
   description:
-    "Portfolio de Fredson Santana, Freelance Developer & Systems Analyst especializado em soluções robustas de software e interfaces premium.",
+    "Portfólio de Fredson Santana, desenvolvedor freelancer e analista de sistemas especializado em soluções robustas de software e interfaces premium.",
   icons: {
     icon: "/icon.png",
     apple: "/icon.png",

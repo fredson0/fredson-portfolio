@@ -53,11 +53,11 @@ type NextCaseFooterProps = {
 };
 
 function formatBahiaTime(date: Date) {
-  const time = new Intl.DateTimeFormat("en-US", {
+  const time = new Intl.DateTimeFormat("pt-BR", {
     timeZone: "America/Bahia",
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true,
+    hour12: false,
   }).format(date);
 
   return `${time} GMT-3`;
@@ -83,7 +83,7 @@ export default function NextCaseFooter({
           {nextProject ? (
             <>
               <p className="text-xs font-light uppercase tracking-[0.08em] text-white/55 sm:text-sm">
-                Next case
+                Próximo projeto
               </p>
 
               <Link
@@ -125,7 +125,7 @@ export default function NextCaseFooter({
             className="btn-pill group relative mt-10 inline-flex w-full items-center justify-center overflow-hidden rounded-full border border-white/35 px-8 py-3 text-sm font-light tracking-[-0.02em] text-white transition-[border-color] duration-500 hover:border-transparent focus-visible:border-transparent md:mt-12 sm:px-10 sm:py-3.5 sm:text-base md:w-auto"
           >
             <span className="btn-pill-fill" aria-hidden="true" />
-            <span className="relative z-10">All work</span>
+            <span className="relative z-10">Todos os trabalhos</span>
           </Link>
         </div>
 
@@ -133,15 +133,15 @@ export default function NextCaseFooter({
           <div className="flex flex-wrap gap-10 sm:gap-14 lg:gap-20">
             <div>
               <p className="text-[10px] font-light uppercase tracking-[0.14em] text-white/40">
-                Version
+                Versão
               </p>
               <p className="mt-2 text-sm font-light tracking-[-0.02em] text-white/85 sm:text-base">
-                {versionYear} © Edition
+                {versionYear} © Edição
               </p>
             </div>
             <div>
               <p className="text-[10px] font-light uppercase tracking-[0.14em] text-white/40">
-                Local time
+                Horário local
               </p>
               <p className="mt-2 text-sm font-light tracking-[-0.02em] text-white/85 sm:text-base">
                 {localTime}
@@ -151,7 +151,7 @@ export default function NextCaseFooter({
 
           <div>
             <p className="text-[10px] font-light uppercase tracking-[0.14em] text-white/40">
-              Socials
+              Redes
             </p>
             <ul className="mt-2 flex flex-wrap gap-5 sm:gap-6">
               {socialLinks.map((link) => (

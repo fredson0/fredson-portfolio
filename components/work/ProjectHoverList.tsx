@@ -103,7 +103,7 @@ function ProjectModal({
 
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <span className="flex h-[5.5rem] w-[5.5rem] items-center justify-center rounded-full bg-[#455CE9] text-[15px] font-light tracking-tight text-white">
-            View
+            Ver
           </span>
         </div>
       </div>

@@ -176,10 +176,10 @@ export default function About() {
             ref={buttonRef}
             href="/about"
             className="inline-flex will-change-transform"
-            aria-label="About me"
+            aria-label="Sobre mim"
           >
             <span className="flex h-36 w-36 items-center justify-center rounded-full bg-[#1c1d20] text-sm font-light tracking-[-0.02em] text-white transition-colors duration-300 hover:bg-black md:h-40 md:w-40 md:text-base">
-              About me
+              Sobre mim
             </span>
           </Link>
         </div>

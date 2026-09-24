@@ -289,7 +289,7 @@ export default function ContactForm() {
                   label="Que serviços você busca?"
                   name="services"
                   value={form.services}
-                  placeholder="Web Design, Desenvolvimento Web ..."
+                  placeholder="Design web, desenvolvimento web ..."
                   required
                   onChange={updateField}
                   error={fieldErrors.services?.[0]}
@@ -445,7 +445,7 @@ export default function ContactForm() {
                   Versão
                 </p>
                 <p className="mt-2 text-sm font-light tracking-[-0.02em] text-white/70">
-                  {year} © Edition
+                  {year} © Edição
                 </p>
               </div>
               <div>

@@ -318,7 +318,7 @@ export const aboutReiDaSelvaScene: NarrativeSceneContent = {
   tags:
     "NEXT.JS · NESTJS · TYPESCRIPT · HEXAGONAL · RBAC · IDEMPOTENCY · MERCADO PAGO · GOOGLE AUTH · WHATSAPP · 2026",
   cta: {
-    label: "Ver case completo",
+    label: "Ver projeto completo",
     href: "/work/rei-da-selva",
   },
   images: [
@@ -447,7 +447,7 @@ export const aboutEnemIaScene: NarrativeSceneContent = {
   ],
   tags: "NEXT.JS · EDTECH · TUTOR IA · SIMULADOS · TRILHA · PRODUTO · 2026",
   cta: {
-    label: "Ver case completo",
+    label: "Ver projeto completo",
     href: "/work/enem-ia",
   },
   images: [

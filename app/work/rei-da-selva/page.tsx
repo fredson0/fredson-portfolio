@@ -30,24 +30,24 @@ export default function ReiDaSelvaPage() {
           <dl className="mt-16 grid gap-0 border-t border-black/10 sm:grid-cols-3">
             <div className="border-b border-black/10 py-8 sm:border-b-0 sm:border-r sm:py-10 sm:pr-8">
               <dt className="text-xs font-light uppercase tracking-tight text-black/45">
-                Role / Services
+                Função / Serviços
               </dt>
               <dd className="mt-3 text-sm font-light leading-relaxed tracking-[-0.02em] sm:text-base">
-                Design &amp; Development
+                Design e desenvolvimento
               </dd>
             </div>
             <div className="border-b border-black/10 py-8 sm:border-b-0 sm:border-r sm:py-10 sm:px-8">
               <dt className="text-xs font-light uppercase tracking-tight text-black/45">
-                Credits
+                Créditos
               </dt>
               <dd className="mt-3 space-y-1 text-sm font-light leading-relaxed tracking-[-0.02em] sm:text-base">
                 <p>Design — Fredson Santana</p>
-                <p>Development — Fredson Santana</p>
+                <p>Desenvolvimento — Fredson Santana</p>
               </dd>
             </div>
             <div className="py-8 sm:py-10 sm:pl-8">
               <dt className="text-xs font-light uppercase tracking-tight text-black/45">
-                Location &amp; Year
+                Localização e ano
               </dt>
               <dd className="mt-3 text-sm font-light leading-relaxed tracking-[-0.02em] sm:text-base">
                 Bahia, Brasil © 2026

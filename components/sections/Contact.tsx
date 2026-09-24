@@ -249,7 +249,7 @@ export default function Contact({ animatedEntrance = true }: ContactProps) {
 
         <footer className="mt-16 border-t border-white/10 pt-8 sm:mt-20">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <nav aria-label="Social links">
+            <nav aria-label="Redes sociais">
               <ul className="flex flex-wrap gap-x-8 gap-y-3">
                 {socialLinks.map((link) => (
                   <li key={link.id}>

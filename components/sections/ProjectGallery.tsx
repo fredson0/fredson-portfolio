@@ -243,11 +243,11 @@ export default function ProjectGallery() {
         <Link
           href="/work"
           className="flex h-36 w-36 items-center justify-center rounded-full bg-[#1c1d20] text-center text-sm font-light leading-tight tracking-[-0.02em] text-white transition-colors duration-300 hover:bg-black md:h-40 md:w-40 md:text-base"
-          aria-label="More work"
+          aria-label="Mais trabalhos"
         >
-          More
+          Mais
           <br />
-          work
+          trabalhos
         </Link>
       </div>
 

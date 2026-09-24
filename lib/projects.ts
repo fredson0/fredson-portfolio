@@ -13,7 +13,7 @@ export const projects: Project[] = [
   {
     id: "enem-ia",
     title: "ENEM+IA",
-    category: "EdTech — Web & AI",
+    category: "EdTech — Web e IA",
     year: "2026",
     imageSrc: "/projects/enem-ia/project.png",
     href: "/work/enem-ia",
@@ -22,7 +22,7 @@ export const projects: Project[] = [
   {
     id: "rei-da-selva",
     title: "REI DA SELVA",
-    category: "Freelance — Web & Development",
+    category: "Freelance — Web e desenvolvimento",
     year: "2026",
     imageSrc: "/projects/rei-da-selva/reidaselva.webp",
     href: "/work/rei-da-selva",

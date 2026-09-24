@@ -9,7 +9,7 @@ export default function Projects() {
       <div className="mx-auto w-full max-w-[1400px] px-6 md:px-16 lg:px-20">
         <div className="border-t border-black/10 pt-8 md:pt-10">
           <p className="text-xs font-light uppercase tracking-tight text-black/45 sm:text-sm">
-            RECENT WORK
+            Trabalhos recentes
           </p>
         </div>
 
