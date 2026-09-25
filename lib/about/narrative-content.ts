@@ -37,9 +37,9 @@ export const aboutStoryScene: NarrativeSceneContent = {
   id: "about-story",
   titleLines: ["Sobre", "mim"],
   body: [
-    "Sou desenvolvedor web full stack júnior, de Salvador, Bahia. Quero atuar em empresas e times de tecnologia — e também faço freelances quando o projeto pede uma entrega ponta a ponta, do conceito à produção.",
-    "Estou na reta final da faculdade e venho construindo experiência prática com projetos reais: freelances entregues e projetos pessoais que em breve entram no portfólio.",
-    "Gosto de colaborar de perto, entender o problema antes de codar e entregar com clareza. Estou em busca de oportunidade em empresa para crescer com um time, sem deixar de lado o que aprendi em projetos autônomos.",
+    "Sou desenvolvedor web full stack júnior, de Salvador, Bahia. Hoje trabalho no Novo Mix Supermercados e quero crescer em times de engenharia — além de fazer freelances quando o projeto pede uma entrega ponta a ponta, do conceito à produção.",
+    "Estou na reta final da faculdade e venho construindo experiência prática com projetos reais: o dia a dia na operação de TI, freelances entregues e projetos pessoais que em breve entram no portfólio.",
+    "Gosto de colaborar de perto, entender o problema antes de codar e entregar com clareza. Busco uma vaga de desenvolvedor em empresa para crescer com um time, levando o que já aprendi na operação e nos projetos autônomos.",
   ],
   tags: "DESENVOLVEDOR WEB · FULL STACK · SALVADOR",
   images: [
@@ -83,6 +83,33 @@ export const aboutStoryScene: NarrativeSceneContent = {
 };
 
 const logoImageClassName = "h-full w-full object-contain";
+
+export const aboutNovomixScene: NarrativeSceneContent = {
+  id: "about-novomix",
+  titleLines: ["Novo Mix", "Supermercados"],
+  collageClassName:
+    "h-[min(38vh,320px)] sm:h-[min(42vh,360px)] md:h-[min(46vh,400px)]",
+  body: [
+    "Hoje sou técnico de suporte de TI no Novo Mix Supermercados. Entrei como estagiário em fevereiro de 2026 e, três meses depois, fui efetivado — atuo no Centro de Distribuição e nas filiais da rede.",
+    "O trabalho fica entre infraestrutura e software: investigar incidentes no ERP, consultar e validar dados no banco, entender falhas de integração e manter a operação das lojas no ar.",
+    "Hoje estou migrando para a área de desenvolvimento da empresa. Entro aos poucos em projetos grandes de software e já entreguei diversas automações para o Novo Mix — o suporte ainda faz parte da rotina, mas o caminho que estou construindo ali é o de desenvolvedor.",
+    "É um ambiente real de varejo, com daily, SQL e troubleshooting no dia a dia. Uso isso para evoluir em lógica e sistemas, agora com um pé cada vez mais firme na engenharia de software.",
+  ],
+  tags: "NOVO MIX · MIGRANDO PARA DEV · AUTOMAÇÃO · SUPORTE TI · SQL · ERP · 2026",
+  images: [
+    {
+      src: "/about/novo-mix-supermercados-logo.webp",
+      alt: "Logo do Novo Mix Supermercados",
+      surface: "float",
+      layoutClassName:
+        "left-[8%] top-[12%] z-30 w-[84%] sm:left-[12%] sm:w-[76%] md:left-[16%] md:top-[10%] md:w-[68%]",
+      imageClassName: "h-auto w-full object-contain",
+      riseY: 80,
+      duration: 0.75,
+      delay: 0,
+    },
+  ],
+};
 
 export const aboutStackScene: NarrativeSceneContent = {
   id: "about-stack",
