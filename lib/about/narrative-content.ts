@@ -37,7 +37,7 @@ export const aboutStoryScene: NarrativeSceneContent = {
   id: "about-story",
   titleLines: ["Sobre", "mim"],
   body: [
-    "Sou desenvolvedor web full stack júnior, de Salvador, Bahia. Hoje trabalho no Novo Mix Supermercados e quero crescer em times de engenharia — além de fazer freelances quando o projeto pede uma entrega ponta a ponta, do conceito à produção.",
+    "Sou desenvolvedor web full stack júnior, de Salvador, Bahia. Hoje trabalho no Novo Mix Supermercados e quero crescer em times de engenharia. Também faço freelances quando o projeto pede uma entrega ponta a ponta, do conceito à produção.",
     "Estou na reta final da faculdade e venho construindo experiência prática com projetos reais: o dia a dia na operação de TI, freelances entregues e projetos pessoais que em breve entram no portfólio.",
     "Gosto de colaborar de perto, entender o problema antes de codar e entregar com clareza. Busco uma vaga de desenvolvedor em empresa para crescer com um time, levando o que já aprendi na operação e nos projetos autônomos.",
   ],
@@ -90,15 +90,15 @@ export const aboutNovomixScene: NarrativeSceneContent = {
   collageClassName:
     "h-[min(38vh,320px)] sm:h-[min(42vh,360px)] md:h-[min(46vh,400px)]",
   body: [
-    "Hoje sou técnico de suporte de TI no Novo Mix Supermercados. Entrei como estagiário em fevereiro de 2026 e, três meses depois, fui efetivado — atuo no Centro de Distribuição e nas filiais da rede.",
+    "Hoje sou técnico de suporte de TI no Novo Mix Supermercados. Entrei como estagiário em fevereiro de 2026 e, três meses depois, fui efetivado. Atuo no Centro de Distribuição e nas filiais da rede.",
     "O trabalho fica entre infraestrutura e software: investigar incidentes no ERP, consultar e validar dados no banco, entender falhas de integração e manter a operação das lojas no ar.",
-    "Hoje estou migrando para a área de desenvolvimento da empresa. Entro aos poucos em projetos grandes de software e já entreguei diversas automações para o Novo Mix — o suporte ainda faz parte da rotina, mas o caminho que estou construindo ali é o de desenvolvedor.",
+    "Hoje estou migrando para a área de desenvolvimento da empresa. Entro aos poucos em projetos grandes de software e já entreguei diversas automações para o Novo Mix. O suporte ainda faz parte da rotina, mas o caminho que estou construindo ali é o de desenvolvedor.",
     "É um ambiente real de varejo, com daily, SQL e troubleshooting no dia a dia. Uso isso para evoluir em lógica e sistemas, agora com um pé cada vez mais firme na engenharia de software.",
   ],
   tags: "NOVO MIX · MIGRANDO PARA DEV · AUTOMAÇÃO · SUPORTE TI · SQL · ERP · 2026",
   images: [
     {
-      src: "/about/novo-mix-supermercados-logo.webp",
+      src: "/about/logotipo_novomix_3d.png",
       alt: "Logo do Novo Mix Supermercados",
       surface: "float",
       layoutClassName:
@@ -117,7 +117,7 @@ export const aboutStackScene: NarrativeSceneContent = {
   collageClassName:
     "h-[min(50vh,420px)] sm:h-[min(52vh,440px)] md:h-[min(56vh,480px)]",
   body: [
-    "Trabalho como desenvolvedor web full stack com TypeScript no front e no back — interfaces com Next.js e APIs com NestJS em Node.js.",
+    "Trabalho como desenvolvedor web full stack com TypeScript no front e no back, com interfaces em Next.js e APIs em NestJS no Node.js.",
     "No dia a dia uso PostgreSQL, MariaDB, MySQL e Supabase para dados; RabbitMQ e Kafka quando o fluxo pede filas e processamento assíncrono.",
     "A stack muda conforme o projeto, mas a base é sempre a mesma: código tipado, estrutura clara e ferramentas que escalam com o produto.",
   ],
@@ -242,8 +242,8 @@ export const aboutArchitectureScene: NarrativeSceneContent = {
   collageClassName:
     "h-[min(50vh,420px)] sm:h-[min(52vh,440px)] md:h-[min(56vh,480px)]",
   body: [
-    "Não paro na interface. Neste portfólio, a API de contato valida com Zod, limita requisições por IP, persiste em PostgreSQL via Supabase com RLS e notifica por e-mail — cada responsabilidade isolada em lib/contact, longe da rota HTTP.",
-    "No Rei da Selva, a API em NestJS organiza módulos com Prisma, autenticação JWT e integrações de auth social — o mesmo rigor de separação que aplico em freelances e projetos de faculdade.",
+    "Não paro na interface. Neste portfólio, a API de contato valida com Zod, limita requisições por IP, persiste em PostgreSQL via Supabase com RLS e notifica por e-mail. Cada responsabilidade fica isolada em lib/contact, longe da rota HTTP.",
+    "No Rei da Selva, a API em NestJS organiza módulos com Prisma, autenticação JWT e integrações de auth social. É o mesmo rigor de separação que aplico em freelances e projetos de faculdade.",
     "Penso em system design desde o início: boundaries entre rota, serviço e infraestrutura; validação na entrada; sessões httpOnly no admin; secrets apenas no servidor.",
   ],
   tags: "SYSTEM DESIGN · ZOD · RATE LIMITING · RLS · NESTJS · API LAYERS",
@@ -337,10 +337,10 @@ export const aboutReiDaSelvaScene: NarrativeSceneContent = {
     "h-[min(68vh,580px)] sm:h-[min(72vh,620px)] md:h-[min(76vh,680px)]",
   collageMaxWidthClassName: "md:max-w-[min(100%,920px)]",
   body: [
-    "Freelance entregue em 2026 para um cliente real na Bahia: front em Next.js e TypeScript, API em NestJS com arquitetura hexagonal — domínio isolado, adapters de infraestrutura e contratos claros entre camadas.",
-    "Integrações em produção: login com Google (OAuth), checkout e pagamentos com Mercado Pago — com idempotência nas operações de pagamento e webhooks para evitar cobranças duplicadas em retries — e fluxo de atendimento via WhatsApp, cada serviço com validação e tratamento de erros.",
+    "Freelance entregue em 2026 para um cliente real na Bahia: front em Next.js e TypeScript, API em NestJS com arquitetura hexagonal, com domínio isolado, adapters de infraestrutura e contratos claros entre camadas.",
+    "Integrações em produção: login com Google (OAuth), checkout e pagamentos com Mercado Pago, com idempotência nas operações de pagamento e webhooks para evitar cobranças duplicadas em retries, e fluxo de atendimento via WhatsApp, cada serviço com validação e tratamento de erros.",
     "Segurança e performance no fluxo: autenticação JWT, RBAC para permissões por papel, schemas tipados, proteção de rotas, rate limiting onde faz sentido, secrets em ambiente e otimização de assets, lazy loading e motion sem sacrificar a experiência mobile.",
-    "Do design ao deploy: identidade visual, animações, responsividade e entrega ponta a ponta — um case que mostra como combino engenharia de software com produto digital real.",
+    "Do design ao deploy: identidade visual, animações, responsividade e entrega ponta a ponta. É um projeto que mostra como combino engenharia de software com produto digital real.",
   ],
   tags:
     "NEXT.JS · NESTJS · TYPESCRIPT · HEXAGONAL · RBAC · IDEMPOTENCY · MERCADO PAGO · GOOGLE AUTH · WHATSAPP · 2026",
@@ -468,9 +468,9 @@ export const aboutEnemIaScene: NarrativeSceneContent = {
     "h-[min(68vh,580px)] sm:h-[min(72vh,620px)] md:h-[min(76vh,680px)]",
   collageMaxWidthClassName: "md:max-w-[min(100%,920px)]",
   body: [
-    "Produto de preparação adaptativa para o ENEM: tutor com IA, simulados e trilha de estudos ajustados ao que o aluno ainda precisa dominar — não é um chat genérico, é foco de prova.",
+    "Produto de preparação adaptativa para o ENEM: tutor com IA, simulados e trilha de estudos ajustados ao que o aluno ainda precisa dominar. Não é um chat genérico, é foco de prova.",
     "A interface organiza conversa, progresso e treinos no mesmo fluxo: o aluno pergunta, revisa lacunas e marca etapas, com métricas que acompanham o que já foi coberto.",
-    "Do design à implementação, o case mostra produto digital de ponta a ponta — visual escuro, motion e responsividade sem perder clareza no mobile.",
+    "Do design à implementação, o projeto mostra produto digital de ponta a ponta, com visual escuro, motion e responsividade sem perder clareza no mobile.",
   ],
   tags: "NEXT.JS · EDTECH · TUTOR IA · SIMULADOS · TRILHA · PRODUTO · 2026",
   cta: {

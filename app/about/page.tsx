@@ -4,9 +4,9 @@ import AboutNarrativeIntro from "@/components/about/narrative/AboutNarrativeIntr
 import Contact from "@/components/sections/Contact";
 
 export const metadata: Metadata = {
-  title: "Sobre — Fredson Santana",
+  title: "Sobre | Fredson Santana",
   description:
-    "Conheça Fredson Santana — desenvolvedor web full stack júnior em Salvador, focado em soluções web de qualidade.",
+    "Conheça Fredson Santana, desenvolvedor web full stack júnior em Salvador, focado em soluções web de qualidade.",
 };
 
 export default function AboutPage() {
