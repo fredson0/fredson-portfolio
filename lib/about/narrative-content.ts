@@ -26,6 +26,7 @@ export type NarrativeSceneContent = {
   /** Optional override for collage container height/sizing */
   collageClassName?: string;
   collageMaxWidthClassName?: string;
+  copyClassName?: string;
   sectionClassName?: string;
   cta?: {
     label: string;
@@ -42,6 +43,10 @@ export const aboutStoryScene: NarrativeSceneContent = {
     "Gosto de colaborar de perto, entender o problema antes de codar e entregar com clareza. Busco uma vaga de desenvolvedor em empresa para crescer com um time, levando o que já aprendi na operação e nos projetos autônomos.",
   ],
   tags: "DESENVOLVEDOR WEB · FULL STACK · SALVADOR",
+  collageClassName:
+    "overflow-hidden h-[min(52vh,420px)] md:h-[min(58vh,520px)] [@media(min-width:768px)_and_(max-height:920px)]:h-[min(74vh,660px)]",
+  copyClassName:
+    "[@media(min-width:768px)_and_(max-height:920px)]:mt-24",
   images: [
     {
       src: "/about/perfil3.jpg",
@@ -65,7 +70,7 @@ export const aboutStoryScene: NarrativeSceneContent = {
       src: "/about/perfil4.jpg",
       alt: "Fredson Santana",
       layoutClassName:
-        "left-[8%] top-[48%] z-20 w-[36%] sm:w-[32%] md:left-[10%] md:top-[44%] md:w-[30%]",
+        "left-[8%] top-[48%] z-20 w-[36%] sm:w-[32%] md:left-[10%] md:top-[44%] md:w-[30%] [@media(min-width:768px)_and_(max-height:920px)]:top-[36%]",
       riseY: 95,
       duration: 0.72,
       delay: 0.02,
@@ -74,7 +79,7 @@ export const aboutStoryScene: NarrativeSceneContent = {
       src: "/about/perfil.jpeg",
       alt: "Fredson Santana",
       layoutClassName:
-        "left-[42%] top-[36%] z-40 w-[42%] sm:w-[38%] md:left-[38%] md:top-[32%] md:w-[36%]",
+        "left-[42%] top-[36%] z-40 w-[42%] sm:w-[38%] md:left-[38%] md:top-[32%] md:w-[36%] [@media(min-width:768px)_and_(max-height:920px)]:top-[20%] [@media(min-width:768px)_and_(max-height:920px)]:w-[30%]",
       riseY: 165,
       duration: 1.15,
       delay: 0.14,

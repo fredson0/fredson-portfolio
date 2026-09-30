@@ -260,7 +260,9 @@ export default function NarrativeScene({ content }: NarrativeSceneProps) {
 
         <div
           ref={copyRef}
-          className="relative z-20 mt-10 max-w-xl md:mt-14 lg:mt-16"
+          className={`relative z-20 mt-10 max-w-xl bg-white md:mt-14 lg:mt-16 ${
+            content.copyClassName ?? ""
+          }`}
         >
           <div className="flex flex-col gap-5">
             {content.body.map((paragraph) => (
